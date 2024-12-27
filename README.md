@@ -133,6 +133,7 @@ Join our community on Discord to contribute to **Keizer Blogs**. We welcome deve
 ## Resources
 
 - **Sample Blog Applications**:
+  - [Stripe Blog](https://stripe.com/blog)
   - [Medium](https://medium.com/)
   - [Hashnode](https://hashnode.com/)
   - [Blog Hub](https://blog-hub-seven.vercel.app/)
