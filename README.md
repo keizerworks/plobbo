@@ -1,149 +1,48 @@
-# Welcome to Keizer Blogs
+# Astro Starter Kit: Basics
 
-Keizer Blogs is a powerful and customizable blogging platform built to deliver a seamless reading and writing experience. With inspiration drawn from apps like Medium and Hashnode, Keizer Blogs combines modern design, advanced features, and scalability to meet the needs of readers, writers, and admins.
-
----
-
-## Overview
-
-**Keizer Blogs** is designed for:
-
-- **Normal Users**:
-  - Read engaging blogs.
-  - Like, share, and comment on blogs to interact with the community.
-
-- **Admins**:
-  - Create, edit, and publish blogs.
-  - Access a secure editor route to manage content.
-
----
-
-## Features
-
-### For Users:
-- Read blogs with a clean, intuitive interface.
-- Share blogs on social media and beyond.
-- Like and comment on blogs to foster engagement.
-
-### For Admins:
-- Full-featured, secure route for blog creation and management.
-- Integrated image management for enhancing blog content.
-- Support for real-time content previews during editing.
-
-### Advanced Capabilities:
-- Integration with [LangDB.ai](https://langdb.ai/) for AI-powered autocompletions, making writing easier and faster.
-- Authentication for user and admin roles.
-- Responsive and modern design inspired by [this Figma template](https://www.figma.com/community/file/1216616090937021365/free-blog-template-modern-creative-design).
-- Full-stack solution leveraging Sanity and Next.js for an unparalleled authoring and publishing experience.
-
----
-
-## Tech Stack
-
-### Frontend:
-- **Next.js**:
-  - High-performance and SEO-friendly.
-  - Server-side rendering and static generation for speed.
-
-### Backend:
-- **Sanity**:
-  - Real-time and collaborative content management.
-  - Flexible query language and robust image transformation APIs.
-
-### Additional Tools:
-- **LangDB.ai** for AI-enhanced writing assistance.
-- **TailwindCSS** for responsive and modern UI design.
-- **Authentication** to secure user and admin roles.
-
----
-
-## Getting Started
-
-### Step 1: Clone the Repository
-```bash
-# Clone the repo
-git clone https://github.com/your-repo/keizer-blogs.git
-
-# Navigate to the project directory
-cd keizer-blogs
+```sh
+npm create astro@latest -- --template basics
 ```
 
-### Step 2: Set Up Environment Variables
-Create a `.env.local` file in the root directory with the following:
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
 
-```env
-# Sanity settings
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
-NEXT_PUBLIC_SANITY_DATASET=your_dataset
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-# Authentication settings
-NEXTAUTH_SECRET=your_secret_key
-NEXTAUTH_URL=http://localhost:3000
+![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
 
-# LangDB.ai settings
-NEXT_PUBLIC_LANGDB_API_KEY=your_langdb_api_key
+## 🚀 Project Structure
+
+Inside of your Astro project, you'll see the following folders and files:
+
+```text
+/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       └── index.astro
+└── package.json
 ```
 
-### Step 3: Install Dependencies
-```bash
-npm install
-```
+To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
-### Step 4: Run the Development Server
-```bash
-npm run dev
-```
+## 🧞 Commands
 
-Visit `http://localhost:3000` to see the app in action. Admins can log in to access the editor at `/admin`.
+All commands are run from the root of the project, from a terminal:
 
----
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## Key Components
+## 👀 Want to learn more?
 
-| File/Folder                 | Description                                       |
-|-----------------------------|---------------------------------------------------|
-| `pages/admin`               | Secure route for admin features.                 |
-| `pages/api/auth`            | Authentication logic for users and admins.       |
-| `pages/blog/[slug].tsx`     | Individual blog pages.                           |
-| `lib/sanity.js`             | Configuration for Sanity client.                 |
-| `components/BlogEditor.tsx` | Rich text editor for blog creation and editing.  |
-
----
-
-## Deploying to Production
-Deploy your project to **Vercel** for an optimized production experience.
-
-```bash
-# Push changes to the repository
-git add .
-git commit -m "Initial commit"
-git push
-
-# Deploy with Vercel
-npx vercel --prod
-```
-
----
-
-## Contributing
-Join our community on Discord to contribute to **Keizer Blogs**. We welcome developers, designers, and writers to collaborate on building this powerful platform. 
-
----
-
-## Resources
-
-- **Sample Blog Applications**:
-  - [Stripe Blog](https://stripe.com/blog)
-  - [Medium](https://medium.com/)
-  - [Hashnode](https://hashnode.com/)
-  - [Blog Hub](https://blog-hub-seven.vercel.app/)
-
-- **Design Inspiration**:
-  - [Free Blog Template on Figma](https://www.figma.com/community/file/1216616090937021365/free-blog-template-modern-creative-design)
-
-- **Sanity and Next.js Tutorial**:
-  - [Watch the Guide](https://youtu.be/Lydgf-Hvla4?si=38SlM353Yulzk6eN)
-
----
-
-Let’s make blogging better, together. 🚀
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
