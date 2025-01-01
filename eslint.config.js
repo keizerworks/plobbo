@@ -9,7 +9,13 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   eslintConfigPrettier,
   {
-    files: ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
+    files: [
+      "src/**/*.js",
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "db/**/*.js",
+      "db/**/*.ts",
+    ],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,
