@@ -1,3 +1,5 @@
+# Keizer-Blogs
+
 **Keizer Blogs** is an open-source, static blogging platform built with Astro and Novel Editor, designed for simplicity, performance, and extensibility. This platform allows users to read articles seamlessly, while administrators can create and manage content with advanced tools like LangDB for AI-driven auto-completions.
 
 ---
@@ -36,6 +38,7 @@ These features will be available as premium add-ons to help monetize your blog.
 - **Editor**: Novel Editor for rich text editing.
 - **Database**: SQLite for simplicity and reliability.
 - **AI Tool**: [LangDB](https://langdb.ai/) for AI-driven auto-completions.
+- **Figma Design**: [https://www.figma.com/design/xO495XLex9ybzXTYJkgAqS/Untitled?node-id=0-1&t=yr7rZYNjVKccXx3m-1 ](https://www.figma.com/design/xO495XLex9ybzXTYJkgAqS/Untitled?node-id=0-1&t=yr7rZYNjVKccXx3m-1 )
 
 ---
 
