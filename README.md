@@ -167,7 +167,7 @@ Keizer Blogs can be self-hosted by startups, businesses, or individual users who
 
 ### Prerequisites:
 1. **Node.js**: Install the latest version from [Node.js](https://nodejs.org).
-2. **Astro CLI**: Install Astro globally using `npm install -g astro`.
+2. **Astro CLI**: Install Astro globally using `pnpm install -g astro`.
 
 ### Steps to Set Up Locally:
 1. Clone the repository:
@@ -177,11 +177,11 @@ Keizer Blogs can be self-hosted by startups, businesses, or individual users who
    ```
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Start the development server:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 4. Open your browser and navigate to `http://localhost:3000`.
 
@@ -191,7 +191,7 @@ Keizer Blogs is optimized for deployment on platforms like Vercel, Netlify, or a
 To deploy on Vercel:
 1. Install the Vercel CLI:
    ```bash
-   npm install -g vercel
+   pnpm install -g vercel
    ```
 2. Link and deploy your project:
    ```bash
@@ -245,12 +245,12 @@ All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `pnpm install`             | Installs dependencies                            |
+| `pnpm run dev`             | Starts local dev server at `localhost:4321`      |
+| `pnpm run build`           | Build your production site to `./dist/`          |
+| `pnpm run preview`         | Preview your build locally, before deploying     |
+| `pnpm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `pnpm run astro -- --help` | Get help using the Astro CLI                     |
 
 ---
 
