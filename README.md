@@ -42,6 +42,125 @@ These features will be available as premium add-ons to help monetize your blog.
 
 ---
 
+## Schema Design for Blog Website
+
+This schema design outlines the structure for a blog website supporting multiple organizations, custom domains, and user management. Each component is designed to ensure scalability, flexibility, and ease of integration.
+
+### Blog Post Schema
+Represents individual blog posts created and managed by organizations.
+
+| Field          | Type         | Description                               |
+|----------------|--------------|-------------------------------------------|
+| `id`           | UUID         | Unique identifier for the blog post.      |
+| `organization_id` | UUID      | References the organization that owns the post. |
+| `title`        | String       | Title of the blog post.                   |
+| `slug`         | String       | URL-friendly identifier for the post.     |
+| `image`        | String       | URL of the cover image for the post.      |
+| `author`       | Object       | Contains `id` (UUID) and `name` (String) of the author. |
+| `body`         | Text         | Content of the blog post.                 |
+| `tags`         | Array[String]| Tags associated with the post.            |
+| `likes`        | Number       | Number of likes the post has received.    |
+| `created_at`   | Datetime     | Timestamp when the post was created.      |
+| `updated_at`   | Datetime     | Timestamp when the post was last updated. |
+| `status`       | String       | Status of the post (e.g., "draft", "published"). |
+
+### Organization Schema
+Defines the structure for organizations that use the blog platform.
+
+| Field          | Type         | Description                               |
+|----------------|--------------|-------------------------------------------|
+| `id`           | UUID         | Unique identifier for the organization.   |
+| `name`         | String       | Name of the organization.                 |
+| `subdomain`    | String       | Subdomain for the organization (e.g., `a` for `a.keizerblog.com`). |
+| `custom_domain`| String       | Custom domain used by the organization.   |
+| `settings`     | Object       | Organization-specific settings including `theme` (String), `logo` (String), and `description` (String). |
+| `created_at`   | Datetime     | Timestamp when the organization was created. |
+| `updated_at`   | Datetime     | Timestamp when the organization was last updated. |
+
+### User Schema
+Manages users who interact with the platform as administrators, editors, or viewers.
+
+| Field          | Type         | Description                               |
+|----------------|--------------|-------------------------------------------|
+| `id`           | UUID         | Unique identifier for the user.           |
+| `name`         | String       | Name of the user.                         |
+| `email`        | String       | Email address of the user.                |
+| `role`         | String       | Role of the user (e.g., "admin", "editor"). |
+| `organization_id` | UUID      | Nullable; references the organization the user belongs to. |
+| `created_at`   | Datetime     | Timestamp when the user was created.      |
+| `updated_at`   | Datetime     | Timestamp when the user was last updated. |
+
+### Relationships
+1. **Organizations and Blog Posts**:
+   - Each organization can create and manage multiple blog posts.
+   - Blog posts reference their owning organization through `organization_id`.
+
+2. **Custom Domains and Subdomains**:
+   - Organizations can either use a subdomain (e.g., `a.keizerblog.com`) or a custom domain for their blog.
+
+3. **Users and Organizations**:
+   - Users are associated with organizations via `organization_id`.
+   - Users with the roles of "admin" or "editor" can manage blog content for their organization.
+
+### Example Usage
+- **Scenario 1**: Startup A uses the platform and opts for the subdomain `a.keizerblog.com`. All their blog posts will be accessible under this subdomain.
+- **Scenario 2**: Organization B prefers a custom domain `blog.organizationb.com`. The platform routes traffic accordingly while ensuring data isolation.
+
+### JSON 
+
+```
+BLOG -
+
+{
+  "id": "UUID",
+  "organization_id": "UUID",
+  "title": "string",
+  "slug": "string",
+  "image": "string",  // URL to the cover image
+  "author": {
+    "id": "UUID",
+    "name": "string"
+  },
+  "body": "text",
+  "tags": ["string"],  
+  "likes": "number",   
+  "created_at": "datetime",
+  "updated_at": "datetime",
+  "status": "string"   // e.g., "draft", "published", "archived"
+}
+
+ORGANIZATION -
+
+{
+  "id": "UUID",
+  "name": "string",
+  "subdomain": "string",  // e.g., "a" for a.keizerblog.com
+  "custom_domain": "string",  // e.g., "customdomain.com"
+  "settings": {
+    "theme": "string",  // Theme or branding details
+    "logo": "string",   // URL to organization logo
+    "description": "string"  // Short description of the organization
+  },
+  "created_at": "datetime",
+  "updated_at": "datetime"
+}
+
+USER - 
+
+{
+  "id": "UUID",
+  "name": "string",
+  "email": "string",
+  "role": "string",  // e.g., "admin", "editor", "viewer"
+  "organization_id": "UUID",  // Nullable if the user is not tied to an org
+  "created_at": "datetime",
+  "updated_at": "datetime"
+}
+
+```
+
+This schema ensures modularity and extensibility, allowing for future features like analytics, comments, and integrations with external services.
+
 ## Self-Hosting Instructions
 
 Keizer Blogs can be self-hosted by startups, businesses, or individual users who want to maintain their blog page. Follow the steps below:
