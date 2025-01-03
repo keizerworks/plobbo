@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # db
 keizerblog.db
+
+.codegpt
