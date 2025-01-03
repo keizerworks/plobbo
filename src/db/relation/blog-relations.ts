@@ -5,7 +5,7 @@ import { relations } from "drizzle-orm";
 
 export const blogRelation = relations(BlogTable, ({ one } ) => ({
   author: one(UserTable, {
-    fields: [BlogTable.author],
+    fields: [BlogTable.authorId],
     references: [UserTable.id]
   }),
   organizationId: one(OrganizationTable, {

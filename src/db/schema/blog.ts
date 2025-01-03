@@ -7,7 +7,7 @@ import { sql } from "drizzle-orm";
 export const BlogTable = sqliteTable("blog", {
   ...baseTable,
   organizationId: text().references(() => OrganizationTable.id),
-  author: text().references(() => UserTable.id).notNull(),
+  authorId: text().references(() => UserTable.id).notNull(),
   title: text().notNull(),
   slug: text().notNull(),
   image: text().notNull(),
