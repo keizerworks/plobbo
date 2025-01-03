@@ -1,4 +1,4 @@
-import { baseTable } from "db/base";
+import { baseTable } from "../base";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { OrganizationTable } from "./organization";
 import { UserTable } from "./user";
