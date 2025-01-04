@@ -1,7 +1,6 @@
-import { z } from "astro/zod";
-import { zfd } from "zod-form-data";
+import { z } from "astro:schema";
 
-export const signUpSchema = zfd.formData({
+export const signUpSchema = z.object({
   firstName: z.string().min(3),
   lastName: z.string().optional(),
   email: z.string().email(),

@@ -1,14 +1,14 @@
-import type { SessionInterface } from "db/schema/session";
-import type { UserInterface } from "db/schema/user";
-import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeHexLowerCase } from "@oslojs/encoding";
-import { createId } from "@paralleldrive/cuid2";
+import type { SessionInterface } from "@/db/schema/session";
+import type { UserInterface } from "@/db/schema/user";
 import {
   deleteSession,
   getSessionWithUser,
   insertSession,
   updateSession,
-} from "db/actions/session";
+} from "@/db/actions/session";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeHexLowerCase } from "@oslojs/encoding";
+import { createId } from "@paralleldrive/cuid2";
 
 export type SessionValidationResult =
   | { session: SessionInterface; user: UserInterface }
