@@ -1,6 +1,6 @@
-import { BlogTable } from "db/schema/blog";
-import { OrganizationTable } from "db/schema/organization";
-import { UserTable } from "db/schema/user";
+import { BlogTable } from "../schema/blog";
+import { OrganizationTable } from "../schema/organization";
+import { UserTable } from "../schema/user";
 import { relations } from "drizzle-orm";
 
 export const blogRelation = relations(BlogTable, ({ one } ) => ({

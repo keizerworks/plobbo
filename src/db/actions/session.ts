@@ -1,8 +1,8 @@
-import type { InsertSessionInterface } from "db/schema/session";
-import type { SessionValidationResult } from "utils/auth/session";
-import { db } from "db";
-import { SessionTable } from "db/schema/session";
-import { UserTable } from "db/schema/user";
+import type { InsertSessionInterface } from "../schema/session";
+import type { SessionValidationResult } from "@/utils/auth/session";
+import { db } from "..";
+import { SessionTable } from "../schema/session";
+import { UserTable } from "../schema/user";
 import { eq } from "drizzle-orm";
 
 export async function insertSession(values: InsertSessionInterface) {
