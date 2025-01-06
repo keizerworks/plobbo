@@ -33,8 +33,6 @@ import { ColorSelector } from '@/components/editor/selectors/color-selector'
 
 import { Separator } from '@/components/ui/separator'
 
-// const hljs = require('highlight.js')
-// import hljs from 'highlight.js'
 
 const extensions = [...defaultExtensions, slashCommand]
 
@@ -71,13 +69,13 @@ export default function Editor({ initialValue, handleChange }: EditorProps) {
   }
 
   return (
-    <div className='relative w-full max-w-screen-lg'>
+    <div className='relative w-full mt-[20px] overflow-hidden' >
       <EditorRoot>
         <EditorContent
           immediatelyRender={false}
           initialContent={initialValue}
           extensions={extensions}
-          className='min-h-96 rounded-xl border p-10'
+          className='w-full min-h-96 rounded-xl border p-4 md:p-10'
           editorProps={{
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event)

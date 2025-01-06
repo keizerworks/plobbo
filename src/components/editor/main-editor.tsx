@@ -28,7 +28,7 @@ const EditorWrapper = () => {
   };
 
   return (
-    <div className="w-[100vw] h-auto flex justify-center items-center">
+    <div className="w-full h-auto flex justify-center items-center">
       <Editor 
         initialValue={defaultValue} 
         handleChange={handleEditorChange} 

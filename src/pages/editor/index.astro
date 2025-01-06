@@ -1,8 +1,26 @@
 ---
-import  EditorWrapper  from "../../components/editor/main-editor";
+import EditorWrapper from "../../components/editor/main-editor";
+
 import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
 
+import {Button} from "../../components/ui/button";
 ---
 
-<EditorWrapper client:load/>
+
+
+<div class="w-[100vw] h-auto flex justify-center items-center overflow-hidden">
+  <div class="mt-[50px] w-[90vw] md:w-[70vw] h-auto flex flex-col justify-start items-center overflow-hidden">
+    <span class="flex self-start text-[32px] md:text-[42px] lg:text-[50px] font-semibold ">
+      Let's Get Started
+    </span>
+    <EditorWrapper client:load />
+    <Button
+      variant="default"
+      size="default"
+      className="mt-[20px] px-[28px] py-[20px] flex self-end rounded-[5px]"
+    >
+      Submit
+    </Button>
+  </div>
+</div>
