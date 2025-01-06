@@ -3,29 +3,47 @@ import BlogList from '../../components/admin/blog-list.astro';
 import { fetchBlogs } from '../../utils/services/blog-service';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { actions } from 'astro:actions';
 import { Book, Plus, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-const PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 5;
+const pageSize = Number(Astro.url.searchParams.get('pageSize') || DEFAULT_PAGE_SIZE);
 const currentPage = Number(Astro.url.searchParams.get('page') || '1');
 const searchQuery = Astro.url.searchParams.get('search') || '';
-const queryMode = Boolean(searchQuery);
-let totalBlogs = 0;
-let blogs: any[] = [];
 
-try {
-  // const result = queryMode
-  //   ? await fetchBlogsWithSearch(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE, searchQuery)
-  //   : await fetchBlogsWithCache(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
+const { data, error } = await Astro.callAction(actions.blogs.fetchBlogs, {
+  page: currentPage,
+  pageSize: pageSize,
+  search: searchQuery,
+});
 
-
-  const result = await fetchBlogs(currentPage, PAGE_SIZE, searchQuery);
-  blogs = result.blogs;
-  totalBlogs = result.total;
-} catch (err) {
-  console.error("Error fetching blogs:", err);
+if (error) {
+  console.error("Error fetching blogs:", error);
 }
 
-const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
+let blogs = data?.blogs || [];
+let totalBlogs = data?.total || 0;
+
+// const searchResult = Astro.getActionResult(actions.blogs.searchBlogs);
+// if (searchResult && !searchResult.error) {
+// console.log("searchResult", searchResult);
+// blogs = searchResult.data.blogs;
+// }
+
+
+// let totalBlogs = 0;
+// let blogs: any[] = [];
+
+// try {
+
+//   const result = await fetchBlogs(currentPage, PAGE_SIZE, searchQuery);
+//   blogs = result.blogs;
+//   totalBlogs = result.total;
+// } catch (err) {
+//   console.error("Error fetching blogs:", err);
+// }
+
+const totalPages = Math.ceil(totalBlogs / pageSize);
 ---
 
 <html lang="en">
@@ -52,13 +70,15 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
     </nav>
 
     <div class="container mx-auto px-4 py-8">
-      <form class="mb-8 flex items-center" method="get">
+      <!-- <form class="mb-8 flex items-center" method="POST" action={actions.blogs.searchBlogs}>
+        <input type="hidden" name="page" value={currentPage} />
+        <input type="hidden" name="pageSize" value={PAGE_SIZE} />
         <div class="relative flex-grow">
           <Input
             type="text"
             name="search"
             placeholder="Search blogs by title..."
-            defaultValue={searchQuery}
+            value={searchQuery}
             className="w-full pr-20 pl-4 py-2"
           />
           <Button type="submit" className="absolute right-0 top-0 h-full">
@@ -66,8 +86,24 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
             Search
           </Button>
         </div>
+      </form> -->
+      <form class="mb-8 flex items-center" method="GET" action="">
+        <input type="hidden" name="page" value="1" />
+        <input type="hidden" name="pageSize" value={pageSize} />
+        <div class="relative flex-grow">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search blogs by title..."
+            value={searchQuery}
+            class="w-full pr-20 pl-4 py-2"
+          />
+          <button type="submit" class="absolute right-0 top-0 h-full btn">
+            <Search className="h-5 w-5 mr-2" />
+            Search
+          </button>
+        </div>
       </form>
-      
       
       <main>
         <section class="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -78,7 +114,7 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
               
               <div class="mt-8 flex justify-center items-center space-x-2">
                 {currentPage > 1 ? (
-                  <a href="?page=1" class="btn" aria-label="First Page">
+                  <a href={`?page=1&pageSize=${pageSize}&search=${searchQuery}`} class="btn" aria-label="First Page">
                     <Button
                       variant="outline"
                       size="sm"
@@ -97,7 +133,7 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
                 )}
               
                 {currentPage > 1 ? (
-                  <a href={`?page=${currentPage - 1}`} class="btn" aria-label="Previous Page">
+                  <a href={`?page=${currentPage - 1}&pageSize=${pageSize}&search=${searchQuery}`} class="btn" aria-label="Previous Page">
                     <Button
                       variant="outline"
                       size="sm"
@@ -118,7 +154,7 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
                 <span class="text-gray-700 font-medium">{currentPage} of {totalPages}</span>
               
                 {currentPage < totalPages ? (
-                  <a href={`?page=${currentPage + 1}`} class="btn" aria-label="Next Page">
+                  <a href={`?page=${currentPage + 1}&pageSize=${pageSize}&search=${searchQuery}`} class="btn" aria-label="Next Page">
                     <Button
                       variant="outline"
                       size="sm"
@@ -137,7 +173,7 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
                 )}
               
                 {currentPage < totalPages ? (
-                  <a href={`?page=${totalPages}`} class="btn" aria-label="Last Page">
+                  <a href={`?page=${totalPages}&pageSize=${pageSize}&search=${searchQuery}`} class="btn" aria-label="Last Page">
                     <Button
                       variant="outline"
                       size="sm"
