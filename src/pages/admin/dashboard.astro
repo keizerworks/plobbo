@@ -1,0 +1,168 @@
+---
+import BlogList from '../../components/admin/blog-list.astro';
+import { fetchBlogsWithCache, fetchBlogsWithSearch } from '../../utils/services/blog-service';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Book, Plus, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
+
+const PAGE_SIZE = 5;
+const currentPage = Number(Astro.url.searchParams.get('page') || '1');
+const searchQuery = Astro.url.searchParams.get('search') || '';
+const queryMode = Boolean(searchQuery);
+let totalBlogs = 0;
+let blogs: any[] = [];
+
+try {
+  const result = queryMode
+    ? await fetchBlogsWithSearch(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE, searchQuery)
+    : await fetchBlogsWithCache(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
+
+  blogs = result.blogs;
+  totalBlogs = result.total;
+} catch (err) {
+  console.error("Error fetching blogs:", err);
+}
+
+const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keizer Blogs - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-['Inter',sans-serif] min-h-screen">
+    <nav class="border-b border-gray-200 bg-white shadow-sm">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <Book className="h-6 w-6 text-blue-600" />
+            <span class="text-xl font-bold text-gray-900">Keizer Blogs</span>
+          </div>
+          <Button>
+            <Plus className="h-5 w-5 mr-2" />
+            New Blog
+          </Button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+      <form class="mb-8 flex items-center" method="get">
+        <div class="relative flex-grow">
+          <Input
+            type="text"
+            name="search"
+            placeholder="Search blogs by title..."
+            value={searchQuery}
+            className="w-full pr-20 pl-4 py-2"
+          />
+          <Button type="submit" className="absolute right-0 top-0 h-full">
+            <Search className="h-5 w-5 mr-2" />
+            Search
+          </Button>
+        </div>
+      </form>
+      
+      
+      <main>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h1 class="text-2xl font-semibold mb-6 text-gray-800">All Blogs</h1>
+          {blogs.length > 0 ? (
+            <>
+              <BlogList blogs={blogs} />
+              
+              <div class="mt-8 flex justify-center items-center space-x-2">
+                {currentPage > 1 ? (
+                  <a href="?page=1" class="btn" aria-label="First Page">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChevronsLeft className="h-5 w-5" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                  >
+                    <ChevronsLeft className="h-5 w-5" />
+                  </Button>
+                )}
+              
+                {currentPage > 1 ? (
+                  <a href={`?page=${currentPage - 1}`} class="btn" aria-label="Previous Page">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                )}
+              
+                <span class="text-gray-700 font-medium">{currentPage} of {totalPages}</span>
+              
+                {currentPage < totalPages ? (
+                  <a href={`?page=${currentPage + 1}`} class="btn" aria-label="Next Page">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                )}
+              
+                {currentPage < totalPages ? (
+                  <a href={`?page=${totalPages}`} class="btn" aria-label="Last Page">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChevronsRight className="h-5 w-5" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                  >
+                    <ChevronsRight className="h-5 w-5" />
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <p class="text-center text-gray-500 py-8">No blogs found</p>
+          )}
+        </section>
+      </main>
+    </div>
+    
+    <footer class="text-center py-4 text-gray-600 text-sm">
+      &copy; 2023 Keizer Blogs. All rights reserved.
+    </footer>
+  </body>
+</html>
