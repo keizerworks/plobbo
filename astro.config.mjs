@@ -8,7 +8,7 @@ import { defineConfig, envField } from "astro/config";
 export default defineConfig({
   integrations: [tailwind({ applyBaseStyles: true }), react()],
   adapter: node({ mode: "standalone" }),
-
+  output: 'server',
   env: {
     schema: {
       // server
