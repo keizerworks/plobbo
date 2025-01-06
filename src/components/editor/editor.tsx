@@ -50,10 +50,10 @@ export const defaultEditorContent = {
 
 interface EditorProps {
   initialValue?: JSONContent
-  onChange: (content: string) => void
+  handleChange: (content: string) => void
 }
 
-export default function Editor({ initialValue, onChange }: EditorProps) {
+export default function Editor({ initialValue, handleChange }: EditorProps) {
   const [openNode, setOpenNode] = useState(false)
   const [openColor, setOpenColor] = useState(false)
   const [openLink, setOpenLink] = useState(false)
@@ -93,7 +93,7 @@ export default function Editor({ initialValue, onChange }: EditorProps) {
           }}
           onUpdate={({ editor }) => {
             console.log(editor.getHTML())
-            // onChange(editor.getHTML())
+            handleChange(editor.getHTML())
           }}
           slotAfter={<ImageResizer />}
         >

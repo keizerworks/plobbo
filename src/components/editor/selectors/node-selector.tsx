@@ -17,6 +17,9 @@ import { Button } from '@/components/ui/button'
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Popover } from '@radix-ui/react-popover'
 
+import "../../../styles/globals.css"
+import "../../../styles/prosemirror.css"
+
 export type SelectorItem = {
   name: string
   icon: LucideIcon
@@ -24,8 +27,6 @@ export type SelectorItem = {
   isActive: (editor: ReturnType<typeof useEditor>['editor']) => boolean
 }
 
-import "../../../styles/globals.css"
-import "../../../styles/prosemirror.css"
 
 const items: SelectorItem[] = [
   {

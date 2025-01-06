@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -86,17 +87,8 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 pre {
-  background: #0d0d0d;
+  background: #001d4e;
   border-radius: 0.5rem;
   color: #fff;
   font-family: 'JetBrainsMono', monospace;
