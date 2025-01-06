@@ -9,23 +9,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Pencil, Trash2, User, Calendar } from 'lucide-react'
+import type { BlogInterface } from "../../db/schema/blog";
 
-interface Blog {
-  id: string;
-  title: string;
-  body: string;
-  authorId: string;
-  image: string;
-  slug: string;
-  tags: string[];
-  likes: number;
-  status: "draft" | "published";
-  organizationId?: string;
-  createdAt: number;
-  updatedAt: number;
-}
+const { blogs } = Astro.props as { blogs: BlogInterface[] };
 
-const { blogs } = Astro.props as { blogs: Blog[] };
 
 function truncate(str: string, length: number) {
   return str.length > length ? str.substring(0, length) + "..." : str;
@@ -54,12 +41,12 @@ function truncate(str: string, length: number) {
       </TableRow>
     </TableHeader>
     <TableBody>
-      {blogs.map((blog: Blog) => (
+      {blogs.map((blog: BlogInterface) => (
         <TableRow>
           <TableCell className="font-medium">{blog.title}</TableCell>
           <TableCell className="text-gray-600">{truncate(blog.body, 50)}</TableCell>
           <TableCell>{blog.authorId}</TableCell>
-          <TableCell>{new Date(blog.createdAt).toLocaleString()}</TableCell>
+          <TableCell>{blog.createdAt ? new Date(Number(blog.createdAt)).toLocaleString() : ''}</TableCell>
           <TableCell>
             <div class="flex space-x-2">
               <Button variant="outline" size="sm">

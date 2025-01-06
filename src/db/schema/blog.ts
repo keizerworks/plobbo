@@ -2,7 +2,7 @@ import { baseTable } from "../base";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { OrganizationTable } from "./organization";
 import { UserTable } from "./user";
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel } from "drizzle-orm";
 
 export const BlogTable = sqliteTable("blog", {
   ...baseTable,
@@ -16,3 +16,5 @@ export const BlogTable = sqliteTable("blog", {
   likes: integer().notNull().default(0),
   status: text({ enum: ["draft", "published"]}).notNull()
 })
+
+export type BlogInterface = InferSelectModel<typeof BlogTable>;
