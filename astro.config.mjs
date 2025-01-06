@@ -8,7 +8,14 @@ import { defineConfig, envField } from "astro/config";
 export default defineConfig({
   integrations: [tailwind({ applyBaseStyles: true }), react()],
   adapter: node({ mode: "standalone" }),
-
+  vite: {
+    ssr: {
+      noExternal: ['katex', 'novel' , 'react-tweet']
+    },
+    optimizeDeps: {
+      include: ['katex', 'novel']
+    }
+  },
   env: {
     schema: {
       // server

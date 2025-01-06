@@ -1,0 +1,28 @@
+---
+import  Editor  from "../../components/editor/editor";
+import "@/styles/globals.css";
+import "@/styles/prosemirror.css";
+
+const defaultValue = {
+  type: "doc",
+  content: [
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: 'type "/" for commands or start writing content',
+        },
+      ],
+    },
+  ],
+};
+function handleEditorChange(content: string) :void {
+  console.log("Editor content changed:", content);
+  // Handle the content update
+};
+---
+
+<div class="w-[100vw] h-[100vh] flex justify-center items-center">
+  <Editor initialValue={defaultValue} onChange={handleEditorChange} client:load />
+</div>
