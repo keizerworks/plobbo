@@ -24,7 +24,6 @@ const EditorWrapper = () => {
 
   const handleEditorChange = (editorContent: string) => {
     setContent(editorContent);
-    console.log(editorContent)
   };
 
   return (

@@ -61,8 +61,7 @@ export default function Editor({ initialValue, handleChange }: EditorProps) {
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, 'text/html')
     doc.querySelectorAll('pre code').forEach(el => {
-      // @ts-ignore
-      // https://highlightjs.readthedocs.io/en/latest/api.html?highlight=highlightElement#highlightelement
+      // @ts-ignore 
       hljs.highlightElement(el)
     })
     return new XMLSerializer().serializeToString(doc)
@@ -90,7 +89,6 @@ export default function Editor({ initialValue, handleChange }: EditorProps) {
             }
           }}
           onUpdate={({ editor }) => {
-            console.log(editor.getHTML())
             handleChange(editor.getHTML())
           }}
           slotAfter={<ImageResizer />}

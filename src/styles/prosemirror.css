@@ -58,7 +58,7 @@
   }
 }
 
-/* Custom TODO list checkboxes – shoutout to this awesome tutorial: https://moderncss.dev/pure-css-custom-checkbox-style/ */
+/* Custom TODO list checkboxes  */
 
 ul[data-type='taskList'] li>label {
   margin-right: 0.2rem;

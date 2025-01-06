@@ -153,7 +153,6 @@ export const suggestionItems = createSuggestionItems([
     icon: <Youtube size={18} />,
     command: ({ editor, range }) => {
       const videoLink = prompt('Please enter Youtube Video Link')
-      //From https://regexr.com/3dj5t
       const ytregex = new RegExp(
         /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
       )
