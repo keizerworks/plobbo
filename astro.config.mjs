@@ -16,6 +16,7 @@ export default defineConfig({
       include: ['katex', 'novel']
     }
   },
+  output: 'server',
   env: {
     schema: {
       // server
