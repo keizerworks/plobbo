@@ -1,6 +1,6 @@
 ---
 import BlogList from '../../components/admin/blog-list.astro';
-import { fetchBlogsWithCache, fetchBlogsWithSearch } from '../../utils/services/blog-service';
+import { fetchBlogs } from '../../utils/services/blog-service';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Book, Plus, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
@@ -13,10 +13,12 @@ let totalBlogs = 0;
 let blogs: any[] = [];
 
 try {
-  const result = queryMode
-    ? await fetchBlogsWithSearch(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE, searchQuery)
-    : await fetchBlogsWithCache(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
+  // const result = queryMode
+  //   ? await fetchBlogsWithSearch(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE, searchQuery)
+  //   : await fetchBlogsWithCache(PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
 
+
+  const result = await fetchBlogs(currentPage, PAGE_SIZE, searchQuery);
   blogs = result.blogs;
   totalBlogs = result.total;
 } catch (err) {
@@ -56,7 +58,7 @@ const totalPages = Math.ceil(totalBlogs / PAGE_SIZE);
             type="text"
             name="search"
             placeholder="Search blogs by title..."
-            value={searchQuery}
+            defaultValue={searchQuery}
             className="w-full pr-20 pl-4 py-2"
           />
           <Button type="submit" className="absolute right-0 top-0 h-full">
