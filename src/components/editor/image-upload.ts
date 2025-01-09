@@ -7,43 +7,37 @@ const onUpload = async(file: File) => {
   const formData = new FormData();
   formData.append('image', file);
 
-  const promise = fetch("/api/images", {
-    method: "POST",
-    body: formData
-  });
+  return new Promise(async(resolve, reject) => {
 
-  return new Promise((resolve, reject) => {
-    toast.promise(
-      promise.then(async (res) => {
-        // Successfully uploaded image
-        if (res.status === 200) {
-          const { imageUrl } = (await res.json()) as { imageUrl: string };
-          // preload the image
-          const image = new Image();
-          image.src = imageUrl;
-          image.onload = () => {
-            resolve(imageUrl);
-          };
-          // No blob store configured
-        } 
-        else if (res.status === 401) {
-          resolve(file);
-          throw new Error("reading image locally instead.");
-          // Unknown error
-        } 
-        else {
-          throw new Error("Error uploading image. Please try again.");
-        }
-      }),
-      {
-        loading: "Uploading image...",
-        success: "Image uploaded successfully.",
-        error: (e) => {
-          reject(e);
-          return e.message;
-        },
-      },
-    );
+    try {
+      const response = await fetch("/api/images", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.status === 200) {
+        const { imageUrl } = (await response.json()) as { imageUrl: string };
+        // preload the image
+        const image = new Image();
+        image.src = imageUrl;
+        image.onload = () => {
+          console.log('Image uploaded successfully');
+          resolve(imageUrl);
+        };
+      }
+      else if (response.status === 401) {
+        console.log('Reading image locally');
+        resolve(file);
+      } 
+      else {
+        throw new Error("Error uploading image. Please try again.");
+      } 
+
+    } catch (error) {
+      console.error('Upload failed:', error);
+      reject(error);
+    }
+
   });
 };
 

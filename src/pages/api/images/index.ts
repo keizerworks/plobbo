@@ -12,11 +12,11 @@ export const POST: APIRoute = async ({request}) => {
 
         // console.log(file);
 
-        // if (!organizationId || !userId) {
-        //     return new Response(JSON.stringify({ error: 'Organization ID and User ID are required' }), {
-        //         status: 400
-        //     });
-        // }
+        if (!organizationId || !userId) {
+            return new Response(JSON.stringify({ error: 'Organization ID and User ID are required' }), {
+                status: 400
+            });
+        }
 
         if (!file) {
              console.log(' no file');
