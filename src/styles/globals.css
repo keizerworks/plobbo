@@ -28,9 +28,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
-
-    --novel-highlight-default: #ffffff;
+    --radius: 0.5rem --novel-highlight-default: #ffffff;
     --novel-highlight-purple: #f6f3f8;
     --novel-highlight-red: #fdebeb;
     --novel-highlight-yellow: #fbf4a2;
@@ -65,9 +63,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
-
-    --novel-highlight-default: #000000;
+    --chart-5: 340 75% 55% --novel-highlight-default: #000000;
     --novel-highlight-purple: #3f2c4b;
     --novel-highlight-red: #5c1a1a;
     --novel-highlight-yellow: #5c4b1a;
@@ -91,7 +87,7 @@ pre {
   background: #001d4e;
   border-radius: 0.5rem;
   color: #fff;
-  font-family: 'JetBrainsMono', monospace;
+  font-family: "JetBrainsMono", monospace;
   padding: 0.75rem 1rem;
 
   code {
@@ -153,4 +149,3 @@ pre {
     font-weight: 700;
   }
 }
-

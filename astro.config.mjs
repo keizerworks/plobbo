@@ -10,13 +10,13 @@ export default defineConfig({
   adapter: node({ mode: "standalone" }),
   vite: {
     ssr: {
-      noExternal: ['katex', 'novel' , 'react-tweet']
+      noExternal: ["katex", "novel", "react-tweet"],
     },
     optimizeDeps: {
-      include: ['katex', 'novel']
-    }
+      include: ["katex", "novel"],
+    },
   },
-  output: 'server',
+  output: "server",
   env: {
     schema: {
       // server

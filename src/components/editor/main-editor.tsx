@@ -1,11 +1,12 @@
-import {type JSONContent } from "novel";
-import Editor from "./editor"
 import { useState } from "react";
+import type {JSONContent} from "novel";
 
-import "../../styles/globals.css"
+import Editor from "./editor";
+
+import "../../styles/globals.css";
 
 const EditorWrapper = () => {
-  const [content ,setContent] = useState<string>('')
+  const [content, setContent] = useState<string>("");
 
   const defaultValue: JSONContent = {
     type: "doc",
@@ -27,11 +28,8 @@ const EditorWrapper = () => {
   };
 
   return (
-    <div className="w-full h-auto flex justify-center items-center">
-      <Editor 
-        initialValue={defaultValue} 
-        handleChange={handleEditorChange} 
-      />
+    <div className="flex h-auto w-full items-center justify-center">
+      <Editor initialValue={defaultValue} handleChange={handleEditorChange} />
     </div>
   );
 };

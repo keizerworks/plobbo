@@ -38,7 +38,7 @@
   position: relative;
 
   &:before {
-    content: '';
+    content: "";
     box-sizing: border-box;
     position: absolute;
     top: 50%;
@@ -60,18 +60,18 @@
 
 /* Custom TODO list checkboxes  */
 
-ul[data-type='taskList'] li>label {
+ul[data-type="taskList"] li > label {
   margin-right: 0.2rem;
   user-select: none;
 }
 
 @media screen and (max-width: 768px) {
-  ul[data-type='taskList'] li>label {
+  ul[data-type="taskList"] li > label {
     margin-right: 0.5rem;
   }
 }
 
-ul[data-type='taskList'] li>label input[type='checkbox'] {
+ul[data-type="taskList"] li > label input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
   background-color: hsl(var(--background));
@@ -95,7 +95,7 @@ ul[data-type='taskList'] li>label input[type='checkbox'] {
   }
 
   &::before {
-    content: '';
+    content: "";
     width: 0.65em;
     height: 0.65em;
     transform: scale(0);
@@ -110,7 +110,7 @@ ul[data-type='taskList'] li>label input[type='checkbox'] {
   }
 }
 
-ul[data-type='taskList'] li[data-checked='true']>div>p {
+ul[data-type="taskList"] li[data-checked="true"] > div > p {
   color: var(--muted-foreground);
   text-decoration: line-through;
   text-decoration-thickness: 2px;
@@ -180,7 +180,7 @@ iframe {
   outline: 0px solid transparent;
 }
 
-div[data-youtube-video]>iframe {
+div[data-youtube-video] > iframe {
   cursor: move;
   aspect-ratio: 16 / 9;
   width: 100%;
@@ -192,22 +192,22 @@ div[data-youtube-video]>iframe {
 }
 
 @media only screen and (max-width: 480px) {
-  div[data-youtube-video]>iframe {
+  div[data-youtube-video] > iframe {
     max-height: 50px;
   }
 }
 
 @media only screen and (max-width: 720px) {
-  div[data-youtube-video]>iframe {
+  div[data-youtube-video] > iframe {
     max-height: 100px;
   }
 }
 
 /* CSS for bold coloring and highlighting issue*/
-span[style]>strong {
+span[style] > strong {
   color: inherit;
 }
 
-mark[style]>strong {
+mark[style] > strong {
   color: inherit;
 }

@@ -1,9 +1,10 @@
-import type { InsertSessionInterface } from "../schema/session";
 import type { SessionValidationResult } from "@/utils/auth/session";
+import { eq } from "drizzle-orm";
+
+import type { InsertSessionInterface } from "../schema/session";
 import { db } from "..";
 import { SessionTable } from "../schema/session";
 import { UserTable } from "../schema/user";
-import { eq } from "drizzle-orm";
 
 export async function insertSession(values: InsertSessionInterface) {
   const sessions = await db.insert(SessionTable).values(values).returning();

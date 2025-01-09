@@ -1,15 +1,15 @@
-services: 
-  minio: 
+services:
+  minio:
     image: minio/minio:latest
-    environment:  
+    environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data
-    ports: 
+    ports:
       - "${MINIO_PORT:-9000}:9000"
-    volumes: 
+    volumes:
       - minio_data:/data
     restart: unless-stopped
-  
-volumes: 
+
+volumes:
   minio_data:

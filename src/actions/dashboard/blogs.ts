@@ -1,9 +1,10 @@
+import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import { count, like, or, sql } from "drizzle-orm";
+import { like, or, sql } from "drizzle-orm";
+
 import { db } from "../../db";
 import { BlogTable } from "../../db/schema/blog";
-import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core";
 
 function parseInput(input: any, ctx: any) {
   if (
@@ -25,7 +26,7 @@ function parseInput(input: any, ctx: any) {
 function withPagination<T extends SQLiteSelectQueryBuilder>(
   qb: T,
   page: number,
-  pageSize: number
+  pageSize: number,
 ) {
   return qb.limit(pageSize).offset((page - 1) * pageSize);
 }
@@ -50,8 +51,8 @@ export const blogs = {
         query = query.where(
           or(
             like(BlogTable.title, `%${search}%`),
-            like(BlogTable.body, `%${search}%`)
-          )
+            like(BlogTable.body, `%${search}%`),
+          ),
         );
       }
 
@@ -69,8 +70,8 @@ export const blogs = {
         countQuery = countQuery.where(
           or(
             like(BlogTable.title, `%${search}%`),
-            like(BlogTable.body, `%${search}%`)
-          )
+            like(BlogTable.body, `%${search}%`),
+          ),
         );
       }
 
