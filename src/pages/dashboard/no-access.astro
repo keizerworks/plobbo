@@ -1,0 +1,22 @@
+---
+const userRole = Astro.props.userRole || 'guest';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>No Access</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-['Inter',sans-serif] min-h-screen">
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold mb-4">Access Denied</h1>
+        <p class="text-lg text-gray-600 mb-6">
+          You do not have the necessary permissions to view this page.
+        </p>
+        <a href="/dashboard" class="text-blue-600 hover:underline">Go Back to Dashboard</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+---
+const redirectUrl = '/dashboard/blogs'; // Update with your actual path
+const userRole = 'admin';
+---
+
+<!-- <head>
+  <meta http-equiv="refresh" content={`0; url=${redirectUrl}`} />
+</head> -->
+{['admin', 'editor'].includes(userRole) ? (
+    <meta http-equiv="refresh" content="0;url=/dashboard/blogs" />
+  ) : (
+    <meta http-equiv="refresh" content="0;url=/dashboard/no-access" />
+  )}
