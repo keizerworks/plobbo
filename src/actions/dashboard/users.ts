@@ -1,22 +1,21 @@
-import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import { like, or, sql } from "drizzle-orm";
-
+import { count, like, or, sql } from "drizzle-orm";
 import { db } from "../../db";
-import { BlogTable } from "../../db/schema/blog";
+import { UserTable } from "../../db/schema/user";
+import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core";
 
 // Helper function for pagination
 function withPagination<T extends SQLiteSelectQueryBuilder>(
   qb: T,
   page: number,
-  pageSize: number,
+  pageSize: number
 ) {
   return qb.limit(pageSize).offset((page - 1) * pageSize);
 }
 
-export const blogs = {
-  fetchBlogs: defineAction({
+export const users = {
+  fetchUsers: defineAction({
     input: z.object({
       page: z.number().min(1).default(1), // Enforce minimum page of 1
       pageSize: z.number().min(1).max(50).default(10), // Limit pageSize to a maximum (optional)
@@ -26,44 +25,44 @@ export const blogs = {
       // Base query
       let query = db
         .select()
-        .from(BlogTable)
-        .orderBy(sql`${BlogTable.createdAt} DESC`)
+        .from(UserTable)
+        .orderBy(sql`${UserTable.createdAt} DESC`)
         .$dynamic();
 
       // Add search condition if provided
       if (search) {
         query = query.where(
           or(
-            like(BlogTable.title, `%${search}%`),
-            like(BlogTable.body, `%${search}%`),
-            like(BlogTable.authorId, `%${search}%`),
-          ),
+            like(UserTable.firstName, `%${search}%`),
+            like(UserTable.lastName, `%${search}%`),
+            like(UserTable.email, `%${search}%`)
+          )
         );
       }
 
       // Apply pagination
       const paginatedQuery = withPagination(query, page, pageSize);
-      const blogs = await paginatedQuery.execute();
+      const users = await paginatedQuery.execute();
 
       // Total count query
       let countQuery = db
         .select({ value: sql<number>`COUNT(*)` })
-        .from(BlogTable)
+        .from(UserTable)
         .$dynamic();
 
       if (search) {
         countQuery = countQuery.where(
           or(
-            like(BlogTable.title, `%${search}%`),
-            like(BlogTable.body, `%${search}%`),
-            like(BlogTable.authorId, `%${search}%`),
-          ),
+            like(UserTable.firstName, `%${search}%`),
+            like(UserTable.lastName, `%${search}%`),
+            like(UserTable.email, `%${search}%`)
+          )
         );
       }
 
       const [{ value: total }] = await countQuery.execute();
 
-      return { blogs, total };
+      return { users, total };
     },
   }),
 };

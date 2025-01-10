@@ -1,6 +1,7 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { baseTable } from "../base";
+import type { InferSelectModel } from "drizzle-orm";
 
 export const OrganizationTable = sqliteTable("organization", {
   ...baseTable,
@@ -15,3 +16,6 @@ export const OrganizationTable = sqliteTable("organization", {
     }>()
     .notNull(),
 });
+
+export type OrganizationInterface = InferSelectModel<typeof OrganizationTable>;
+  

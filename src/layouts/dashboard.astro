@@ -1,0 +1,32 @@
+---
+import NavBar from '@/components/dashboard/NavBar.astro';
+import { Users, Grid, Book } from 'lucide-react';
+
+const userRole = Astro.props.userRole || 'user';
+
+const navItems = [
+  { label: 'Blogs', href: '/dashboard/blogs', icon: Book, visible: true },
+  { label: 'Users', href: '/dashboard/users', icon: Users, visible: userRole === 'admin' },
+  { label: 'Organizations', href: '/dashboard/organizations', icon: Grid, visible: userRole === 'admin' },
+].filter(item => item.visible);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-['Inter',sans-serif] min-h-screen">
+    <div class="flex">
+      <NavBar navItems={navItems} />
+      <main class="flex-1 ml-64 p-8">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
