@@ -1,13 +1,17 @@
-import "dotenv/config";
+import { type Config } from "drizzle-kit";
+import { env } from "env";
 
-import { defineConfig } from "drizzle-kit";
-
-export default defineConfig({
-  out: "./drizzle",
-  schema: "./src/db/schema/*",
-  dialect: "sqlite",
-  casing: "snake_case",
+export default {
+  schema: "./src/db/schema",
+  dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DB_FILE_NAME!,
+    database: env.DB_DATABASE,
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    user: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    ssl: false,
   },
-});
+  tablesFilter: ["renor-casting_*"],
+  casing: "snake_case",
+} satisfies Config;

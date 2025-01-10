@@ -1,17 +1,16 @@
-import type { InferSelectModel } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { boolean, pgTable, text, varchar } from "drizzle-orm/pg-core";
 
 import { baseTable } from "../base";
-import { OrganizationTable } from "./organization";
 
-export const UserTable = sqliteTable("user", {
+export const UserTable = pgTable("user", {
   ...baseTable,
-  firstName: text().notNull(),
-  lastName: text(),
-  email: text(),
+  email: varchar().notNull().unique(),
+  name: varchar().notNull(),
+  emailVerified: boolean().notNull().default(false),
+  recoveryCode: varchar(),
   passwordHash: text(),
-  role: text({ enum: ["admin", "editor"] }).notNull(),
-  organizationId: text().references(() => OrganizationTable.id),
 });
 
 export type UserInterface = InferSelectModel<typeof UserTable>;
+export type CreateUserInterface = InferInsertModel<typeof UserTable>;

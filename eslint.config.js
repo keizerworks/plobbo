@@ -1,33 +1,35 @@
 /// <reference types="./types.d.ts" />
 import eslint from "@eslint/js";
+import nextPlugin from "@next/eslint-plugin-next";
 import eslintConfigPrettier from "eslint-config-prettier";
-import eslintPluginAstro from "eslint-plugin-astro";
 import importPlugin from "eslint-plugin-import";
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  eslintConfigPrettier,
   {
-    files: [
-      "src/**/*.js",
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "db/**/*.js",
-      "db/**/*.ts",
-    ],
+    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,
+      unicorn: eslintPluginUnicorn,
+      "@next/next": nextPlugin,
     },
     extends: [
       eslint.configs.recommended,
-      ...eslintPluginAstro.configs.recommended,
+      eslintConfigPrettier,
+
       ...tseslint.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+      // TypeError: context.getAncestors is not a function
+      "@next/next/no-duplicate-head": "off",
+
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "error",
@@ -35,6 +37,13 @@ export default tseslint.config(
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "kebabCase",
         },
       ],
 

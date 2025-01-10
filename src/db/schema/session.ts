@@ -1,19 +1,19 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
+import { baseTable } from "../base";
 import { UserTable } from "./user";
 
-export const SessionTable = sqliteTable("session", {
-  id: text().primaryKey(),
-  userId: text()
+export const SessionTable = pgTable("session", {
+  ...baseTable,
+  id: text("id").primaryKey(),
+  userId: uuid("user_id")
     .notNull()
-    .references(() => UserTable.id),
-  //
-  // INFO:
-  // add expiration here
-  expiresAt: integer({ mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)),
+    .references(() => UserTable.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
 });
 
 export type SessionInterface = InferSelectModel<typeof SessionTable>;

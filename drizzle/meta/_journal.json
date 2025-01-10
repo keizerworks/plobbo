@@ -1,26 +1,19 @@
 {
   "version": "7",
-  "dialect": "sqlite",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1735381295244,
-      "tag": "0000_glamorous_inhumans",
+      "version": "7",
+      "when": 1735641808685,
+      "tag": "0000_familiar_karnak",
       "breakpoints": true
     },
     {
       "idx": 1,
-      "version": "6",
-      "when": 1735894140108,
-      "tag": "0001_dark_bedlam",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1735896835143,
-      "tag": "0002_shiny_jigsaw",
+      "version": "7",
+      "when": 1735642407632,
+      "tag": "0001_military_professor_monster",
       "breakpoints": true
     }
   ]

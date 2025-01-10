@@ -1,12 +1,20 @@
-import { createId } from "@paralleldrive/cuid2";
-import { integer, text } from "drizzle-orm/sqlite-core";
+import { timestamp, uuid } from "drizzle-orm/pg-core";
+import { uuidv7 } from "uuidv7";
 
 export const baseTable = {
-  id: text()
-    .primaryKey()
-    .$defaultFn(() => createId()),
-  createdAt: integer({ mode: "timestamp" }).$defaultFn(() => new Date()),
-  updatedAt: integer({ mode: "timestamp" })
-    .$defaultFn(() => new Date())
+  id: uuid("id")
+    .$defaultFn(() => uuidv7())
+    .primaryKey(),
+
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  }).defaultNow(),
+
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .defaultNow()
     .$onUpdateFn(() => new Date()),
 };
