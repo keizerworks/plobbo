@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
@@ -21,10 +22,15 @@ export function generateSessionToken(): string {
   return token;
 }
 
-export const getCurrentSession = (token: string) => {
-  const result = validateSessionToken(token);
+export const getCurrentSession = cache(async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value ?? null;
+  if (token === null) {
+    return { session: null, user: null };
+  }
+  const result = await validateSessionToken(token);
   return result;
-};
+});
 
 export async function createSession(token: string, userId: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));

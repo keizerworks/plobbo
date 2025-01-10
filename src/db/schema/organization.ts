@@ -23,6 +23,7 @@ export const orgRoleEnum = pgEnum("role", [
 export const OrganizationTable = pgTable("organization", {
   ...baseTable,
   name: varchar().notNull(),
+  logo: varchar({ length: 255 }).notNull(),
   slug: varchar().notNull().unique(),
   description: varchar(),
 });

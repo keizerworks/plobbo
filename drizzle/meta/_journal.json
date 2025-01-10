@@ -22,6 +22,13 @@
       "when": 1736527613957,
       "tag": "0002_skinny_queen_noir",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1736537687627,
+      "tag": "0003_rapid_celestials",
+      "breakpoints": true
     }
   ]
 }
