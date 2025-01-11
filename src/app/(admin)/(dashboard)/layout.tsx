@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
-import { AppSidebar } from "components/dashboard/app-sidebar";
-import DashboardHeader from "components/dashboard/header";
-import { SidebarInset, SidebarProvider } from "components/dashboard/sidebar";
+import { AppSidebar } from "components/dashboard/sidebar/app-sidebar";
+import DashboardHeader from "components/dashboard/sidebar/header";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "components/dashboard/sidebar/sidebar";
 import { CreateOrganization } from "components/organization/create";
 import { Separator } from "components/ui/separator";
 

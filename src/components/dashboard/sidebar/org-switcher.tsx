@@ -5,21 +5,20 @@ import type {
   OrganizationMemberInterface,
 } from "db/schema/organization";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "components/dashboard/sidebar";
+} from "components/dashboard/sidebar/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
 import { env } from "env";
@@ -78,20 +77,24 @@ export function OrgSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <Image
-                  height={16}
-                  width={16}
+              <Avatar className="size-8 rounded-lg">
+                <AvatarImage
                   src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
-                  alt={activeOrg.name}
+                  alt={activeOrg.slug}
                 />
-              </div>
+
+                <AvatarFallback className="rounded-lg uppercase">
+                  {activeOrg.name[0]}
+                  {activeOrg.name[1]}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{activeOrg.name}</span>
                 <span className="truncate text-xs">{activeOrg.slug}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+
+              <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
 
@@ -105,7 +108,7 @@ export function OrgSwitcher() {
               Organizations
             </DropdownMenuLabel>
 
-            {orgs.map((org, index) => (
+            {orgs.map((org) => (
               <DropdownMenuItem
                 key={org.id}
                 onClick={() => {
@@ -114,16 +117,22 @@ export function OrgSwitcher() {
                 }}
                 className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <Image
-                    height={16}
-                    width={16}
+                <Avatar className="size-8 rounded-lg">
+                  <AvatarImage
                     src={env.NEXT_PUBLIC_MINIO_URL + org.logo}
-                    alt={org.name}
+                    alt={org.slug}
                   />
+
+                  <AvatarFallback className="rounded-lg uppercase">
+                    {org.name[0]}
+                    {org.name[1]}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{org.name}</span>
+                  <span className="truncate text-xs">{org.slug}</span>
                 </div>
-                {org.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />

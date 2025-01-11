@@ -6,7 +6,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "components/dashboard/sidebar";
+} from "components/dashboard/sidebar/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
 import {
   DropdownMenu,

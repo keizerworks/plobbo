@@ -1,4 +1,4 @@
-import { SidebarTrigger } from "components/dashboard/sidebar";
+import { SidebarTrigger } from "components/dashboard/sidebar/sidebar";
 
 // type Orgs = UseTRPCQueryResult<
 //   inferRouterOutputs<AppRouter>["organization"]["list"],

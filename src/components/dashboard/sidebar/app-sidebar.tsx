@@ -1,15 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { NavUser } from "components/dashboard/nav-user";
-import { OrgSwitcher } from "components/dashboard/org-switcher";
+import { NavUser } from "components/dashboard/sidebar/nav-user";
+import { OrgSwitcher } from "components/dashboard/sidebar/org-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "components/dashboard/sidebar";
+  SidebarSeparator,
+} from "components/dashboard/sidebar/sidebar";
+
+import { NavMain } from "./nav-main";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -17,9 +20,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <OrgSwitcher />
       </SidebarHeader>
+      <SidebarSeparator />
 
-      <SidebarContent></SidebarContent>
+      <SidebarContent>
+        <NavMain />
+      </SidebarContent>
 
+      <SidebarSeparator />
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
