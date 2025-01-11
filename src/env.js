@@ -21,6 +21,7 @@ export const env = createEnv({
     DB_SCHEMA: z.string(),
 
     // MinIO
+    MINIO_URL: z.string().url(),
     MINIO_ROOT_USER: z.string(),
     MINIO_ROOT_PASSWORD: z.string(),
     MINIO_PORT: z.coerce.number(),
@@ -45,6 +46,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_MINIO_URL: z.string().url(),
   },
 
   /**
@@ -67,6 +69,8 @@ export const env = createEnv({
     MINIO_ROOT_USER: process.env.MINIO_ROOT_USER,
     MINIO_ROOT_PASSWORD: process.env.MINIO_ROOT_PASSWORD,
     MINIO_PORT: process.env.MINIO_PORT,
+    MINIO_URL: process.env.MINIO_URL,
+    NEXT_PUBLIC_MINIO_URL: process.env.NEXT_PUBLIC_MINIO_URL,
 
     // Redis
     REDIS_HOST: process.env.REDIS_HOST,

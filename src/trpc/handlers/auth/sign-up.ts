@@ -43,7 +43,7 @@ export const signUpHanlder = publicProcedure
       otp,
     });
 
-    await transporter
+    transporter
       .sendMail({
         from: env.EMAIL_FROM,
         to: body.email,

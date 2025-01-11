@@ -54,6 +54,19 @@ const FormField = <
   );
 };
 
+const BaseFormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) => {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  );
+};
+
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
@@ -179,6 +192,7 @@ FormMessage.displayName = "FormMessage";
 export {
   useFormField,
   Form,
+  BaseFormField,
   FormItem,
   FormLabel,
   FormControl,

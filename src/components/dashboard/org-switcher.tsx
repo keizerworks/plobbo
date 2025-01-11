@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   SidebarMenu,
@@ -19,6 +18,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
+import { env } from "env";
+import { emitter } from "events/emitter";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { api } from "trpc/react";
 
@@ -34,6 +35,14 @@ export function OrgSwitcher() {
       router.replace("/no-organizations");
     }
   }, [orgs, router]);
+
+  useEffect(() => {
+    setActiveOrg(orgs?.[0]);
+  }, [orgs]);
+
+  const handleCreateOrg = () => {
+    emitter.emit("createOrganization", true);
+  };
 
   if (!orgs?.length || !activeOrg) {
     return null;
@@ -52,7 +61,7 @@ export function OrgSwitcher() {
                 <Image
                   height={16}
                   width={16}
-                  src={activeOrg.logo}
+                  src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
                   alt={activeOrg.name}
                 />
               </div>
@@ -74,14 +83,20 @@ export function OrgSwitcher() {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Organizations
             </DropdownMenuLabel>
+
             {orgs.map((org, index) => (
               <DropdownMenuItem
-                key={org.name}
+                key={org.id}
                 onClick={() => setActiveOrg(org)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <Image height={16} width={16} src={org.logo} alt={org.name} />
+                  <Image
+                    height={16}
+                    width={16}
+                    src={env.NEXT_PUBLIC_MINIO_URL + org.logo}
+                    alt={org.name}
+                  />
                 </div>
                 {org.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
@@ -89,17 +104,11 @@ export function OrgSwitcher() {
             ))}
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild className="gap-2 p-2">
-              <Link href="create/organization">
-                <>
-                  <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                    <Plus className="size-4" />
-                  </div>
-                  <div className="font-medium text-muted-foreground">
-                    Add Org
-                  </div>
-                </>
-              </Link>
+            <DropdownMenuItem onClick={handleCreateOrg} className="gap-2 p-2">
+              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                <Plus className="size-4" />
+              </div>
+              <div className="font-medium text-muted-foreground">Add Org</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
