@@ -1,5 +1,9 @@
 "use client";
 
+import type {
+  OrganizationInterface,
+  OrganizationMemberInterface,
+} from "db/schema/organization";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -20,15 +24,22 @@ import {
 } from "components/ui/dropdown-menu";
 import { env } from "env";
 import { emitter } from "events/emitter";
+import { find } from "lodash";
 import { ChevronsUpDown, Plus } from "lucide-react";
+import { setActiveOrgId, useActiveOrgStore } from "store/active-org";
 import { api } from "trpc/react";
+
+interface ActiveOrgInteface extends OrganizationInterface {
+  member: OrganizationMemberInterface;
+}
 
 export function OrgSwitcher() {
   const router = useRouter();
 
   const { data: orgs } = api.organization.list.useQuery();
   const { isMobile } = useSidebar();
-  const [activeOrg, setActiveOrg] = useState(orgs?.[0]);
+  const { id } = useActiveOrgStore();
+  const [activeOrg, setActiveOrg] = useState<ActiveOrgInteface | null>(null);
 
   useEffect(() => {
     if (typeof orgs !== "undefined" && orgs.length === 0) {
@@ -37,11 +48,21 @@ export function OrgSwitcher() {
   }, [orgs, router]);
 
   useEffect(() => {
-    setActiveOrg(orgs?.[0]);
-  }, [orgs]);
+    if (id === null && orgs?.[0]) {
+      setActiveOrg(orgs[0]);
+      setActiveOrgId(orgs[0].id);
+    }
+
+    if (id && orgs?.length && orgs.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const org = find(orgs, (value) => value.id === id) ?? orgs[0]!;
+      setActiveOrg(org);
+      setActiveOrgId(org.id);
+    }
+  }, [orgs, id]);
 
   const handleCreateOrg = () => {
-    emitter.emit("createOrganization", true);
+    emitter.emit("create:org", true);
   };
 
   if (!orgs?.length || !activeOrg) {
@@ -87,7 +108,10 @@ export function OrgSwitcher() {
             {orgs.map((org, index) => (
               <DropdownMenuItem
                 key={org.id}
-                onClick={() => setActiveOrg(org)}
+                onClick={() => {
+                  setActiveOrgId(org.id);
+                  setActiveOrg(org);
+                }}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">

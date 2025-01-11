@@ -80,9 +80,9 @@ export const CreateOrganization = () => {
   }
 
   useEffect(() => {
-    emitter.on("createOrganization", setOpen);
+    emitter.on("create:org", setOpen);
     return () => {
-      emitter.off("createOrganization");
+      emitter.off("create:org");
     };
   }, []);
 

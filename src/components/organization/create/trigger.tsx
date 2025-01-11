@@ -6,7 +6,7 @@ import { PlusCircle } from "lucide-react";
 
 export const CreateOrganizationTrigger = () => {
   const handleCreateOrg = () => {
-    emitter.emit("createOrganization", true);
+    emitter.emit("create:org", true);
   };
 
   return (
