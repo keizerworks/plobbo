@@ -4,7 +4,7 @@ import {
   OrganizationMemberTable,
   OrganizationTable,
 } from "db/schema/organization";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export const getOrganizationBySlug = async (slug: string) => {
   const orgs = await db
@@ -53,4 +53,13 @@ export const getOrganizationsByUserId = async (userId: string) => {
       eq(OrganizationMemberTable.organizationId, OrganizationTable.id),
     )
     .where(eq(OrganizationMemberTable.userId, userId));
+};
+
+export const getOrganizationCountByUserId = async (userId: string) => {
+  const result = await db
+    .select({ count: sql<number>`count(*)`.mapWith(Number) })
+    .from(OrganizationMemberTable)
+    .where(eq(OrganizationMemberTable.userId, userId));
+
+  return result[0]?.count ?? 0;
 };
