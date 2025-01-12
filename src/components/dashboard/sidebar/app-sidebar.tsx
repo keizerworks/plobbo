@@ -11,20 +11,21 @@ import {
   SidebarRail,
   SidebarSeparator,
 } from "components/dashboard/sidebar/sidebar";
+import { useActiveOrgStore } from "store/active-org";
 
 import { NavMain } from "./nav-main";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const activeOrgId = useActiveOrgStore.use.id();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <OrgSwitcher />
       </SidebarHeader>
-      <SidebarSeparator />
 
-      <SidebarContent>
-        <NavMain />
-      </SidebarContent>
+      {activeOrgId ? <SidebarSeparator /> : null}
+      <SidebarContent>{activeOrgId ? <NavMain /> : null}</SidebarContent>
 
       <SidebarSeparator />
       <SidebarFooter>

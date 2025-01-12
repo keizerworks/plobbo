@@ -10,10 +10,10 @@ import {
 import { SESSION_EXPIRE_TIME, SESSION_EXPIRING_SOON } from "constants/auth";
 import {
   deleteSession,
-  getSessionWithUser,
+  getSession,
   insertSession,
   updateSession,
-} from "db/actions/session";
+} from "repository/session";
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);
@@ -36,8 +36,8 @@ export async function createSession(token: string, userId: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session = await insertSession({
     id: sessionId,
-    userId,
-    expiresAt: new Date(Date.now() + SESSION_EXPIRE_TIME),
+    user_id: userId,
+    expires_at: new Date(Date.now() + SESSION_EXPIRE_TIME),
   });
 
   const cookieStore = await cookies();
@@ -46,7 +46,7 @@ export async function createSession(token: string, userId: string) {
     path: "/",
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    expires: session.expiresAt,
+    expires: session.expires_at,
   });
 
   return session;
@@ -54,21 +54,21 @@ export async function createSession(token: string, userId: string) {
 
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const result = await getSessionWithUser(sessionId);
-  if (!result) return { session: null, user: null };
-  const { user, session } = result;
+  const result = await getSession(sessionId, { user: true });
+  if (typeof result === "undefined") return null;
+  const session = result;
 
-  if (Date.now() >= session.expiresAt.getTime()) {
+  if (Date.now() >= session.expires_at.getTime()) {
     await deleteSession(sessionId);
-    return { session: null, user: null };
+    return null;
   }
 
-  if (Date.now() >= session.expiresAt.getTime() - SESSION_EXPIRING_SOON) {
-    session.expiresAt = new Date(Date.now() + SESSION_EXPIRE_TIME);
-    await updateSession({ expiresAt: session.expiresAt }, session.id);
+  if (Date.now() >= session.expires_at.getTime() - SESSION_EXPIRING_SOON) {
+    session.expires_at = new Date(Date.now() + SESSION_EXPIRE_TIME);
+    await updateSession(session.id, { expires_at: session.expires_at });
   }
 
-  return { session, user };
+  return session;
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {

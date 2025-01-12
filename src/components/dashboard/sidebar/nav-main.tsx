@@ -30,15 +30,15 @@ export function NavMain() {
       [
         {
           title: "Blogs",
-          url: "/dashboard/blogs",
+          url: "/blogs",
           icon: Newspaper,
-          isActive: pathname.startsWith("/dashboard/blogs"),
+          isActive: pathname.startsWith("/blogs"),
         },
         {
           title: "Users",
-          url: "/dashboard/users",
+          url: "/users",
           icon: Users,
-          isActive: pathname.startsWith("/dashboard/users"),
+          isActive: pathname.startsWith("/users"),
         },
       ] satisfies NavItemInterface[],
     [pathname],

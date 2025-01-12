@@ -30,7 +30,6 @@
     }
   },
   "include": [
-    "drizzle.config.ts",
     "eslint.config.js",
     "prettier.config.js",
     "next.config.js",

@@ -1,29 +1,37 @@
-import { drizzle } from "drizzle-orm/postgres-js";
 import { env } from "env";
-import postgres from "postgres";
+import { Kysely, PostgresDialect } from "kysely";
+import { Pool } from "pg";
 
-/**
- * Cache the database connection in development. This avoids creating a new connection on every HMR
- * update.
- */
+import type { DB } from "./types";
 
 const globalForDb = globalThis as unknown as {
-  conn: postgres.Sql | undefined;
+  dialect: PostgresDialect | undefined;
+  pool: Pool | undefined;
 };
 
-const conn =
-  globalForDb.conn ??
-  postgres({
+const pool =
+  globalForDb.pool ??
+  new Pool({
     database: env.DB_DATABASE,
     host: env.DB_HOST,
-    port: env.DB_PORT,
     user: env.DB_USERNAME,
+    port: env.DB_PORT,
     password: env.DB_PASSWORD,
-    ssl: false,
+    max: 10,
+  });
+
+const dialect =
+  globalForDb.dialect ??
+  new PostgresDialect({
+    pool,
   });
 
 if (env.NODE_ENV !== "production") {
-  globalForDb.conn = conn;
+  globalForDb.dialect = dialect;
 }
 
-export const db = drizzle(conn, { casing: "snake_case" });
+// Database interface is passed to Kysely's constructor, and from now on, Kysely
+// knows your database structure.
+// Dialect is passed to Kysely's constructor, and from now on, Kysely knows how
+// to communicate with your database.
+export const db = new Kysely<DB>({ dialect });

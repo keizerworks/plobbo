@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
-import { createOrganization } from "db/actions/organization";
-import { createOrganizationMember } from "db/actions/organization-member";
+import { insertOrganization } from "repository/organization";
+import { insertOrganizationMember } from "repository/organization-member";
 import { getSignedUrlPutObject } from "storage";
 import { protectedProcedure } from "trpc";
 import { createOrganizationMutationSchema } from "validators/organization/create";
@@ -14,18 +14,18 @@ export const organizationCreateHandler = protectedProcedure
       const logoUrl = `organizations/${filename}`;
 
       // Create organization
-      const organization = await createOrganization({
+      const organization = await insertOrganization({
         name: input.name,
         slug: input.slug,
         logo: logoUrl,
       });
 
       // Create organization member (current user as admin)
-      await createOrganizationMember({
-        userId: ctx.user.id,
-        organizationId: organization.id,
+      await insertOrganizationMember({
+        user_id: ctx.user.id,
+        organization_id: organization.id,
         role: "ADMIN",
-        orgMetadata: { display_name: ctx.user.name },
+        org_metadata: { display_name: ctx.user.name },
       });
 
       const logoUploadUrl = await getSignedUrlPutObject({

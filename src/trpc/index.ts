@@ -1,18 +1,14 @@
 import { initTRPC, TRPCError } from "@trpc/server";
+import { getActiveOrg } from "actions/cookies/active-org";
 import { getCurrentSession } from "auth/session";
 import { db } from "db";
-import {
-  OrganizationMemberTable,
-  OrganizationTable,
-} from "db/schema/organization";
-import { and, eq } from "drizzle-orm";
+import { getOrganizationMember } from "repository/organization-member";
 import superjson from "superjson";
-import { inputWithOrgId } from "validators/trpc/plugins/enforce-user-org";
 import { ZodError } from "zod";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const { user } = await getCurrentSession();
-  return { ...opts, user, db };
+  const session = await getCurrentSession();
+  return { ...opts, user: session ? session.user : null, db };
 };
 
 export const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -48,28 +44,25 @@ export const publicProcedure = t.procedure;
 export const protectedProcedure = publicProcedure.use(enforceUserIsAuthed);
 
 // plugins
-const enforceUserHasOrgAccess = protectedProcedure
-  .input(inputWithOrgId)
-  .use(async ({ ctx, input, next }) => {
-    const [orgMembership] = await ctx.db
-      .select({
-        organization: OrganizationTable,
-        member: OrganizationMemberTable,
-      })
-      .from(OrganizationMemberTable)
-      .innerJoin(
-        OrganizationTable,
-        eq(OrganizationMemberTable.organizationId, OrganizationTable.id),
-      )
-      .where(
-        and(
-          eq(OrganizationMemberTable.userId, ctx.user.id),
-          eq(OrganizationTable.id, input.orgId),
-        ),
-      )
-      .limit(1);
+const enforceUserHasOrgAccess = protectedProcedure.use(
+  async ({ ctx, next }) => {
+    const activeOrg = await getActiveOrg();
+    if (!activeOrg) {
+      throw new TRPCError({ code: "FORBIDDEN" });
+    }
 
-    if (!orgMembership) {
+    const activeOrgId = (
+      JSON.parse(activeOrg) as {
+        state: { id: string; version: number };
+      }
+    ).state.id;
+
+    const member = await getOrganizationMember({
+      organization_id: activeOrgId,
+      user_id: ctx.user.id,
+    });
+
+    if (typeof member === "undefined") {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "You are not a member of this organization",
@@ -79,10 +72,11 @@ const enforceUserHasOrgAccess = protectedProcedure
     return next({
       ctx: {
         user: ctx.user,
-        orgMembership,
+        member,
       },
     });
-  });
+  },
+);
 
 export const protectedOrgProcedure = protectedProcedure.unstable_concat(
   enforceUserHasOrgAccess,

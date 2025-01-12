@@ -29,7 +29,6 @@ export const createOrganizationMutationSchema = z.object({
       message:
         "Slug must contain only lowercase letters, numbers, and hyphens.",
     }),
-  logoFilename: z.string(),
 });
 
 export type CreateOrganizationInterface = z.infer<

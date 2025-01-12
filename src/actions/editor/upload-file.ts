@@ -22,8 +22,8 @@ export async function uploadFile(
   formData: FormData,
 ): Promise<SuccessResponse | ErrorResponse> {
   try {
-    const { user } = await getCurrentSession();
-    if (!user) {
+    const session = await getCurrentSession();
+    if (!session?.user) {
       redirect("/signin");
     }
 

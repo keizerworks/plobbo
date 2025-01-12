@@ -1,9 +1,7 @@
 "use client";
 
-import type {
-  OrganizationInterface,
-  OrganizationMemberInterface,
-} from "db/schema/organization";
+import type { DB } from "db/types";
+import type { Selectable } from "kysely";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -28,9 +26,7 @@ import { ChevronsUpDown, Plus } from "lucide-react";
 import { setActiveOrgId, useActiveOrgStore } from "store/active-org";
 import { api } from "trpc/react";
 
-interface ActiveOrgInteface extends OrganizationInterface {
-  member: OrganizationMemberInterface;
-}
+type ActiveOrgInteface = Selectable<DB["organization"]>;
 
 export function OrgSwitcher() {
   const router = useRouter();

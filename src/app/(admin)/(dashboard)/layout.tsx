@@ -7,10 +7,11 @@ import {
 } from "components/dashboard/sidebar/sidebar";
 import { CreateOrganization } from "components/organization/create";
 import { Separator } from "components/ui/separator";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <>
+    <NuqsAdapter>
       <SidebarProvider>
         <AppSidebar variant="floating" />
         <SidebarInset className="m-2 h-[calc(100svh_-_1rem)] min-h-[calc(100svh_-_1rem)] overflow-hidden rounded-lg border shadow-lg">
@@ -21,6 +22,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </SidebarProvider>
 
       <CreateOrganization />
-    </>
+    </NuqsAdapter>
   );
 }

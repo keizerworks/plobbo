@@ -33,7 +33,7 @@ import { toast } from "sonner";
 import { api } from "trpc/react";
 import { createOrganizationSchema } from "validators/organization/create";
 
-import { ImageUpload } from "./image-upload";
+import { ImageUpload } from "../../image-upload";
 
 export const CreateOrganization = () => {
   const queryClient = useQueryClient();
@@ -60,7 +60,6 @@ export const CreateOrganization = () => {
     toast.promise(
       async () =>
         mutateAsync({
-          logoFilename: values.logo.name,
           name: values.name,
           slug: values.slug,
         }),

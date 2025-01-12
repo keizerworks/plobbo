@@ -32,7 +32,7 @@ export const SignUpForm = ({ className, ...props }: Props) => {
       toast.success(res.message);
       setOtpRequestStatus(true);
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => console.error(err),
   });
 
   function onSubmit(data: EmailSignUpInterface) {
