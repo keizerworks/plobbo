@@ -6,6 +6,7 @@ import type {
   DataTableRowAction,
 } from "interface/data-table";
 import type { Selectable } from "kysely";
+import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import { useMemo, useState } from "react";
 import { DataTable } from "components/data-table";
 import { DataTableSkeleton } from "components/data-table/skeleton";
@@ -23,16 +24,22 @@ export interface BlogListWithAuthor extends Selectable<DB["blog"]> {
   author: Selectable<DB["organization_member"]>;
 }
 
-export const BlogsTable = () => {
+export const BlogsTable = ({
+  params,
+}: {
+  params: ListBlogSortFilterInterface;
+}) => {
   const [rowAction, setRowAction] =
     useState<DataTableRowAction<BlogListWithAuthor> | null>(null);
 
+  const { data, isPending } = api.blog.list.useQuery(params, {
+    initialData: [],
+  });
+
   const { data: count, isPending: countIsPending } = api.blog.count.useQuery(
-    {},
+    params.filter ?? {},
     { initialData: 0 },
   );
-
-  const { data, isPending } = api.blog.list.useQuery({}, { initialData: [] });
 
   const columns = useMemo(() => getColumns({ setRowAction }), [setRowAction]);
 

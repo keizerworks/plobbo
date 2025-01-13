@@ -7,7 +7,7 @@ import * as React from "react";
 import Link from "next/link";
 import { DataTableColumnHeader } from "components/data-table/header";
 import { Badge } from "components/ui/badge";
-import { Button, buttonVariants } from "components/ui/button";
+import { Button } from "components/ui/button";
 import { Checkbox } from "components/ui/checkbox";
 import {
   DropdownMenu,
@@ -45,26 +45,47 @@ export function getColumns({
     {
       id: "select",
       header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="translate-y-0.5"
-        />
+        <div className="flex size-8">
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+            className="m-auto"
+          />
+        </div>
       ),
       cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-          className="translate-y-0.5"
-        />
+        <div className="flex size-8">
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+            className="m-auto"
+          />
+        </div>
       ),
       enableSorting: false,
       enableHiding: false,
+      size: 40,
+    },
+
+    {
+      accessorKey: "slug",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="slug" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <span className="max-w-[31.25rem] truncate font-medium">
+            {row.getValue("slug")}
+          </span>
+        );
+      },
     },
 
     {
@@ -124,10 +145,10 @@ export function getColumns({
     {
       accessorKey: "author",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Updated At" />
+        <DataTableColumnHeader column={column} title="Author" />
       ),
       cell: ({ cell }) => (
-        <Link className={buttonVariants({ variant: "link" })} href="#">
+        <Link href="#" className="hover:underline">
           {
             (cell.getValue() as { org_metadata: { display_name: string } })
               .org_metadata.display_name

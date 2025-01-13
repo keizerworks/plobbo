@@ -1,7 +1,9 @@
 import type { blog_status } from "db/enums";
 import type { DB } from "db/types";
 import type { Insertable } from "kysely";
+import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import { db } from "db";
+import { sql } from "kysely";
 import { jsonObjectFrom } from "kysely/helpers/postgres";
 import { uuidv7 } from "uuidv7";
 
@@ -44,7 +46,7 @@ export const getBlogBySlug = async (slug: string) => {
 };
 
 export const getBlogs = async (
-  filter?: BlogFilterInterface,
+  { filter, sort }: ListBlogSortFilterInterface,
   withRel?: BlogWithInterface,
 ) => {
   const query = db
@@ -83,30 +85,35 @@ export const getBlogs = async (
     .$if(!!filter?.search, (qb) =>
       qb.where((eb) =>
         eb.or([
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          eb("title", "ilike", `%${filter!.search!}%`),
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          eb("slug", "ilike", `%${filter!.search!}%`),
+          eb("title", "ilike", `%${filter?.search}%`),
+          eb("slug", "ilike", `%${filter?.search}%`),
         ]),
       ),
     )
     .$if(!!filter?.organization_id, (qb) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      qb.where("blog.organization_id", "=", filter!.organization_id!),
+      qb.where("blog.organization_id", "=", "" + filter?.organization_id),
     )
     .$if(!!filter?.status, (qb) =>
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       qb.where("blog.status", "=", filter!.status!),
     )
-    .$if(!!filter?.author_id, (qb) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      qb.where("blog.author_id", "=", filter!.author_id!),
+    // .$if(!!filter?.author_id, (qb) =>
+    //   qb.where("blog.author_id", "=", filter.author_id),
+    // )
+    .$if(!!sort?.created_at, (qb) => qb.orderBy("created_at", sort?.created_at))
+    .$if(!!sort?.title, (qb) => qb.orderBy("title", sort?.title))
+    .$if(!!sort?.status, (qb) => qb.orderBy("status", sort?.status))
+    .$if(!!sort?.slug, (qb) => qb.orderBy("slug", sort?.slug))
+    .$if(!!withRel?.author && !!sort?.author_name, (qb) =>
+      qb.orderBy(sql`author.org_metadata->>'display_name'`, sort?.author_name),
     );
 
   return await query.execute();
 };
 
-export const getBlogsCount = async (filter?: BlogFilterInterface) => {
+export const getBlogsCount = async (
+  filter?: ListBlogSortFilterInterface["filter"],
+) => {
   const result = await db
     .selectFrom("blog")
     .select((eb) => eb.fn.countAll().as("count"))
@@ -124,10 +131,10 @@ export const getBlogsCount = async (filter?: BlogFilterInterface) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       qb.where("blog.organization_id", "=", filter!.organization_id!),
     )
-    .$if(!!filter?.author_id, (qb) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      qb.where("blog.author_id", "=", filter!.author_id!),
-    )
+    // .$if(!!filter?.author_id, (qb) =>
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //   qb.where("blog.author_id", "=", filter!.author_id),
+    // )
     .executeTakeFirstOrThrow();
 
   return Number(result.count);

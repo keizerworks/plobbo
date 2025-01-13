@@ -1,13 +1,35 @@
+import type { SearchParams } from "interface/data-table";
+import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import React from "react";
 import { CreateBlog } from "components/blogs/create";
 import { BlogsTable } from "components/blogs/list";
 import { DateRangePicker } from "components/ui/data-range-picker";
 import { Skeleton } from "components/ui/skeleton";
 import { api, HydrateClient } from "trpc/server";
+import { blogsSearchParamsCache } from "validators/blog/query-params";
 
-export default function BlogsPage() {
-  void api.blog.count.prefetch({});
-  void api.blog.list.prefetch({});
+interface PageProps {
+  searchParams: Promise<SearchParams>;
+}
+
+export default async function BlogsPage(props: PageProps) {
+  const searchParams = await props.searchParams;
+  const search = blogsSearchParamsCache.parse(searchParams);
+
+  const params: ListBlogSortFilterInterface = {
+    filter: {
+      search: search.title,
+      status: search.status[0],
+    },
+    sort: search.sort[0]
+      ? {
+          [search.sort[0].id]: search.sort[0].desc ? "desc" : "asc",
+        }
+      : {},
+  };
+
+  void api.blog.count.prefetch(params.filter ?? {});
+  void api.blog.list.prefetch(params);
 
   return (
     <HydrateClient>
@@ -31,7 +53,7 @@ export default function BlogsPage() {
           </React.Suspense>
         </div>
 
-        <BlogsTable />
+        <BlogsTable params={params} />
       </main>
     </HydrateClient>
   );
