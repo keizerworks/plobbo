@@ -1,11 +1,37 @@
-import { DB_FILE_NAME } from "astro:env/server";
+import { env } from "env";
+import { Kysely, PostgresDialect } from "kysely";
+import { Pool } from "pg";
 
-import "dotenv/config";
+import type { DB } from "./types";
 
-import { drizzle } from "drizzle-orm/libsql";
+const globalForDb = globalThis as unknown as {
+  dialect: PostgresDialect | undefined;
+  pool: Pool | undefined;
+};
 
-// You can specify any property from the libsql connection options
-export const db = drizzle({
-  connection: { url: DB_FILE_NAME },
-  casing: "snake_case",
-});
+const pool =
+  globalForDb.pool ??
+  new Pool({
+    database: env.DB_DATABASE,
+    host: env.DB_HOST,
+    user: env.DB_USERNAME,
+    port: env.DB_PORT,
+    password: env.DB_PASSWORD,
+    max: 10,
+  });
+
+const dialect =
+  globalForDb.dialect ??
+  new PostgresDialect({
+    pool,
+  });
+
+if (env.NODE_ENV !== "production") {
+  globalForDb.dialect = dialect;
+}
+
+// Database interface is passed to Kysely's constructor, and from now on, Kysely
+// knows your database structure.
+// Dialect is passed to Kysely's constructor, and from now on, Kysely knows how
+// to communicate with your database.
+export const db = new Kysely<DB>({ dialect });
