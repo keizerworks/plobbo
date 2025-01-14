@@ -173,10 +173,8 @@ export function getColumns({
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem
-                onSelect={() => setRowAction({ row, type: "update" })}
-              >
-                Edit
+              <DropdownMenuItem asChild>
+                <Link href={"/blogs/" + row.id}>Edit</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
