@@ -4,6 +4,7 @@ import { BlogsTable } from "components/blogs/list";
 import { DateRangePicker } from "components/ui/data-range-picker";
 import { Skeleton } from "components/ui/skeleton";
 import { api, HydrateClient } from "trpc/server";
+import { UpdateOrganization } from "components/organization/update";
 
 export default function BlogsPage() {
   void api.blog.count.prefetch({});
@@ -22,6 +23,7 @@ export default function BlogsPage() {
             }
           >
             <CreateBlog />
+            <UpdateOrganization/>
             <DateRangePicker
               triggerSize="sm"
               triggerClassName="w-56 sm:w-60"
