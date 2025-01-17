@@ -30,7 +30,7 @@ export const insertOrganizationMember = async (
 };
 
 export const getOrganizationMember = async (
-  props: { id: string } | { user_id: string; organization_id: string },
+  props: { id?: string } | { user_id?: string; organization_id?: string },
 ) => {
   return await db
     .selectFrom("organization_member")
@@ -38,7 +38,7 @@ export const getOrganizationMember = async (
     .$if("id" in props, (qb) =>
       qb.where("organization_member.id", "=", (props as { id: string }).id),
     )
-    .$if("userId" in props, (qb) =>
+    .$if("user_id" in props, (qb) =>
       qb
         .where(
           "organization_member.user_id",
