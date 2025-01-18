@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Collapsible } from "components/ui/collapsible";
-import { Newspaper, Users } from "lucide-react";
+import { Newspaper, User, Users } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -39,6 +39,12 @@ export function NavMain() {
           url: "/users",
           icon: Users,
           isActive: pathname.startsWith("/users"),
+        },
+        {
+          title: "Profile",
+          url: "/profile",
+          icon: User,
+          isActive: pathname.startsWith("/profile"),
         },
       ] satisfies NavItemInterface[],
     [pathname],

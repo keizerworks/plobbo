@@ -45,7 +45,9 @@ export interface organization_member {
   user_id: string;
   organization_id: string;
   role: role;
-  org_metadata: unknown;
+  profile_picture: string | null;
+  bio: string | null;
+  display_name: string | null;
 }
 export interface session {
   id: string;

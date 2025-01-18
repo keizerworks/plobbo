@@ -149,10 +149,7 @@ export function getColumns({
       ),
       cell: ({ cell }) => (
         <Link href="#" className="hover:underline">
-          {
-            (cell.getValue() as { display_name: string })
-              .display_name
-          }
+          {(cell.getValue() as { display_name: string }).display_name}
         </Link>
       ),
     },
