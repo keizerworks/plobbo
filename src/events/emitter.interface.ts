@@ -2,4 +2,5 @@
 export type EmitterInterface = {
   "create:org": boolean;
   "update:org": boolean;
+  "update:organizationmember": boolean;
 };
