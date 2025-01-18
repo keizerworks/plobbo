@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "components/dashboard/sidebar/sidebar";
+import { UpdateOrganization } from "components/organization/update";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
 import {
   DropdownMenu,
@@ -73,7 +74,7 @@ export function OrgSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="size-8 rounded-lg">
+              <Avatar className="size-8 rounded-[8px]">
                 <AvatarImage
                   src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
                   alt={activeOrg.slug}
@@ -95,43 +96,75 @@ export function OrgSwitcher() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-full min-w-72 max-w-80 flex-1 rounded-lg"
             align="start"
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
+            <DropdownMenuLabel className="w-full text-xs text-muted-foreground">
               Organizations
             </DropdownMenuLabel>
 
-            {orgs.map((org) => (
-              <DropdownMenuItem
-                key={org.id}
-                onClick={() => {
-                  setActiveOrgId(org.id);
-                  setActiveOrg(org);
-                }}
-                className="gap-2 p-2"
-              >
-                <Avatar className="size-8 rounded-lg">
-                  <AvatarImage
-                    src={env.NEXT_PUBLIC_MINIO_URL + org.logo}
-                    alt={org.slug}
-                  />
+            <DropdownMenuItem
+              onClick={() => {
+                setActiveOrgId(activeOrg.id);
+                setActiveOrg(activeOrg);
+              }}
+              className="gap-2 p-2"
+            >
+              <Avatar className="size-8 rounded-lg">
+                <AvatarImage
+                  src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
+                  alt={activeOrg.slug}
+                />
 
-                  <AvatarFallback className="rounded-lg uppercase">
-                    {org.name[0]}
-                    {org.name[1]}
-                  </AvatarFallback>
-                </Avatar>
+                <AvatarFallback className="rounded-lg uppercase">
+                  {activeOrg.name[0]}
+                  {activeOrg.name[1]}
+                </AvatarFallback>
+              </Avatar>
 
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{org.name}</span>
-                  <span className="truncate text-xs">{org.slug}</span>
-                </div>
-              </DropdownMenuItem>
-            ))}
+              <div className="mr-auto grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{activeOrg.name}</span>
+                <span className="truncate text-xs">{activeOrg.slug}</span>
+              </div>
+
+              <UpdateOrganization />
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
+
+            {orgs
+              .filter((org) => org.id !== activeOrg.id)
+              .map((org) => (
+                <DropdownMenuItem
+                  key={org.id}
+                  onClick={() => {
+                    setActiveOrgId(org.id);
+                    setActiveOrg(org);
+                  }}
+                  className="gap-2 p-2"
+                >
+                  <Avatar className="size-8 rounded-lg">
+                    <AvatarImage
+                      src={env.NEXT_PUBLIC_MINIO_URL + org.logo}
+                      alt={org.slug}
+                    />
+
+                    <AvatarFallback className="rounded-lg uppercase">
+                      {org.name[0]}
+                      {org.name[1]}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{org.name}</span>
+                    <span className="truncate text-xs">{org.slug}</span>
+                  </div>
+                </DropdownMenuItem>
+              ))}
+
+            {orgs.length > 1 ? <DropdownMenuSeparator /> : null}
 
             <DropdownMenuItem onClick={handleCreateOrg} className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">

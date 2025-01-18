@@ -8,7 +8,7 @@ import { cn } from "lib/utils";
 export const AuthNav = () => {
   const pathname = usePathname();
 
-  // Check if the pathname is '/signin' or root ('/') 
+  // Check if the pathname is '/signin' or root ('/')
   const isSigninPage = pathname === "/signin" || pathname === "/";
 
   return (

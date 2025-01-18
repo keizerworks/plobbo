@@ -1,20 +1,44 @@
+import type { InsertOrganizationInterface } from "repository/organization";
+import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { updateOrganization } from "repository/organization";
+import { getSignedUrlPutObject } from "storage";
 import { protectedOrgProcedure } from "trpc";
-import { updateOrganizationSchema } from "validators/organization/update";
+import { updateOrganizationMutationSchema } from "validators/organization/update";
+
+interface UpdateResponse {
+  organization?: Awaited<ReturnType<typeof updateOrganization>>;
+  logoUploadUrl?: string;
+}
 
 export const organizationUpdateHandler = protectedOrgProcedure
-  .input(updateOrganizationSchema)
-  .mutation(async ({ input, ctx }) => {
-    let updateOrg;
-    let organization_id;
+  .input(updateOrganizationMutationSchema)
+  .mutation(async ({ input, ctx }): Promise<UpdateResponse> => {
     try {
-      const {...values} = input
-      updateOrg = await updateOrganization(
-        (organization_id = ctx.member.organization_id),
+      let logoUploadUrl;
+
+      const { updateLogo, ...destructeredInput } = input;
+      const values: Omit<
+        Partial<InsertOrganizationInterface>,
+        "id"
+      > = destructeredInput;
+
+      if (updateLogo) {
+        const filename = encodeURI(`${createId()}-${input.slug}`);
+        const logoUrl = `organizations/${filename}`;
+        logoUploadUrl = await getSignedUrlPutObject({
+          bucket: "organizations",
+          filename,
+        });
+        values.logo = logoUrl;
+      }
+
+      const organization = await updateOrganization(
+        ctx.member.organization_id,
         values,
       );
-      return { updateOrg, success: true };
+
+      return { organization, logoUploadUrl };
     } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",

@@ -125,6 +125,10 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   box-shadow: none;
 }
 
+.ProseMirror p {
+  margin: 0;
+}
+
 .drag-handle {
   position: fixed;
   opacity: 1;
