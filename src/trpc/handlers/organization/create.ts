@@ -25,7 +25,7 @@ export const organizationCreateHandler = protectedProcedure
         user_id: ctx.user.id,
         organization_id: organization.id,
         role: "ADMIN",
-        org_metadata: { display_name: ctx.user.name },
+        display_name: ctx.user.name,
       });
 
       const logoUploadUrl = await getSignedUrlPutObject({

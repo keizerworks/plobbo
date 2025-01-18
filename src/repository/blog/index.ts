@@ -105,7 +105,7 @@ export const getBlogs = async (
     .$if(!!sort?.status, (qb) => qb.orderBy("status", sort?.status))
     .$if(!!sort?.slug, (qb) => qb.orderBy("slug", sort?.slug))
     .$if(!!withRel?.author && !!sort?.author_name, (qb) =>
-      qb.orderBy(sql`author.org_metadata->>'display_name'`, sort?.author_name),
+      qb.orderBy(sql`author.display_name'`, sort?.author_name),
     );
 
   return await query.execute();

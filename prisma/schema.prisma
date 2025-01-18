@@ -55,10 +55,12 @@ model organization_member {
   user_id         String       @db.Uuid
   organization_id String       @db.Uuid
   role            role
-  org_metadata    Json
   blog            blog[]
   organization    organization @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user            user         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profile_picture String?      @db.VarChar(255)
+  bio             String?      @db.VarChar(255)
+  display_name    String?      @db.VarChar(255)
 }
 
 model session {

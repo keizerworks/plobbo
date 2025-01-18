@@ -54,7 +54,6 @@ CREATE TABLE "organization_member" (
     "user_id" UUID NOT NULL,
     "organization_id" UUID NOT NULL,
     "role" "role" NOT NULL,
-    "org_metadata" JSONB NOT NULL,
 
     CONSTRAINT "organization_member_pkey" PRIMARY KEY ("id")
 );
