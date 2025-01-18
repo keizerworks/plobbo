@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 import { ImageUpload } from "components/image-upload";
-import { Button, buttonVariants } from "components/ui/button";
+import { Button } from "components/ui/button";
 import {
   Credenza,
   CredenzaContent,
@@ -14,7 +14,6 @@ import {
   CredenzaFooter,
   CredenzaHeader,
   CredenzaTitle,
-  CredenzaTrigger,
 } from "components/ui/credenza";
 import {
   BaseFormField,
@@ -28,8 +27,9 @@ import {
 import { Input } from "components/ui/input";
 import { Separator } from "components/ui/separator";
 import { env } from "env";
-import { cn, uploadToPresignedUrl } from "lib/utils";
-import { Loader, Settings } from "lucide-react";
+import { emitter } from "events/emitter";
+import { uploadToPresignedUrl } from "lib/utils";
+import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { api } from "trpc/react";
@@ -38,6 +38,7 @@ import { updateOrganizationSchema } from "validators/organization/update";
 export const UpdateOrganization = () => {
   const queryClient = useQueryClient();
   const orgListQueryKey = getQueryKey(api.organization.list);
+  const orgGetQueryKey = getQueryKey(api.organization.get);
 
   const [open, setOpen] = useState(false);
   const [updateLogo, setUpdateLogo] = useState(false);
@@ -60,7 +61,11 @@ export const UpdateOrganization = () => {
       if (logo && logoUploadUrl) {
         await uploadToPresignedUrl(logoUploadUrl, logo);
       }
-      await queryClient.refetchQueries({ queryKey: orgListQueryKey });
+
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: orgListQueryKey }),
+        queryClient.refetchQueries({ queryKey: orgGetQueryKey }),
+      ]);
     },
   });
 
@@ -88,6 +93,13 @@ export const UpdateOrganization = () => {
   }
 
   useEffect(() => {
+    emitter.on("update:org", setOpen);
+    return () => {
+      emitter.off("update:org");
+    };
+  }, []);
+
+  useEffect(() => {
     if (data) {
       form.setValue("name", data.name);
       form.setValue("slug", data.slug);
@@ -96,15 +108,9 @@ export const UpdateOrganization = () => {
 
   return (
     <Credenza open={open} onOpenChange={setOpen}>
-      <CredenzaTrigger
-        className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-      >
-        <Settings className="size-4" />
-      </CredenzaTrigger>
-
       <CredenzaContent className="px-0 sm:max-w-[425px]">
         {isPending ? (
-          <Loader className="animate-spin" />
+          <Loader className="m-auto animate-spin" />
         ) : (
           <>
             <CredenzaHeader className="max-mb:pb-4 gap-x-0 gap-y-1 space-y-0 px-4 text-left md:px-6">
