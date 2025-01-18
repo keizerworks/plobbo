@@ -6,6 +6,7 @@ import {
   SidebarProvider,
 } from "components/dashboard/sidebar/sidebar";
 import { CreateOrganization } from "components/organization/create";
+import { UpdateOrganization } from "components/organization/update";
 import { Separator } from "components/ui/separator";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
@@ -22,6 +23,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </SidebarProvider>
 
       <CreateOrganization />
+      <UpdateOrganization />
     </NuqsAdapter>
   );
 }

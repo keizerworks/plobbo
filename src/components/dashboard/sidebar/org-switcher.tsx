@@ -2,6 +2,7 @@
 
 import type { DB } from "db/types";
 import type { Selectable } from "kysely";
+import type { DOMAttributes } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -10,8 +11,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "components/dashboard/sidebar/sidebar";
-import { UpdateOrganization } from "components/organization/update";
 import { Avatar, AvatarFallback, AvatarImage } from "components/ui/avatar";
+import { Button } from "components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +24,7 @@ import {
 import { env } from "env";
 import { emitter } from "events/emitter";
 import { find } from "lodash";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronsUpDown, Plus, Settings } from "lucide-react";
 import { setActiveOrgId, useActiveOrgStore } from "store/active-org";
 import { api } from "trpc/react";
 
@@ -33,8 +34,11 @@ export function OrgSwitcher() {
   const router = useRouter();
 
   const { data: orgs } = api.organization.list.useQuery();
+
   const { isMobile } = useSidebar();
   const { id } = useActiveOrgStore();
+
+  const [open, setOpen] = useState(false);
   const [activeOrg, setActiveOrg] = useState<ActiveOrgInteface | null>(null);
 
   useEffect(() => {
@@ -61,6 +65,12 @@ export function OrgSwitcher() {
     emitter.emit("create:org", true);
   };
 
+  const handleUpdateOrg: DOMAttributes<HTMLButtonElement>["onClick"] = (e) => {
+    e.stopPropagation();
+    setOpen(false);
+    emitter.emit("update:org", true);
+  };
+
   if (!orgs?.length || !activeOrg) {
     return null;
   }
@@ -68,7 +78,7 @@ export function OrgSwitcher() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
@@ -101,10 +111,6 @@ export function OrgSwitcher() {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="w-full text-xs text-muted-foreground">
-              Organizations
-            </DropdownMenuLabel>
-
             <DropdownMenuItem
               onClick={() => {
                 setActiveOrgId(activeOrg.id);
@@ -129,10 +135,16 @@ export function OrgSwitcher() {
                 <span className="truncate text-xs">{activeOrg.slug}</span>
               </div>
 
-              <UpdateOrganization />
+              <Button onClick={handleUpdateOrg} size="icon" variant="outline">
+                <Settings className="size-4" />
+              </Button>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
+
+            <DropdownMenuLabel className="w-full text-xs text-muted-foreground">
+              Organizations
+            </DropdownMenuLabel>
 
             {orgs
               .filter((org) => org.id !== activeOrg.id)
