@@ -17,11 +17,11 @@ export const organizationMemberUpdateHandler = protectedOrgProcedure
     try {
       let profilePictureUploadUrl;
 
-      const { updateProfile_picture, ...destructeredInput } = input;
+      const { update_profile_picture, ...destructeredInput } = input;
       const values: Partial<InsertOrganizationMemberInterface> =
         destructeredInput;
 
-      if (updateProfile_picture) {
+      if (update_profile_picture) {
         const filename = encodeURI(`${createId()}-${input.display_name}`);
         const profilePictureUrl = `organizations/${filename}`;
         profilePictureUploadUrl = await getSignedUrlPutObject({

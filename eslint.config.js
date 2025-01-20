@@ -5,11 +5,16 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
+    languageOptions: {
+      globals: globals.builtin,
+    },
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
+    ignores: ["./src/db/types.ts", "./src/db/enums.ts"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,

@@ -8,6 +8,13 @@ import { getQueryKey } from "@trpc/react-query";
 import { ImageUpload } from "components/image-upload";
 import { Button } from "components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "components/ui/card";
+import {
   BaseFormField,
   Form,
   FormControl,
@@ -17,6 +24,7 @@ import {
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/input";
+import { Textarea } from "components/ui/textarea";
 import { env } from "env";
 import { uploadToPresignedUrl } from "lib/utils";
 import { useForm } from "react-hook-form";
@@ -24,7 +32,7 @@ import { toast } from "sonner";
 import { api } from "trpc/react";
 import { updateUserProfileSchema } from "validators/organization-member/update";
 
-interface UpdateUserProfileProps {
+interface UpdateOrgMemberProfileProps {
   data:
     | {
         display_name: string | null;
@@ -34,11 +42,13 @@ interface UpdateUserProfileProps {
     | undefined;
 }
 
-export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
+export const UpdateOrgMemberProfile = ({
+  data,
+}: UpdateOrgMemberProfileProps) => {
   const queryClient = useQueryClient();
-  const orgListQueryKey = getQueryKey(api.organizationmember.list);
+  const orgListQueryKey = getQueryKey(api.organization.member.list);
 
-  const [updateProfile_picture, setUpdateProfile_picture] = useState(false);
+  const [updateProfilePicture, setUpdateProfilePicture] = useState(false);
 
   const form = useForm<UpdateUserProfileInterface>({
     resolver: zodResolver(updateUserProfileSchema),
@@ -48,7 +58,7 @@ export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
     },
   });
 
-  const { mutateAsync } = api.organizationmember.update.useMutation({
+  const { mutateAsync } = api.organization.member.update.useMutation({
     onSuccess: async ({ profilePictureUploadUrl }) => {
       const logo = form.getValues("profile_picture");
       if (logo && profilePictureUploadUrl) {
@@ -65,7 +75,7 @@ export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
         mutateAsync({
           display_name: values.display_name,
           bio: values.bio,
-          updateProfile_picture,
+          update_profile_picture: updateProfilePicture,
         }),
       {
         loading: (
@@ -73,17 +83,21 @@ export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
             <p className="text-sm">Updating organization member...</p>
           </div>
         ),
-        success: "Organization member updated successfully!",
+        success: "Organization Profile updated successfully!",
         error: "Something went wrong while updating.",
       },
     );
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+    <Card className="border-0 shadow-none">
+      <CardHeader>
+        <CardTitle>Update Profile</CardTitle>
+      </CardHeader>
+
+      <CardContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <BaseFormField
               control={form.control}
               name="profile_picture"
@@ -100,7 +114,7 @@ export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
                       }
                       onChange={(file) => {
                         field.onChange(file);
-                        setUpdateProfile_picture(file instanceof File);
+                        setUpdateProfilePicture(file instanceof File);
                       }}
                     />
                   </FormControl>
@@ -112,48 +126,27 @@ export const UpdateUserProfile = ({ data }: UpdateUserProfileProps) => {
             <FormField
               control={form.control}
               name="display_name"
+              label="Name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter name"
-                      {...field}
-                      className="w-full rounded-md border px-3 py-2"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <Input placeholder="Enter name" {...field} />
               )}
             />
 
             <FormField
               control={form.control}
               name="bio"
+              label="Bio"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bio</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter bio"
-                      {...field}
-                      className="w-full rounded-md border px-3 py-2"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <Textarea placeholder="Enter bio" {...field} />
               )}
             />
 
-            <Button
-              type="submit"
-              className="w-full rounded-lg bg-black px-4 py-2 text-white md:w-auto"
-            >
-              Update Organization Member
-            </Button>
+            <CardFooter className="-mx-6">
+              <Button type="submit">Update</Button>
+            </CardFooter>
           </form>
         </Form>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };

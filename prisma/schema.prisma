@@ -12,8 +12,9 @@ datasource db {
 
 model blog {
   id                  String              @id @db.Uuid
-  created_at          DateTime?           @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime?           @default(now()) @db.Timestamptz(6)
+  created_at          DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime            @default(now()) @db.Timestamptz(6)
+  published_date      DateTime            @db.Timestamptz(6)
   organization_id     String?             @db.Uuid
   author_id           String              @db.Uuid
   title               String              @db.VarChar(255)
@@ -25,6 +26,22 @@ model blog {
   status              blog_status         @default(DRAFT)
   organization_member organization_member @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   organization        organization?       @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  blog_metadata       blog_metadata?
+}
+
+model blog_metadata {
+  id             String   @id @db.Uuid
+  blog           blog     @relation(fields: [blog_id], references: [id], onDelete: Cascade)
+  blog_id        String   @unique @db.Uuid
+  title          String // SEO title
+  description    String // SEO meta description
+  keywords       String? // Comma-separated keywords
+  og_title       String? // Open Graph title (for Facebook/LinkedIn/Discord/Twitter/etc..)
+  og_description String? // Open Graph description
+  og_image       String? // Open Graph image URL
+  og_url         String? // Canonical URL for Open Graph
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime @default(now()) @db.Timestamptz(6)
 }
 
 model email_verification_request {
