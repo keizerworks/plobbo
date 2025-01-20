@@ -10,8 +10,9 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface blog {
   id: string;
-  created_at: Generated<Timestamp | null>;
-  updated_at: Generated<Timestamp | null>;
+  created_at: Generated<Timestamp>;
+  updated_at: Generated<Timestamp>;
+  published_date: Timestamp;
   organization_id: string | null;
   author_id: string;
   title: string;
@@ -21,6 +22,19 @@ export interface blog {
   tags: Generated<string[]>;
   likes: Generated<number>;
   status: Generated<blog_status>;
+}
+export interface blog_metadata {
+  id: string;
+  blog_id: string;
+  title: string;
+  description: string;
+  keywords: string | null;
+  og_title: string | null;
+  og_description: string | null;
+  og_image: string | null;
+  og_url: string | null;
+  created_at: Generated<Timestamp>;
+  updated_at: Generated<Timestamp>;
 }
 export interface email_verification_request {
   id: Generated<number>;
@@ -69,6 +83,7 @@ export interface user {
 }
 export interface DB {
   blog: blog;
+  blog_metadata: blog_metadata;
   email_verification_request: email_verification_request;
   organization: organization;
   organization_member: organization_member;
