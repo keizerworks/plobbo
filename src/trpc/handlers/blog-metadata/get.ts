@@ -1,15 +1,21 @@
+import { TRPCError } from "@trpc/server";
 import { getBlogMetadata } from "repository/blog-metadata";
 import { protectedOrgProcedure } from "trpc";
-import { z } from "zod";
+import { getBlogMetadataSchema } from "validators/blog-metadata/get";
 
 export const getBlogMetadataHandler = protectedOrgProcedure
-  .input(z.string()) // Validating input as a string
+  .input(getBlogMetadataSchema) // Validating input as a string
   .query(async ({ input }) => {
     try {
       const blogMetadata = await getBlogMetadata(input); // Pass the ID
+
       if (!blogMetadata) {
-        return { message: "No metadata found for this blog ID" }; // Or handle as needed
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No metadata found for this blog ID",
+        });
       }
+
       return blogMetadata;
     } catch (error) {
       console.error("Error fetching blog metadata:", error);

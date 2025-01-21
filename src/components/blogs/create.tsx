@@ -2,6 +2,7 @@
 
 import type { CreateBlogInterface } from "validators/blog/create";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
@@ -35,6 +36,7 @@ import { api } from "trpc/react";
 import { createBlogSchema } from "validators/blog/create";
 
 export const CreateBlog = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const blogListQueryKey = getQueryKey(api.blog.list);
@@ -51,10 +53,8 @@ export const CreateBlog = () => {
     },
   });
 
-  console.log(form.formState.errors);
-
   const { mutateAsync } = api.blog.create.useMutation({
-    onSuccess: async ({ imageUploadUrl }) => {
+    onSuccess: async ({ imageUploadUrl, blog: { id } }) => {
       const image = form.getValues("image");
       if (image) {
         await uploadToPresignedUrl(imageUploadUrl, image);
@@ -64,6 +64,8 @@ export const CreateBlog = () => {
         await queryClient.refetchQueries({ queryKey: blogListQueryKey }),
         await queryClient.refetchQueries({ queryKey: blogCountQueryKey }),
       ]);
+
+      router.push("/blogs" + id);
     },
     onError: console.error,
   });

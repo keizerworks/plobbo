@@ -14,7 +14,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   organization: organizationRouter,
   blog: blogRouter,
-  blogmetadata: blogMetadataRouter,
+  blogMetadata: blogMetadataRouter,
 });
 
 // export type definition of API

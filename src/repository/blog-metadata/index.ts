@@ -25,12 +25,19 @@ export const insertBlogMetadata = async (
 };
 
 // Retrieve metadata for a specific blog
-export const getBlogMetadata = async (blogId: string) => {
+export const getBlogMetadata = async (
+  props: { id: string } | { blog_id: string },
+) => {
   try {
     const result = await db
       .selectFrom("blog_metadata")
       .selectAll()
-      .where("blog_id", "=", blogId)
+      .$if("id" in props, (qb) =>
+        qb.where("id", "=", (props as { id: string }).id),
+      )
+      .$if("blogId" in props, (qb) =>
+        qb.where("blog_id", "=", (props as { blog_id: string }).blog_id),
+      )
       .executeTakeFirst(); // Return null if no result is found
 
     // If no metadata is found, return null
@@ -39,38 +46,34 @@ export const getBlogMetadata = async (blogId: string) => {
     }
 
     return result;
-  } catch (error) {
-    console.error(`Error fetching metadata for blogId ${blogId}:`, error);
-    throw new Error(`Failed to fetch blog metadata for ${blogId}.`);
+  } catch {
+    throw new Error(`Failed to fetch blog metadata.`);
   }
 };
 
 // Update metadata for a blog
 export const updateBlogMetadata = async (
-  blogId: string,
+  id: string,
   values: Partial<Omit<InsertBlogMetadataInterface, "blog_id" | "id">>, // Ensure `blog_id` is excluded
 ) => {
   try {
     return await db
       .updateTable("blog_metadata")
-      .where("blog_id", "=", blogId)
+      .where("id", "=", id)
       .set(values)
       .executeTakeFirstOrThrow();
   } catch (error) {
-    console.error(`Error updating metadata for blogId ${blogId}:`, error);
+    console.error(`Error updating metadata for id ${id}:`, error);
     throw new Error("Failed to update blog metadata.");
   }
 };
 
 // Delete metadata for a blog
-export const deleteBlogMetadata = async (blogId: string) => {
+export const deleteBlogMetadata = async (id: string) => {
   try {
-    return await db
-      .deleteFrom("blog_metadata")
-      .where("blog_id", "=", blogId)
-      .execute();
+    return await db.deleteFrom("blog_metadata").where("id", "=", id).execute();
   } catch (error) {
-    console.error(`Error deleting metadata for blogId ${blogId}:`, error);
+    console.error(`Error deleting metadata for blogId ${id}:`, error);
     throw new Error("Failed to delete blog metadata.");
   }
 };
