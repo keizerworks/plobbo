@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const upsertBlogMetadataInputSchema = z.object({
-  blog_id: z.string().min(1, "Blog ID is required"), // Blog ID should be a non-empty string
+  blog_id: z.string().min(1, "Blog ID is required"),
   metadata: z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().min(1, "Description is required"),

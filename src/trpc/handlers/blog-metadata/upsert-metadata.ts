@@ -25,7 +25,10 @@ export const upsertBlogMetadataHandler = protectedOrgProcedure
       }
 
       // If not exists then create
-      const validatedData = createBlogMetadataSchema.parse(metadata);
+      const validatedData = createBlogMetadataSchema.parse({
+        ...metadata,
+        blog_id,
+      });
       const newMetadata = await insertBlogMetadata(validatedData);
       return {
         success: true,
