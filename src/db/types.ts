@@ -12,7 +12,7 @@ export interface blog {
   id: string;
   created_at: Generated<Timestamp>;
   updated_at: Generated<Timestamp>;
-  published_date: Timestamp;
+  published_date: Timestamp | null;
   organization_id: string | null;
   author_id: string;
   title: string;
