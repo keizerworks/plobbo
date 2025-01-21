@@ -4,8 +4,8 @@ import {
   deleteBlogHandler,
   deleteMultipleBlogHandler,
 } from "trpc/handlers/blog/delete";
-import { blogListHandler } from "trpc/handlers/blog/list";
 import { blogGetHandler } from "trpc/handlers/blog/get";
+import { blogListHandler } from "trpc/handlers/blog/list";
 import { updateBlogHandler } from "trpc/handlers/blog/update";
 
 export const blogRouter = {
