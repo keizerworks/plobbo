@@ -2,8 +2,8 @@ import { createCallerFactory, createTRPCRouter } from "trpc";
 
 import { authRouter } from "./router/auth";
 import { blogRouter } from "./router/blog";
+import { blogMetadataRouter } from "./router/blog-metadata";
 import { organizationRouter } from "./router/organization";
-import {blogMetadataRouter} from "./router/blog-metadata";
 
 /**
  * This is the primary router for your server.
@@ -14,7 +14,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   organization: organizationRouter,
   blog: blogRouter,
-  blogMetadata: blogMetadataRouter,
+  blogmetadata: blogMetadataRouter,
 });
 
 // export type definition of API

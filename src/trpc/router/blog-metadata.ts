@@ -1,7 +1,7 @@
-import { createBlogMetadataHandler } from "trpc/handlers/blog-metadata/create";
-import { updateBlogMetadataHandler } from "trpc/handlers/blog-metadata/update";
+import { getBlogMetadataHandler } from "trpc/handlers/blog-metadata/get";
+import { upsertBlogMetadataHandler } from "trpc/handlers/blog-metadata/upsert-metadata";
 
 export const blogMetadataRouter = {
-  create: createBlogMetadataHandler,  
-  update: updateBlogMetadataHandler,
+  upsert: upsertBlogMetadataHandler,
+  get: getBlogMetadataHandler,
 };

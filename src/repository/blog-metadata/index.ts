@@ -3,10 +3,15 @@ import type { Insertable } from "kysely";
 import { db } from "db";
 import { uuidv7 } from "uuidv7";
 
-export type InsertBlogMetadataInterface = Omit<Insertable<DB["blog_metadata"]>, "id">;
+export type InsertBlogMetadataInterface = Omit<
+  Insertable<DB["blog_metadata"]>,
+  "id"
+>;
 
 // Insert metadata for a blog
-export const insertBlogMetadata = async (values: InsertBlogMetadataInterface) => {
+export const insertBlogMetadata = async (
+  values: InsertBlogMetadataInterface,
+) => {
   try {
     return await db
       .insertInto("blog_metadata")
@@ -22,21 +27,28 @@ export const insertBlogMetadata = async (values: InsertBlogMetadataInterface) =>
 // Retrieve metadata for a specific blog
 export const getBlogMetadata = async (blogId: string) => {
   try {
-    return await db
+    const result = await db
       .selectFrom("blog_metadata")
       .selectAll()
       .where("blog_id", "=", blogId)
-      .executeTakeFirstOrThrow();
+      .executeTakeFirst(); // Return null if no result is found
+
+    // If no metadata is found, return null
+    if (!result) {
+      return null;
+    }
+
+    return result;
   } catch (error) {
     console.error(`Error fetching metadata for blogId ${blogId}:`, error);
-    throw new Error("Failed to fetch blog metadata.");
+    throw new Error(`Failed to fetch blog metadata for ${blogId}.`);
   }
 };
 
 // Update metadata for a blog
 export const updateBlogMetadata = async (
   blogId: string,
-  values: Partial<Omit<InsertBlogMetadataInterface, "blog_id">> // Ensure `blog_id` is excluded
+  values: Partial<Omit<InsertBlogMetadataInterface, "blog_id" | "id">>, // Ensure `blog_id` is excluded
 ) => {
   try {
     return await db
