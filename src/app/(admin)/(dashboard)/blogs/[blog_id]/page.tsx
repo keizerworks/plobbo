@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { PlateEditor } from "components/editor/plate-editor";
 import { api } from "trpc/server";
 
@@ -6,6 +7,7 @@ export default async function Page({
 }: {
   params: Promise<{ blog_id: string }>;
 }) {
+  await connection();
   const { blog_id: id } = await params;
   void api.blogMetadata.get.prefetch({ blog_id: id });
   const blog = await api.blog.get({ id });

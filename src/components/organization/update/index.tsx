@@ -125,7 +125,7 @@ export const UpdateOrganization = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="no-scrollbar flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 max-md:pt-3 md:px-6"
+                className="no-scrollbar max-md:pt-3 flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 md:px-6"
               >
                 <BaseFormField
                   control={form.control}
@@ -166,7 +166,7 @@ export const UpdateOrganization = () => {
                   )}
                 />
 
-                <CredenzaFooter className="-mx-4 mt-4 border-t px-4 pt-2 max-md:pb-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
+                <CredenzaFooter className="max-md:pb-2 -mx-4 mt-4 border-t px-4 pt-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
                   <Button type="submit" className="w-full">
                     Update Organization
                   </Button>
