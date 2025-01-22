@@ -29,17 +29,13 @@ services:
       - LANGDB_OPENAI_BASE_URL=${LANGDB_OPENAI_BASE_URL}
       - LANGDB_PROJECT_ID=${LANGDB_PROJECT_ID}
       - LANGDB_API_KEY=${LANGDB_API_KEY}
-
     restart: unless-stopped
     volumes:
       - ./app:/app
       - node_modules:/app/node_modules
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     profiles: ["with-postgres"]
     ports:
       - "5432:5432"
