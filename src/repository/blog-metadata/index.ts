@@ -28,27 +28,16 @@ export const insertBlogMetadata = async (
 export const getBlogMetadata = async (
   props: { id: string } | { blog_id: string },
 ) => {
-  try {
-    const result = await db
-      .selectFrom("blog_metadata")
-      .selectAll()
-      .$if("id" in props, (qb) =>
-        qb.where("id", "=", (props as { id: string }).id),
-      )
-      .$if("blogId" in props, (qb) =>
-        qb.where("blog_id", "=", (props as { blog_id: string }).blog_id),
-      )
-      .executeTakeFirst(); // Return null if no result is found
-
-    // If no metadata is found, return null
-    if (!result) {
-      return null;
-    }
-
-    return result;
-  } catch {
-    throw new Error(`Failed to fetch blog metadata.`);
-  }
+  return await db
+    .selectFrom("blog_metadata")
+    .selectAll()
+    .$if("id" in props, (qb) =>
+      qb.where("id", "=", (props as { id: string }).id),
+    )
+    .$if("blogId" in props, (qb) =>
+      qb.where("blog_id", "=", (props as { blog_id: string }).blog_id),
+    )
+    .executeTakeFirst(); // Return null if no result is found
 };
 
 // Update metadata for a blog

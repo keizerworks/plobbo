@@ -13,8 +13,8 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.builtin,
     },
-    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     ignores: ["./src/db/types.ts", "./src/db/enums.ts"],
+    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,
