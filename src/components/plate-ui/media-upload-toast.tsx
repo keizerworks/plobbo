@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-
-import { useEditorRef } from '@udecode/plate/react';
-import { PlaceholderPlugin, UploadErrorCode } from '@udecode/plate-media/react';
-import { toast } from 'sonner';
+import { useEffect } from "react";
+import { PlaceholderPlugin, UploadErrorCode } from "@udecode/plate-media/react";
+import { useEditorRef } from "@udecode/plate/react";
+import { toast } from "sonner";
 
 export const useUploadErrorToast = () => {
   const editor = useEditorRef();
 
-  const uploadError = editor.useOption(PlaceholderPlugin, 'error');
+  const uploadError = editor.useOption(PlaceholderPlugin, "error");
 
   useEffect(() => {
     if (!uploadError) return;
@@ -21,7 +20,7 @@ export const useUploadErrorToast = () => {
         toast.error(
           `The size of files ${data.files
             .map((f) => f.name)
-            .join(', ')} is invalid`
+            .join(", ")} is invalid`,
         );
 
         break;
@@ -30,7 +29,7 @@ export const useUploadErrorToast = () => {
         toast.error(
           `The type of files ${data.files
             .map((f) => f.name)
-            .join(', ')} is invalid`
+            .join(", ")} is invalid`,
         );
 
         break;
@@ -39,14 +38,14 @@ export const useUploadErrorToast = () => {
         toast.error(
           `The size of files ${data.files
             .map((f) => f.name)
-            .join(', ')} is too large than ${data.maxFileSize}`
+            .join(", ")} is too large than ${data.maxFileSize}`,
         );
 
         break;
       }
       case UploadErrorCode.TOO_LESS_FILES: {
         toast.error(
-          `The mini um number of files is ${data.minFileCount} for ${data.fileType}`
+          `The mini um number of files is ${data.minFileCount} for ${data.fileType}`,
         );
 
         break;
@@ -54,8 +53,8 @@ export const useUploadErrorToast = () => {
       case UploadErrorCode.TOO_MANY_FILES: {
         toast.error(
           `The maximum number of files is ${data.maxFileCount} ${
-            data.fileType ? `for ${data.fileType}` : ''
-          }`
+            data.fileType ? `for ${data.fileType}` : ""
+          }`,
         );
 
         break;

@@ -1,24 +1,22 @@
-import * as React from 'react';
-
-import type { SlateElementProps } from '@udecode/plate';
-
-import { cn } from '@udecode/cn';
-import { SlateElement } from '@udecode/plate';
-import { cva } from 'class-variance-authority';
+import type { SlateElementProps } from "@udecode/plate";
+import * as React from "react";
+import { cn } from "@udecode/cn";
+import { SlateElement } from "@udecode/plate";
+import { cva } from "class-variance-authority";
 
 interface HeadingElementViewProps extends SlateElementProps {
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
 
-const headingVariants = cva('relative mb-1', {
+const headingVariants = cva("relative mb-1", {
   variants: {
     variant: {
-      h1: 'mt-[1.6em] pb-1 font-heading text-4xl font-bold',
-      h2: 'mt-[1.4em] pb-px font-heading text-2xl font-semibold tracking-tight',
-      h3: 'mt-[1em] pb-px font-heading text-xl font-semibold tracking-tight',
-      h4: 'mt-[0.75em] font-heading text-lg font-semibold tracking-tight',
-      h5: 'mt-[0.75em] text-lg font-semibold tracking-tight',
-      h6: 'mt-[0.75em] text-base font-semibold tracking-tight',
+      h1: "mt-[1.6em] pb-1 font-heading text-4xl font-bold",
+      h2: "mt-[1.4em] pb-px font-heading text-2xl font-semibold tracking-tight",
+      h3: "mt-[1em] pb-px font-heading text-xl font-semibold tracking-tight",
+      h4: "mt-[0.75em] font-heading text-lg font-semibold tracking-tight",
+      h5: "mt-[0.75em] text-lg font-semibold tracking-tight",
+      h6: "mt-[0.75em] text-base font-semibold tracking-tight",
     },
   },
 });
@@ -26,7 +24,7 @@ const headingVariants = cva('relative mb-1', {
 export const HeadingElementStatic = ({
   children,
   className,
-  variant = 'h1',
+  variant = "h1",
   ...props
 }: HeadingElementViewProps) => {
   return (

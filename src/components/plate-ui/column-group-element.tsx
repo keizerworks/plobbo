@@ -1,35 +1,34 @@
-'use client';
+"use client";
 
-import React from 'react';
-
-import { cn, withRef } from '@udecode/cn';
+import type { TColumnElement } from "@udecode/plate-layout";
+import type { LucideProps } from "lucide-react";
+import React from "react";
+import { cn, withRef } from "@udecode/cn";
+import { setColumns } from "@udecode/plate-layout";
+import { useDebouncePopoverOpen } from "@udecode/plate-layout/react";
 import {
   useEditorRef,
   useElement,
   useReadOnly,
   useRemoveNodeButton,
-} from '@udecode/plate/react';
-import {  setColumns } from '@udecode/plate-layout';
-import type {TColumnElement} from '@udecode/plate-layout';
-import { useDebouncePopoverOpen } from '@udecode/plate-layout/react';
-import {  Trash2Icon } from 'lucide-react';
-import type {LucideProps} from 'lucide-react';
+} from "@udecode/plate/react";
+import { Trash2Icon } from "lucide-react";
 
-import { Button } from './button';
-import { PlateElement } from './plate-element';
-import { Popover, PopoverAnchor, PopoverContent } from './popover';
-import { Separator } from './separator';
+import { Button } from "./button";
+import { PlateElement } from "./plate-element";
+import { Popover, PopoverAnchor, PopoverContent } from "./popover";
+import { Separator } from "./separator";
 
 export const ColumnGroupElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
     return (
-      <PlateElement ref={ref} className={cn(className, 'mb-2')} {...props}>
+      <PlateElement ref={ref} className={cn(className, "mb-2")} {...props}>
         <ColumnFloatingToolbar>
-          <div className={cn('flex size-full rounded')}>{children}</div>
+          <div className={cn("flex size-full rounded")}>{children}</div>
         </ColumnFloatingToolbar>
       </PlateElement>
     );
-  }
+  },
 );
 
 export function ColumnFloatingToolbar({ children }: React.PropsWithChildren) {
@@ -64,35 +63,35 @@ export function ColumnFloatingToolbar({ children }: React.PropsWithChildren) {
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onColumnChange(['50%', '50%'])}
+            onClick={() => onColumnChange(["50%", "50%"])}
           >
             <DoubleColumnOutlined />
           </Button>
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onColumnChange(['33%', '33%', '33%'])}
+            onClick={() => onColumnChange(["33%", "33%", "33%"])}
           >
             <ThreeColumnOutlined />
           </Button>
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onColumnChange(['70%', '30%'])}
+            onClick={() => onColumnChange(["70%", "30%"])}
           >
             <RightSideDoubleColumnOutlined />
           </Button>
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onColumnChange(['30%', '70%'])}
+            onClick={() => onColumnChange(["30%", "70%"])}
           >
             <LeftSideDoubleColumnOutlined />
           </Button>
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onColumnChange(['25%', '50%', '25%'])}
+            onClick={() => onColumnChange(["25%", "50%", "25%"])}
           >
             <DoubleSideDoubleColumnOutlined />
           </Button>

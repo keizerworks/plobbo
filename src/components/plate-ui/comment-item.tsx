@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-
-import { useEditorPlugin } from '@udecode/plate/react';
+import React from "react";
 import {
   CommentProvider,
   CommentsPlugin,
   useCommentItemContentState,
-} from '@udecode/plate-comments/react';
-import { formatDistance } from 'date-fns';
+} from "@udecode/plate-comments/react";
+import { useEditorPlugin } from "@udecode/plate/react";
+import { formatDistance } from "date-fns";
 
-import { CommentAvatar } from './comment-avatar';
-import { CommentMoreDropdown } from './comment-more-dropdown';
-import { CommentResolveButton } from './comment-resolve-button';
-import { CommentValue } from './comment-value';
+import { CommentAvatar } from "./comment-avatar";
+import { CommentMoreDropdown } from "./comment-more-dropdown";
+import { CommentResolveButton } from "./comment-resolve-button";
+import { CommentValue } from "./comment-value";
 
 interface PlateCommentProps {
   commentId: string;
@@ -62,7 +61,7 @@ function CommentItemContent() {
 
 export function CommentItem({ commentId }: PlateCommentProps) {
   const { useOption } = useEditorPlugin(CommentsPlugin);
-  const comment = useOption('commentById', commentId);
+  const comment = useOption("commentById", commentId);
 
   if (!comment) return null;
 

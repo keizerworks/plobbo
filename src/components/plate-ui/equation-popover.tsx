@@ -1,24 +1,22 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
-import type {TextareaAutosizeProps} from 'react-textarea-autosize';
-
-import type { TEquationElement } from '@udecode/plate-math';
-
-import { cn } from '@udecode/cn';
+import type { TEquationElement } from "@udecode/plate-math";
+import type { TextareaAutosizeProps } from "react-textarea-autosize";
+import React, { useEffect } from "react";
+import { cn } from "@udecode/cn";
+import { useEquationInput } from "@udecode/plate-math/react";
+import { BlockSelectionPlugin } from "@udecode/plate-selection/react";
 import {
   createPrimitiveComponent,
   useEditorRef,
   useElement,
   useReadOnly,
-} from '@udecode/plate/react';
-import { useEquationInput } from '@udecode/plate-math/react';
-import { BlockSelectionPlugin } from '@udecode/plate-selection/react';
-import { CornerDownLeftIcon } from 'lucide-react';
+} from "@udecode/plate/react";
+import { CornerDownLeftIcon } from "lucide-react";
+import TextareaAutosize from "react-textarea-autosize";
 
-import { Button } from './button';
-import { PopoverContent } from './popover';
+import { Button } from "./button";
+import { PopoverContent } from "./popover";
 
 const EquationInput = createPrimitiveComponent(TextareaAutosize)({
   propsHook: useEquationInput,
@@ -68,7 +66,7 @@ const EquationPopoverContent = ({
       contentEditable={false}
     >
       <EquationInput
-        className={cn('max-h-[50vh] grow resize-none p-2 text-sm', className)}
+        className={cn("max-h-[50vh] grow resize-none p-2 text-sm", className)}
         state={{ isInline, open, onClose }}
         autoFocus
         {...props}

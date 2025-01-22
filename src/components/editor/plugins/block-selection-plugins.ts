@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { BlockSelectionPlugin } from '@udecode/plate-selection/react';
+import { BlockSelectionPlugin } from "@udecode/plate-selection/react";
 
 export const blockSelectionPlugins = [
   BlockSelectionPlugin.configure(({ editor }) => ({
@@ -8,8 +8,8 @@ export const blockSelectionPlugins = [
       enableContextMenu: true,
       isSelectable: (element, path) => {
         return (
-          !['code_line', 'column', 'td'].includes(element.type) &&
-          !editor.api.block({ above: true, at: path, match: { type: 'tr' } })
+          !["code_line", "column", "td"].includes(element.type) &&
+          !editor.api.block({ above: true, at: path, match: { type: "tr" } })
         );
       },
     },

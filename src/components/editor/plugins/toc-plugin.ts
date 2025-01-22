@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { TocPlugin } from '@udecode/plate-heading/react';
+import { TocPlugin } from "@udecode/plate-heading/react";
 
 export const tocPlugin = TocPlugin.configure({
   options: {

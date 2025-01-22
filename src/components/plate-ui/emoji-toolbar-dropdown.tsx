@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import type {ReactNode} from 'react';
-
-import * as Popover from '@radix-ui/react-popover';
+import type { ReactNode } from "react";
+import React from "react";
+import * as Popover from "@radix-ui/react-popover";
 
 interface EmojiToolbarDropdownProps {
   children: ReactNode;

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { cn, withRef } from '@udecode/cn';
-import { useReadOnly } from '@udecode/plate/react';
+import { cn, withRef } from "@udecode/cn";
+import { useReadOnly } from "@udecode/plate/react";
 
-import { Calendar } from './calendar';
-import { PlateElement } from './plate-element';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Calendar } from "./calendar";
+import { PlateElement } from "./plate-element";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 export const DateElement = withRef<typeof PlateElement>(
   ({ children, className, ...props }, ref) => {
@@ -16,7 +16,7 @@ export const DateElement = withRef<typeof PlateElement>(
     const trigger = (
       <span
         className={cn(
-          'w-fit cursor-pointer rounded-sm bg-muted px-1 text-muted-foreground'
+          "w-fit cursor-pointer rounded-sm bg-muted px-1 text-muted-foreground",
         )}
         contentEditable={false}
         draggable
@@ -37,14 +37,14 @@ export const DateElement = withRef<typeof PlateElement>(
               new Date(today.setDate(today.getDate() + 2)).toDateString() ===
               elementDate.toDateString();
 
-            if (isToday) return 'Today';
-            if (isYesterday) return 'Yesterday';
-            if (isTomorrow) return 'Tomorrow';
+            if (isToday) return "Today";
+            if (isYesterday) return "Yesterday";
+            if (isTomorrow) return "Tomorrow";
 
             return elementDate.toLocaleDateString(undefined, {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
+              day: "numeric",
+              month: "long",
+              year: "numeric",
             });
           })()
         ) : (
@@ -60,7 +60,7 @@ export const DateElement = withRef<typeof PlateElement>(
     return (
       <PlateElement
         ref={ref}
-        className={cn(className, 'inline-block')}
+        className={cn(className, "inline-block")}
         contentEditable={false}
         {...props}
       >
@@ -74,7 +74,7 @@ export const DateElement = withRef<typeof PlateElement>(
 
                 editor.tf.setNodes(
                   { date: date.toDateString() },
-                  { at: element }
+                  { at: element },
                 );
               }}
               mode="single"
@@ -85,5 +85,5 @@ export const DateElement = withRef<typeof PlateElement>(
         {children}
       </PlateElement>
     );
-  }
+  },
 );
