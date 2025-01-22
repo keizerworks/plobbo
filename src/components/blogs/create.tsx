@@ -2,6 +2,7 @@
 
 import type { CreateBlogInterface } from "validators/blog/create";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
@@ -35,6 +36,7 @@ import { api } from "trpc/react";
 import { createBlogSchema } from "validators/blog/create";
 
 export const CreateBlog = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const blogListQueryKey = getQueryKey(api.blog.list);
@@ -47,14 +49,11 @@ export const CreateBlog = () => {
       title: "",
       slug: "",
       status: "DRAFT",
-      body: "",
     },
   });
 
-  console.log(form.formState.errors);
-
   const { mutateAsync } = api.blog.create.useMutation({
-    onSuccess: async ({ imageUploadUrl }) => {
+    onSuccess: async ({ imageUploadUrl, blog: { id } }) => {
       const image = form.getValues("image");
       if (image) {
         await uploadToPresignedUrl(imageUploadUrl, image);
@@ -64,6 +63,8 @@ export const CreateBlog = () => {
         await queryClient.refetchQueries({ queryKey: blogListQueryKey }),
         await queryClient.refetchQueries({ queryKey: blogCountQueryKey }),
       ]);
+
+      router.push("/blogs" + id);
     },
     onError: console.error,
   });
@@ -74,7 +75,6 @@ export const CreateBlog = () => {
         mutateAsync({
           title: values.title,
           slug: values.slug,
-          body: "",
           status: values.status,
         }),
       {
@@ -110,7 +110,7 @@ export const CreateBlog = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="no-scrollbar flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 max-md:pt-3 md:px-6"
+            className="no-scrollbar max-md:pt-3 flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 md:px-6"
           >
             <BaseFormField
               control={form.control}
@@ -147,7 +147,7 @@ export const CreateBlog = () => {
               )}
             />
 
-            <CredenzaFooter className="-mx-4 mt-4 border-t px-4 pt-2 max-md:pb-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
+            <CredenzaFooter className="max-md:pb-2 -mx-4 mt-4 border-t px-4 pt-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
               <Button type="submit" className="w-full">
                 Create Blog
               </Button>

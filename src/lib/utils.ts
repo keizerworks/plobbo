@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const uploadToPresignedUrl = async (url: string, file: File) => {
-  await fetch(url, {
+  return await fetch(url, {
     method: "PUT",
     body: file,
     headers: {

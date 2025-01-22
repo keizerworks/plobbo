@@ -19,8 +19,8 @@ export default function RootLayout({
       <body>
         <TRPCReactProvider>
           <div vaul-drawer-wrapper="">{children}</div>
+          <Toaster />
         </TRPCReactProvider>
-        <Toaster />
       </body>
     </html>
   );

@@ -31,6 +31,11 @@ export const env = createEnv({
     REDIS_PORT: z.coerce.number(),
     REDIS_PASSWORD: z.string(),
 
+    // langdb
+    LANGDB_OPENAI_BASE_URL: z.string().url(),
+    LANGDB_PROJECT_ID: z.string().uuid(),
+    LANGDB_API_KEY: z.string(),
+
     // SMTP
     SMTP_HOST: z.string(),
     SMTP_PORT: z.coerce.number(),
@@ -76,6 +81,11 @@ export const env = createEnv({
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+
+    // langdb
+    LANGDB_OPENAI_BASE_URL: process.env.LANGDB_OPENAI_BASE_URL,
+    LANGDB_PROJECT_ID: process.env.LANGDB_PROJECT_ID,
+    LANGDB_API_KEY: process.env.LANGDB_API_KEY,
 
     // SMTP
     SMTP_HOST: process.env.SMTP_HOST,

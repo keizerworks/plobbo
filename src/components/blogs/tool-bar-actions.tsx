@@ -2,11 +2,11 @@
 
 import type { Table } from "@tanstack/react-table";
 
-import type { BlogListWithAuthor } from "./list";
+import type { BlogList } from "./list";
 import { DeleteBlogsDialog } from "./delete-blogs-dialog";
 
 interface TasksTableToolbarActionsProps {
-  table: Table<BlogListWithAuthor>;
+  table: Table<BlogList>;
 }
 
 export function BlogsTableToolbarActions({

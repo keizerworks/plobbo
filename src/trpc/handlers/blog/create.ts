@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { insertBlog } from "repository/blog";
+import { insertBlogMetadata } from "repository/blog-metadata";
 import { getSignedUrlPutObject } from "storage";
 import { protectedOrgProcedure } from "trpc";
 import { createBlogMutationSchema } from "validators/blog/create";
@@ -15,14 +16,19 @@ export const createBlogHandler = protectedOrgProcedure
       let blog;
       try {
         blog = await insertBlog({
-          title: input.title,
           slug: input.slug,
-          body: input.body ?? "",
+          body: input.body ?? [],
           image: imageUrl,
           tags: input.tags,
           status: input.status,
           organization_id: ctx.member.organization_id,
           author_id: ctx.member.id,
+        });
+
+        await insertBlogMetadata({
+          blog_id: blog.id,
+          title: input.title,
+          description: "",
         });
       } catch (e) {
         console.log(e);

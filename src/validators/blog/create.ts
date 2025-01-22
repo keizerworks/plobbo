@@ -14,7 +14,6 @@ export const createBlogSchema = z.object({
       message:
         "Slug must contain only lowercase letters, numbers, and hyphens.",
     }),
-  body: z.string().optional(),
   image: z.instanceof(File).optional(),
   tags: z.array(z.string()).default([]),
   status: z
@@ -25,7 +24,8 @@ export const createBlogSchema = z.object({
 export const createBlogMutationSchema = z.object({
   title: z.string().min(2),
   slug: z.string().min(2),
-  body: z.string().optional(),
+  content: z.string().optional(),
+  body: z.array(z.any()).optional(),
   tags: z.array(z.string()).default([]),
   status: z
     .enum([blog_status.PUBLISHED, blog_status.DRAFT])

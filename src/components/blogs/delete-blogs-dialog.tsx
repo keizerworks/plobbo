@@ -17,11 +17,11 @@ import { Trash } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "trpc/react";
 
-import type { BlogListWithAuthor } from "./list";
+import type { BlogList } from "./list";
 
 interface DeleteBlogsDialogProps
   extends Omit<React.ComponentPropsWithoutRef<typeof Credenza>, "children"> {
-  blogs: Row<BlogListWithAuthor>["original"][];
+  blogs: Row<BlogList>["original"][];
   showTrigger?: boolean;
   onSuccess?: () => void;
 }

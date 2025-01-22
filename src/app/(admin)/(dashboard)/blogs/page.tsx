@@ -18,7 +18,7 @@ export default async function BlogsPage(props: PageProps) {
 
   const params: ListBlogSortFilterInterface = {
     filter: {
-      search: search.title,
+      search: search.blog_metadata,
       status: search.status[0],
     },
     sort: search.sort[0]
