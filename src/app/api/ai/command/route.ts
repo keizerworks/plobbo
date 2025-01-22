@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   };
 
   const openai = createOpenAI({
-    apiKey: env.LANGDB_OPENAI_BASE_URL,
+    apiKey: env.LANGDB_API_KEY,
     baseURL: env.LANGDB_OPENAI_BASE_URL,
     headers: { "x-project-id": env.LANGDB_PROJECT_ID },
   });

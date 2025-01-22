@@ -66,11 +66,13 @@ export interface MyLinkElement extends TLinkElement {
   type: typeof LinkPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyMentionInputElement extends TMentionInputElement {
   children: [PlainText];
   type: typeof MentionInputPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyMentionElement extends TMentionElement {
   children: [EmptyText];
   type: typeof MentionPlugin.key;
@@ -114,36 +116,43 @@ export interface MyBlockElement
 
 /** Blocks */
 
+// @ts-expect-error idk
 export interface MyParagraphElement extends MyBlockElement {
   children: MyInlineChildren;
   type: typeof ParagraphPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyH1Element extends MyBlockElement {
   children: MyInlineChildren;
   type: typeof HEADING_KEYS.h1;
 }
 
+// @ts-expect-error idk
 export interface MyH2Element extends MyBlockElement {
   children: MyInlineChildren;
   type: typeof HEADING_KEYS.h2;
 }
 
+// @ts-expect-error idk
 export interface MyH3Element extends MyBlockElement {
   children: MyInlineChildren;
   type: typeof HEADING_KEYS.h3;
 }
 
+// @ts-expect-error idk
 export interface MyBlockquoteElement extends MyBlockElement {
   children: MyInlineChildren;
   type: typeof BlockquotePlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyCodeBlockElement extends MyBlockElement {
   children: MyCodeLineElement[];
   type: typeof CodeBlockPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyCodeLineElement extends TElement {
   children: PlainText[];
   type: typeof CodeLinePlugin.key;
@@ -164,16 +173,19 @@ export interface MyTableCellElement extends TElement {
   type: typeof TableCellPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyToggleElement extends TToggleElement, MyBlockElement {
   children: MyInlineChildren;
   type: typeof TogglePlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyImageElement extends TImageElement, MyBlockElement {
   children: [EmptyText];
   type: typeof ImagePlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyMediaEmbedElement
   extends TMediaEmbedElement,
     MyBlockElement {
@@ -181,11 +193,13 @@ export interface MyMediaEmbedElement
   type: typeof MediaEmbedPlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyHrElement extends MyBlockElement {
   children: [EmptyText];
   type: typeof HorizontalRulePlugin.key;
 }
 
+// @ts-expect-error idk
 export interface MyExcalidrawElement
   extends TExcalidrawElement,
     MyBlockElement {

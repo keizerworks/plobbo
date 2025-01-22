@@ -80,7 +80,7 @@ export const MediaPlaceholderElement = withHOC(
           const firstFile = updatedFiles[0];
           const restFiles = updatedFiles.slice(1);
 
-          replaceCurrentPlaceholder(firstFile as File);
+          replaceCurrentPlaceholder(firstFile as File).catch(console.log);
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (restFiles.length > 0) (editor as any).tf.insert.media(restFiles);
@@ -88,8 +88,8 @@ export const MediaPlaceholderElement = withHOC(
       });
 
       const replaceCurrentPlaceholder = useCallback(
-        (file: File) => {
-          void uploadFile(file);
+        async (file: File) => {
+          await uploadFile(file);
           api.placeholder.addUploadingFile(element.id as string, file);
         },
         [api.placeholder, element.id, uploadFile],
@@ -116,7 +116,7 @@ export const MediaPlaceholderElement = withHOC(
 
           editor.tf.insertNodes(node, { at: path });
 
-          updateUploadHistory(editor, node);
+          if (editor.operations) updateUploadHistory(editor, node);
         });
 
         api.placeholder.removeUploadingFile(element.id as string);
@@ -136,7 +136,7 @@ export const MediaPlaceholderElement = withHOC(
 
         if (!currentFiles) return;
 
-        replaceCurrentPlaceholder(currentFiles);
+        replaceCurrentPlaceholder(currentFiles).catch(console.log);
       }, [isReplaced]);
 
       return (

@@ -93,7 +93,8 @@ import { TableRowElement } from "components/plate-ui/table-row-element";
 import { TocElement } from "components/plate-ui/toc-element";
 import { ToggleElement } from "components/plate-ui/toggle-element";
 
-export const useCreateEditor = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useCreateEditor = ({ value }: { value?: any[] }) => {
   return usePlateEditor({
     override: {
       components: withPlaceholders({
@@ -149,7 +150,7 @@ export const useCreateEditor = () => {
       FixedToolbarPlugin,
       FloatingToolbarPlugin,
     ],
-    value: [
+    value: value ?? [
       {
         children: [{ text: "Playground" }],
         type: "h1",

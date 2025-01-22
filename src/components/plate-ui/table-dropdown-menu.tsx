@@ -1,12 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-
-import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-
-import { cn } from '@udecode/cn';
-import { useEditorPlugin, useEditorSelector } from '@udecode/plate/react';
-import { TablePlugin, useTableMergeState } from '@udecode/plate-table/react';
+import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
+import React, { useState } from "react";
+import { cn } from "@udecode/cn";
+import { TablePlugin, useTableMergeState } from "@udecode/plate-table/react";
+import { useEditorPlugin, useEditorSelector } from "@udecode/plate/react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -18,7 +16,7 @@ import {
   Trash2Icon,
   Ungroup,
   XIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
 import {
   DropdownMenu,
@@ -30,13 +28,13 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu';
-import { ToolbarButton } from './toolbar';
+} from "./dropdown-menu";
+import { ToolbarButton } from "./toolbar";
 
 export function TableDropdownMenu(props: DropdownMenuProps) {
   const tableSelected = useEditorSelector(
     (editor) => editor.api.some({ match: { type: TablePlugin.key } }),
-    []
+    [],
   );
 
   const { editor, tf } = useEditorPlugin(TablePlugin);
@@ -210,10 +208,13 @@ export function TablePicker() {
     const newGrid = [...tablePicker.grid];
 
     for (let i = 0; i < newGrid.length; i++) {
-      for (let j = 0; j < newGrid[i].length; j++) {
-        newGrid[i][j] =
-          i >= 0 && i <= rowIndex && j >= 0 && j <= colIndex ? 1 : 0;
-      }
+      const iNewGrid = newGrid[i];
+      if (Array.isArray(iNewGrid))
+        for (let j = 0; j < iNewGrid.length; j++) {
+          if (iNewGrid[j])
+            iNewGrid[j] =
+              i >= 0 && i <= rowIndex && j >= 0 && j <= colIndex ? 1 : 0;
+        }
     }
 
     setTablePicker({
@@ -237,15 +238,15 @@ export function TablePicker() {
               <div
                 key={`(${rowIndex},${columIndex})`}
                 className={cn(
-                  'col-span-1 size-3 border border-solid bg-secondary',
-                  !!value && 'border-current'
+                  "col-span-1 size-3 border border-solid bg-secondary",
+                  !!value && "border-current",
                 )}
                 onMouseMove={() => {
                   onCellMove(rowIndex, columIndex);
                 }}
               />
             );
-          })
+          }),
         )}
       </div>
 

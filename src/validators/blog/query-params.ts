@@ -1,4 +1,4 @@
-import type { BlogListWithAuthor } from "components/blogs/list";
+import type { BlogList } from "components/blogs/list";
 import { blog_status } from "db/enums";
 import {
   getFiltersStateParser,
@@ -16,10 +16,10 @@ import { z } from "zod";
 export const blogsSearchParamsCache = createSearchParamsCache({
   page: parseAsInteger.withDefault(1),
   perPage: parseAsInteger.withDefault(10),
-  sort: getSortingStateParser<BlogListWithAuthor>().withDefault([
+  sort: getSortingStateParser<BlogList>().withDefault([
     { id: "created_at", desc: true },
   ]),
-  title: parseAsString.withDefault(""),
+  blog_metadata: parseAsString.withDefault(""),
   status: parseAsArrayOf(
     z.enum([blog_status.PUBLISHED, blog_status.DRAFT]),
   ).withDefault([]),

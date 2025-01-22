@@ -22,7 +22,7 @@ import { TrailingBlockPlugin } from "@udecode/plate-trailing-block";
 import { FixedToolbarPlugin } from "components/editor/plugins/fixed-toolbar-plugin";
 import { FloatingToolbarPlugin } from "components/editor/plugins/floating-toolbar-plugin";
 
-// import { aiPlugins } from "./ai-plugins";
+import { aiPlugins } from "./ai-plugins";
 import { alignPlugin } from "./align-plugin";
 import { autoformatPlugin } from "./autoformat-plugin";
 import { basicNodesPlugins } from "./basic-nodes-plugins";
@@ -75,7 +75,7 @@ export const viewPlugins = [
 
 export const editorPlugins = [
   // AI
-  // ...aiPlugins,
+  ...aiPlugins,
 
   // Nodes
   ...viewPlugins,

@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { uploadFile } from "actions/editor/upload-file";
+import { getPreSignedUrlPutObject } from "actions/editor/s3/presigned-url/put";
+import { uploadToPresignedUrl } from "lib/utils";
 
 interface UploadedFile {
   url: string;
@@ -8,26 +11,26 @@ interface UploadedFile {
 
 export function useS3Upload() {
   const [isUploading, setIsUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
   const [uploadingFile, setUploadingFile] = useState<File | null>(null);
 
   const uploadFileFn = async (file: File) => {
     setIsUploading(true);
     setUploadingFile(file);
-    setProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.set("file", file);
+      const { url, uploadUrl } = await getPreSignedUrlPutObject(
+        file.name,
+        "editor",
+      );
 
-      const res = await uploadFile(formData);
-      if (!res.success) {
+      const res = await uploadToPresignedUrl(uploadUrl, file);
+      if (!res.ok) {
         throw new Error();
       }
 
       setUploadedFile({
-        url: res.url,
+        url,
         name: file.name,
       });
     } catch (error) {
@@ -40,7 +43,6 @@ export function useS3Upload() {
 
   return {
     isUploading,
-    progress,
     uploadFile: uploadFileFn,
     uploadedFile,
     uploadingFile,

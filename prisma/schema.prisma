@@ -14,13 +14,13 @@ model blog {
   id                  String              @id @db.Uuid
   created_at          DateTime            @default(now()) @db.Timestamptz(6)
   updated_at          DateTime            @default(now()) @db.Timestamptz(6)
-  published_date      DateTime?            @db.Timestamptz(6)
+  published_date      DateTime?           @db.Timestamptz(6)
   organization_id     String?             @db.Uuid
   author_id           String              @db.Uuid
-  title               String              @db.VarChar(255)
   slug                String              @db.VarChar(255)
   image               String?             @db.VarChar(255)
-  body                String
+  body                Json[]
+  content             String              @default("")
   tags                String[]            @default([])
   likes               Int                 @default(0)
   status              blog_status         @default(DRAFT)

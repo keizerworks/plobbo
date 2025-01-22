@@ -15,10 +15,10 @@ export interface blog {
   published_date: Timestamp | null;
   organization_id: string | null;
   author_id: string;
-  title: string;
   slug: string;
   image: string | null;
-  body: string;
+  body: unknown[];
+  content: Generated<string>;
   tags: Generated<string[]>;
   likes: Generated<number>;
   status: Generated<blog_status>;

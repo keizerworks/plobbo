@@ -93,6 +93,7 @@
     --novel-highlight-pink: #5c1a3a;
     --novel-highlight-gray: #3a3a3a;
   }
+
   [data-registry="plate"].dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -121,6 +122,7 @@
     --brand: 213.3 93.9% 67.8%;
     --highlight: 48 96% 53%;
   }
+
   [data-registry="plate"] {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -153,15 +155,11 @@
 }
 @layer base {
   * {
-    @apply box-border min-w-0 whitespace-normal border-border;
+    @apply box-border min-w-0 border-border;
   }
 
   body {
     @apply bg-background text-foreground;
-  }
-
-  blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
   }
 }
 

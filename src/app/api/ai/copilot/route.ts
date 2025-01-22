@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   };
 
   const openai = createOpenAI({
-    apiKey: env.LANGDB_OPENAI_BASE_URL,
+    apiKey: env.LANGDB_API_KEY,
     baseURL: env.LANGDB_OPENAI_BASE_URL,
     headers: { "x-project-id": env.LANGDB_PROJECT_ID },
   });
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   try {
     const result = await generateText({
       abortSignal: req.signal,
-      maxTokens: 50,
+      maxTokens: 200,
       model: openai("gpt-3.5-turbo-0125"),
       prompt: prompt,
       system,

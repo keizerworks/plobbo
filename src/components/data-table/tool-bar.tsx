@@ -70,6 +70,7 @@ export function DataTableToolbar<TData>({
             (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
                 <Input
+                  autoFocus
                   key={String(column.id)}
                   placeholder={column.placeholder}
                   value={

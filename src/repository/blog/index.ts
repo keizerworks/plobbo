@@ -12,6 +12,7 @@ export type InsertBlogInterface = Omit<Insertable<DB["blog"]>, "id">;
 export interface BlogWithInterface {
   organization?: boolean;
   author?: boolean;
+  metadata?: boolean;
 }
 
 export interface BlogFilterInterface {
@@ -55,13 +56,22 @@ export const getBlogs = async (
       "blog.updated_at",
       "blog.created_at",
       "blog.id",
-      "blog.title",
       "blog.body",
       "blog.slug",
       "blog.status",
       "blog.organization_id",
       "blog.author_id",
     ])
+    .$if(!!withRel?.metadata, (qb) =>
+      qb.select((eb) =>
+        jsonObjectFrom(
+          eb
+            .selectFrom("blog_metadata")
+            .selectAll("blog_metadata")
+            .whereRef("blog_metadata.blog_id", "=", "blog.id"),
+        ).as("blog_metadata"),
+      ),
+    )
     .$if(!!withRel?.organization, (qb) =>
       qb.select((eb) =>
         jsonObjectFrom(
@@ -82,13 +92,15 @@ export const getBlogs = async (
         ).as("author"),
       ),
     )
-    .$if(!!filter?.search, (qb) =>
-      qb.where((eb) =>
-        eb.or([
-          eb("title", "ilike", `%${filter?.search}%`),
-          eb("slug", "ilike", `%${filter?.search}%`),
-        ]),
-      ),
+    .$if(!!filter?.search && !!withRel?.metadata, (qb) =>
+      qb
+        .innerJoin("blog_metadata", "blog_metadata.blog_id", "blog.id")
+        .where((eb) =>
+          eb.or([
+            eb("blog_metadata.title", "ilike", `%${filter?.search}%`),
+            eb("blog.slug", "ilike", `%${filter?.search}%`),
+          ]),
+        ),
     )
     .$if(!!filter?.organization_id, (qb) =>
       qb.where("blog.organization_id", "=", "" + filter?.organization_id),
@@ -97,11 +109,10 @@ export const getBlogs = async (
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       qb.where("blog.status", "=", filter!.status!),
     )
-    // .$if(!!filter?.author_id, (qb) =>
-    //   qb.where("blog.author_id", "=", filter.author_id),
-    // )
     .$if(!!sort?.created_at, (qb) => qb.orderBy("created_at", sort?.created_at))
-    .$if(!!sort?.title, (qb) => qb.orderBy("title", sort?.title))
+    .$if(!!sort?.title && !!withRel?.metadata, (qb) =>
+      qb.orderBy(sql`blog_metadata.title'`, sort?.title),
+    )
     .$if(!!sort?.status, (qb) => qb.orderBy("status", sort?.status))
     .$if(!!sort?.slug, (qb) => qb.orderBy("slug", sort?.slug))
     .$if(!!withRel?.author && !!sort?.author_name, (qb) =>
@@ -118,14 +129,16 @@ export const getBlogsCount = async (
     .selectFrom("blog")
     .select((eb) => eb.fn.countAll().as("count"))
     .$if(!!filter?.search, (qb) =>
-      qb.where((eb) =>
-        eb.or([
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          eb("title", "ilike", `%${filter!.search!}%`),
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          eb("slug", "ilike", `%${filter!.search!}%`),
-        ]),
-      ),
+      qb
+        .innerJoin("blog_metadata", "blog_metadata.blog_id", "blog.id")
+        .where((eb) =>
+          eb.or([
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            eb("title", "ilike", `%${filter!.search!}%`),
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            eb("slug", "ilike", `%${filter!.search!}%`),
+          ]),
+        ),
     )
     .$if(!!filter?.organization_id, (qb) =>
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

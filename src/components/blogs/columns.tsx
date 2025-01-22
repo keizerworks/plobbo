@@ -21,11 +21,11 @@ import { blog_status } from "db/enums";
 import { cn, formatDate } from "lib/utils";
 import { CheckCircle2, Ellipsis, Timer } from "lucide-react";
 
-import type { BlogListWithAuthor } from "./list";
+import type { BlogList } from "./list";
 
 interface GetColumnsProps {
   setRowAction: React.Dispatch<
-    React.SetStateAction<DataTableRowAction<BlogListWithAuthor> | null>
+    React.SetStateAction<DataTableRowAction<BlogList> | null>
   >;
 }
 
@@ -40,7 +40,7 @@ export function getStatusIcon(status: blog_status) {
 
 export function getColumns({
   setRowAction,
-}: GetColumnsProps): ColumnDef<BlogListWithAuthor>[] {
+}: GetColumnsProps): ColumnDef<BlogList>[] {
   return [
     {
       id: "select",
@@ -89,14 +89,14 @@ export function getColumns({
     },
 
     {
-      accessorKey: "title",
+      accessorKey: "blog_metadata",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
-      cell: ({ row }) => {
+      cell: ({ cell }) => {
         return (
           <span className="max-w-[31.25rem] truncate font-medium">
-            {row.getValue("title")}
+            {(cell.getValue() as BlogList["blog_metadata"]).title}
           </span>
         );
       },
@@ -149,7 +149,7 @@ export function getColumns({
       ),
       cell: ({ cell }) => (
         <Link href="#" className="hover:underline">
-          {(cell.getValue() as { display_name: string }).display_name}
+          {(cell.getValue() as BlogList["author"]).display_name}
         </Link>
       ),
     },

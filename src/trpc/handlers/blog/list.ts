@@ -10,6 +10,6 @@ export const blogListHandler = protectedOrgProcedure
         ...input,
         filter: { ...input.filter, organization_id: member.organization_id },
       },
-      { author: true },
+      { author: true, metadata: true },
     );
   });

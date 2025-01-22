@@ -9,7 +9,8 @@ export const updateBlogSchema = z.object({
     .min(2)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
     .optional(),
-  body: z.string().min(1).optional(),
+  body: z.array(z.any()).optional(),
+  content: z.string().optional(),
   image: z.string().optional(),
   tags: z.array(z.string()).optional(),
   status: z.enum([blog_status.PUBLISHED, blog_status.DRAFT]).optional(),

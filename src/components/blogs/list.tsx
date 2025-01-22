@@ -20,8 +20,9 @@ import { getColumns, getStatusIcon } from "./columns";
 import { DeleteBlogsDialog } from "./delete-blogs-dialog";
 import { BlogsTableToolbarActions } from "./tool-bar-actions";
 
-export interface BlogListWithAuthor extends Selectable<DB["blog"]> {
+export interface BlogList extends Selectable<DB["blog"]> {
   author: Selectable<DB["organization_member"]>;
+  blog_metadata: Selectable<DB["blog_metadata"]>;
 }
 
 export const BlogsTable = ({
@@ -30,11 +31,14 @@ export const BlogsTable = ({
   params: ListBlogSortFilterInterface;
 }) => {
   const [rowAction, setRowAction] =
-    useState<DataTableRowAction<BlogListWithAuthor> | null>(null);
+    useState<DataTableRowAction<BlogList> | null>(null);
 
-  const { data, isPending } = api.blog.list.useQuery(params, {
-    initialData: [],
-  });
+  const { data, isPending } = api.blog.list.useQuery(
+    { ...params },
+    {
+      initialData: [],
+    },
+  );
 
   const { data: count, isPending: countIsPending } = api.blog.count.useQuery(
     params.filter ?? {},
@@ -43,9 +47,9 @@ export const BlogsTable = ({
 
   const columns = useMemo(() => getColumns({ setRowAction }), [setRowAction]);
 
-  const filterFields: DataTableFilterField<BlogListWithAuthor>[] = [
+  const filterFields: DataTableFilterField<BlogList>[] = [
     {
-      id: "title",
+      id: "blog_metadata",
       label: "Title",
       placeholder: "Filter titles...",
     },
@@ -61,7 +65,7 @@ export const BlogsTable = ({
   ];
 
   const { table } = useDataTable({
-    data: data as BlogListWithAuthor[],
+    data: data as BlogList[],
     columns,
     filterFields,
     pageCount: count / 10,

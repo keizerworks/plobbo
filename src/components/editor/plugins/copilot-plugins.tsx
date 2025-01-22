@@ -36,7 +36,7 @@ export const copilotPlugins = [
           });
         },
       },
-      debounceDelay: 1000,
+      debounceDelay: 500,
       getPrompt: ({ editor }) => {
         const contextEntry = editor.api.block({ highest: true });
         if (!contextEntry) return "";
