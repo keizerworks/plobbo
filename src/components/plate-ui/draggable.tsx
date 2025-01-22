@@ -4,7 +4,7 @@ import type {
   NodeWrapperComponent,
   PlateRenderElementProps,
 } from "@udecode/plate/react";
-import type { ReactNode} from "react";
+import type { ReactNode } from "react";
 import React, { useMemo } from "react";
 import { cn, withRef } from "@udecode/cn";
 import { isType } from "@udecode/plate";
@@ -101,7 +101,6 @@ export const Draggable = withRef<"div", DraggableProps>(
     const { isDragging, previewRef, handleRef } = useDraggable({
       element,
       onDropHandler: (_, { dragItem }) => {
-         
         const id = (dragItem as { id: string }).id;
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
