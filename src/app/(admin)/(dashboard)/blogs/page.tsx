@@ -1,6 +1,7 @@
 import type { SearchParams } from "interface/data-table";
 import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import React from "react";
+import { connection } from "next/server";
 import { CreateBlog } from "components/blogs/create";
 import { BlogsTable } from "components/blogs/list";
 import { DateRangePicker } from "components/ui/data-range-picker";
@@ -13,6 +14,7 @@ interface PageProps {
 }
 
 export default async function BlogsPage(props: PageProps) {
+  await connection();
   const searchParams = await props.searchParams;
   const search = blogsSearchParamsCache.parse(searchParams);
 
