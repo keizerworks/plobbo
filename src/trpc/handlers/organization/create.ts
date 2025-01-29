@@ -29,7 +29,6 @@ export const organizationCreateHandler = protectedProcedure
       });
 
       const logoUploadUrl = await getSignedUrlPutObject({
-        bucket: "organizations",
         filename,
       });
 

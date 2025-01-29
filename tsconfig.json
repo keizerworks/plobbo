@@ -33,13 +33,18 @@
     "eslint.config.js",
     "prettier.config.js",
     "tailwind.config.ts",
+    "open-next.config.ts",
     "next.config.js",
     "next-env.d.ts",
+    "sst-env.d.ts",
+    "sst.config.ts",
+    "infra/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.cjs",
     "src/**/*.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".sst/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

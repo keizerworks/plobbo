@@ -136,7 +136,9 @@ export const UpdateOrganization = () => {
                       <FormControl>
                         <ImageUpload
                           edit
-                          defaultSrc={env.NEXT_PUBLIC_MINIO_URL + data?.logo}
+                          defaultSrc={
+                            env.NEXT_PUBLIC_S3_DOMAIN + "/" + data?.logo
+                          }
                           onChange={(file) => {
                             field.onChange(file);
                             setUpdateLogo(file instanceof File);

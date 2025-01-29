@@ -4,21 +4,11 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Resource } from "sst/resource";
 
-import { env } from "../env";
-
-export const s3Client = new S3Client({
-  region: "auto",
-  endpoint: env.MINIO_URL,
-  credentials: {
-    accessKeyId: env.MINIO_ROOT_USER,
-    secretAccessKey: env.MINIO_ROOT_PASSWORD,
-  },
-  forcePathStyle: true,
-});
+export const s3Client = new S3Client({ region: "us-east-1" });
 
 interface PutObjectSignedUrlProps {
-  bucket: string;
   filename: string;
 }
 
@@ -27,22 +17,26 @@ interface GetObjectSignedUrlProps extends PutObjectSignedUrlProps {
 }
 
 export const getSignedUrlGetObject = async ({
-  bucket,
   filename,
   expiresIn,
 }: GetObjectSignedUrlProps) =>
   await getSignedUrl(
     s3Client,
-    new GetObjectCommand({ Bucket: bucket, Key: filename }),
+    new GetObjectCommand({
+      Bucket: Resource["plobbo-bucket"].name,
+      Key: filename,
+    }),
     { expiresIn },
   );
 
 export const getSignedUrlPutObject = async ({
-  bucket,
   filename,
 }: PutObjectSignedUrlProps) =>
   await getSignedUrl(
-    s3Client,
-    new PutObjectCommand({ Bucket: bucket, Key: filename, ACL: "public-read" }),
-    { expiresIn: 3600 },
+    new S3Client(),
+    new PutObjectCommand({
+      Bucket: Resource["plobbo-bucket"].name,
+      Key: filename,
+      ACL: "public-read",
+    }),
   );

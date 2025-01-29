@@ -19,12 +19,15 @@ export function useS3Upload() {
     setUploadingFile(file);
 
     try {
-      const { url, uploadUrl } = await getPreSignedUrlPutObject(
-        file.name,
-        "editor",
-      );
+      const { url, uploadUrl } = await getPreSignedUrlPutObject(file.name);
 
-      const res = await uploadToPresignedUrl(uploadUrl, file);
+      const res = await uploadToPresignedUrl(uploadUrl, file)
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          throw new Error();
+        });
+
       if (!res.ok) {
         throw new Error();
       }
@@ -35,6 +38,7 @@ export function useS3Upload() {
       });
     } catch (error) {
       console.error("Upload failed:", error);
+      if (error instanceof Error) console.log(error.message);
     } finally {
       setIsUploading(false);
       setUploadingFile(null);

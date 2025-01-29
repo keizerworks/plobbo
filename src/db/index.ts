@@ -1,6 +1,7 @@
 import { env } from "env";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
+import { Resource } from "sst/resource";
 
 import type { DB } from "./types";
 
@@ -12,12 +13,11 @@ const globalForDb = globalThis as unknown as {
 const pool =
   globalForDb.pool ??
   new Pool({
-    database: env.DB_DATABASE,
-    host: env.DB_HOST,
-    user: env.DB_USERNAME,
-    port: env.DB_PORT,
-    password: env.DB_PASSWORD,
-    max: 10,
+    host: Resource["plobbo-pg"].host,
+    port: Resource["plobbo-pg"].port,
+    user: Resource["plobbo-pg"].username,
+    password: Resource["plobbo-pg"].password,
+    database: Resource["plobbo-pg"].database,
   });
 
 const dialect =

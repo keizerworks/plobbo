@@ -14,7 +14,7 @@ export default tseslint.config(
       globals: globals.builtin,
     },
     ignores: ["./src/db/types.ts", "./src/db/enums.ts"],
-    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
+    files: ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,

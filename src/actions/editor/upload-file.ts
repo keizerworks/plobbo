@@ -5,6 +5,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { createId } from "@paralleldrive/cuid2";
 import { getCurrentSession } from "auth/session";
 import { env } from "env";
+import { Resource } from "sst/resource";
 import { s3Client } from "storage";
 
 interface SuccessResponse {
@@ -35,14 +36,14 @@ export async function uploadFile(
 
     // Generate unique filename
     const fileExtension = file.name.split(".").pop();
-    const filename = `${createId()}.${fileExtension}`;
+    const filename = `editor/${createId()}.${fileExtension}`;
 
     // Convert File to Buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
     await s3Client.send(
       new PutObjectCommand({
-        Bucket: "editor",
+        Bucket: Resource["plobbo-bucket"].name,
         Key: filename,
         Body: buffer,
         ContentType: file.type,
@@ -51,8 +52,7 @@ export async function uploadFile(
     );
 
     // Return public URL
-    // Adjust this URL format according to your MinIO/S3 setup
-    const publicUrl = `${env.MINIO_URL}/editor/${filename}`;
+    const publicUrl = `${env.NEXT_PUBLIC_S3_DOMAIN}/${filename}`;
 
     return {
       success: true,

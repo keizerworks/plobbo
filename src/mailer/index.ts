@@ -1,15 +1,26 @@
-import { env } from "env";
-import nodemailer from "nodemailer";
+import type { Destination } from "@aws-sdk/client-sesv2";
+import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
+import { Resource } from "sst/resource";
 
-const transporter = nodemailer.createTransport({
-  host: env.SMTP_HOST,
-  port: env.SMTP_PORT,
-  from: env.EMAIL_FROM,
-  secure: false,
-  auth: {
-    user: env.SMTP_USER,
-    pass: env.SMTP_PASSWORD,
-  },
-});
+const client = new SESv2Client();
 
-export default transporter;
+interface Props {
+  destination: Destination;
+  template: string;
+  subject?: string;
+}
+
+export const sendMail = async (props: Props) => {
+  await client.send(
+    new SendEmailCommand({
+      FromEmailAddress: Resource["plobbo-ses"].sender,
+      Destination: props.destination,
+      Content: {
+        Simple: {
+          Subject: { Data: props.subject },
+          Body: { Html: { Data: props.template } },
+        },
+      },
+    }),
+  );
+};

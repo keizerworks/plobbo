@@ -36,7 +36,6 @@ export const createBlogHandler = protectedOrgProcedure
       }
 
       const imageUploadUrl = await getSignedUrlPutObject({
-        bucket: "blogs",
         filename,
       });
 

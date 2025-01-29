@@ -109,7 +109,9 @@ export const UpdateOrgMemberProfile = ({
                       edit
                       defaultSrc={
                         data?.profile_picture
-                          ? env.NEXT_PUBLIC_MINIO_URL + data.profile_picture
+                          ? env.NEXT_PUBLIC_S3_DOMAIN +
+                            "/" +
+                            data.profile_picture
                           : undefined
                       }
                       onChange={(file) => {

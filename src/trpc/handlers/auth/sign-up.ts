@@ -1,8 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { generateRandomOTP } from "auth/code";
 import { hashPassword } from "auth/password";
-import { env } from "env";
-import transporter from "mailer";
+import { sendMail } from "mailer";
 import { getVerifyHtml } from "mailer/templates/auth/verify-email";
 import {
   createEmailVerificationRequest,
@@ -46,13 +45,11 @@ export const signUpHanlder = publicProcedure
         otp,
       }).catch(console.error);
 
-      transporter
-        .sendMail({
-          from: env.EMAIL_FROM,
-          to: body.email,
-          html: await getVerifyHtml({ validationCode: otp }),
-        })
-        .catch(console.error);
+      sendMail({
+        destination: { ToAddresses: [body.email] },
+        subject: "Confirm your email address",
+        template: await getVerifyHtml({ validationCode: otp }),
+      }).catch(console.error);
 
       return {
         message:
