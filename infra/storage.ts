@@ -9,7 +9,7 @@ export const postgres = new sst.aws.Postgres("plobbo-pg", {
   dev: {
     username: "postgres",
     password: "password",
-    database: "open-blog",
+    database: "plobbo",
     host: "localhost",
     port: 5432,
   },
