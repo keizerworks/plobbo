@@ -18,4 +18,17 @@ export default $config({
     await import("./infra/app");
     await import("./infra/command");
   },
+  console: {
+    autodeploy: {
+      target(event) {
+        if (
+          event.type === "pull_request" &&
+          event.base === "main" &&
+          event.action === "pushed"
+        ) {
+          return { stage: "production" };
+        }
+      },
+    },
+  },
 });
