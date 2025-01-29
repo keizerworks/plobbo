@@ -25,7 +25,6 @@ export const organizationMemberUpdateHandler = protectedOrgProcedure
         const filename = encodeURI(`${createId()}-${input.display_name}`);
         const profilePictureUrl = `organizations/${filename}`;
         profilePictureUploadUrl = await getSignedUrlPutObject({
-          bucket: "organizations",
           filename,
         });
         values.profile_picture = profilePictureUrl;

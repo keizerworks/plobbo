@@ -3,32 +3,13 @@ services:
     image: postgres:latest
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: "open-blog"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
     ports:
-      - "${DB_PORT}:5432"
+      - "5432:5432"
     volumes:
       - psql_volume_bp:/var/lib/postgresql/data
-
-  minio:
-    image: "minio/minio:latest"
-    ports:
-      - "${FORWARD_MINIO_PORT:-9000}:9000"
-      - "${FORWARD_MINIO_CONSOLE_PORT:-9090}:9090"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    volumes:
-      - "minio:/data/minio"
-    command: minio server /data/minio --console-address ":9090"
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    ports:
-      - "1025:1025" # SMTP server
-      - "8025:8025" # Web UI for email testing
-    restart: unless-stopped
 
   redis:
     image: redis:latest
@@ -40,6 +21,4 @@ services:
 
 volumes:
   psql_volume_bp:
-  minio:
-    driver: local
   redis_data:

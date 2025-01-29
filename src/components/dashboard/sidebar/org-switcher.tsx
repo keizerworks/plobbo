@@ -86,7 +86,7 @@ export function OrgSwitcher() {
             >
               <Avatar className="size-8 rounded-[8px]">
                 <AvatarImage
-                  src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
+                  src={env.NEXT_PUBLIC_S3_DOMAIN + "/" + activeOrg.logo}
                   alt={activeOrg.slug}
                 />
 
@@ -120,7 +120,7 @@ export function OrgSwitcher() {
             >
               <Avatar className="size-8 rounded-lg">
                 <AvatarImage
-                  src={env.NEXT_PUBLIC_MINIO_URL + activeOrg.logo}
+                  src={env.NEXT_PUBLIC_S3_DOMAIN + "/" + activeOrg.logo}
                   alt={activeOrg.slug}
                 />
 
@@ -159,7 +159,7 @@ export function OrgSwitcher() {
                 >
                   <Avatar className="size-8 rounded-lg">
                     <AvatarImage
-                      src={env.NEXT_PUBLIC_MINIO_URL + org.logo}
+                      src={env.NEXT_PUBLIC_S3_DOMAIN + "/" + org.logo}
                       alt={org.slug}
                     />
 
