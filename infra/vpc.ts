@@ -1,1 +1,1 @@
-export const vpc = new sst.aws.Vpc("plobbo-vpc");
+export const vpc = new sst.aws.Vpc("plobbo-vpc", { nat: "ec2" });
