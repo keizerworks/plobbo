@@ -9,20 +9,6 @@ const config = {
       queue: "sqs-lite",
     },
   },
-  functions: {
-    // edge: {
-    //   runtime: "edge",
-    //   routes: [
-    //     "app/(admin)/(auth)/signin/page",
-    //     "app/(admin)/(auth)/signup/page",
-    //   ],
-    //   patterns: ["app/(admin)/(auth)/*"],
-    //   override: {},
-    // },
-  },
-  middleware: {
-    external: true,
-  },
 } satisfies OpenNextConfig;
 
 export default config;
