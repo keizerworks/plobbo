@@ -7,8 +7,10 @@ import {
   NEXT_PUBLIC_S3_DOMAIN,
   postgres,
 } from "./storage";
+import { vpc } from "./vpc";
 
 export const app = new sst.aws.Nextjs("plobbo-www", {
+  vpc,
   link: [
     postgres,
     bucket,
