@@ -3,7 +3,7 @@
 export default $config({
   app(input) {
     return {
-      name: "keizer-blogs",
+      name: "plobbo",
       removal: input.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input.stage),
       home: "aws",
