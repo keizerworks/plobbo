@@ -22,8 +22,8 @@ export default $config({
     autodeploy: {
       target(event) {
         if (
-          event.type === "pull_request" &&
-          event.base === "main" &&
+          event.type === "branch" &&
+          event.branch === "main" &&
           event.action === "pushed"
         ) {
           return { stage: "production" };
