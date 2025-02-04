@@ -18,7 +18,4 @@ export const app = new sst.aws.Nextjs("plobbo-www", {
           dns: sst.cloudflare.dns(),
         }
       : undefined,
-  server: {
-    runtime: "nodejs22.x",
-  },
 });
