@@ -8,7 +8,6 @@ const config = {
       incrementalCache: "s3-lite",
       queue: "sqs-lite",
     },
-    experimentalBundledNextServer: true,
   },
   functions: {
     // edge: {
