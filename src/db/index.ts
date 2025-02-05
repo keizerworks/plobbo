@@ -1,3 +1,4 @@
+import { drizzle } from "drizzle-orm/node-postgres";
 import { env } from "env";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
@@ -18,7 +19,12 @@ const pool =
     user: Resource["plobbo-pg"].username,
     password: Resource["plobbo-pg"].password,
     database: Resource["plobbo-pg"].database,
+    ssl: false,
   });
+
+if (env.NODE_ENV !== "production") {
+  globalForDb.pool = pool;
+}
 
 const dialect =
   globalForDb.dialect ??
@@ -35,3 +41,5 @@ if (env.NODE_ENV !== "production") {
 // Dialect is passed to Kysely's constructor, and from now on, Kysely knows how
 // to communicate with your database.
 export const db = new Kysely<DB>({ dialect });
+
+export const drizzleDb = drizzle(pool);

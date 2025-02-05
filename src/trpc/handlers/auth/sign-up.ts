@@ -1,13 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { generateRandomOTP } from "auth/code";
 import { hashPassword } from "auth/password";
+import { EmailVerificationRequest } from "db/email-verification";
+import { User } from "db/user";
 import { sendMail } from "mailer";
 import { getVerifyHtml } from "mailer/templates/auth/verify-email";
-import {
-  createEmailVerificationRequest,
-  deleteEmailVerificationRequestByEmail,
-} from "repository/email-verification";
-import { deleteUser, getUserByEmail, insertUser } from "repository/user";
 import { publicProcedure } from "trpc";
 import { signUpSchema } from "validators/auth";
 
@@ -15,9 +12,9 @@ export const signUpHanlder = publicProcedure
   .input(signUpSchema)
   .mutation(async ({ input: body }) => {
     try {
-      let user = await getUserByEmail(body.email);
+      let user = await User.findByEmail(body.email);
 
-      if (user?.email_verified) {
+      if (user?.emailVerified) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message:
@@ -26,22 +23,21 @@ export const signUpHanlder = publicProcedure
       }
 
       const passwordHash = await hashPassword(body.password);
-      if (user?.id) await deleteUser(user.id);
-      user = await insertUser({
+      if (user?.id) await User.remove(user.id);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- INFO: user will be defined
+      user = (await User.create({
         email: body.email,
         name: body.name,
-        email_verified: false,
-        password_hash: passwordHash,
-      });
+        emailVerified: false,
+        passwordHash: passwordHash,
+      }))!;
 
       const otp = generateRandomOTP();
-      const expiresAt = new Date(Date.now() + 1000 * 60 * 10);
 
-      await deleteEmailVerificationRequestByEmail(body.email);
-      createEmailVerificationRequest({
+      await EmailVerificationRequest.removeByEmail(body.email);
+      await EmailVerificationRequest.create({
         email: body.email,
-        expires_at: expiresAt,
-        user_id: user.id,
+        userId: user.id,
         otp,
       }).catch(console.error);
 

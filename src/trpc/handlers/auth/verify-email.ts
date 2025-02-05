@@ -1,19 +1,17 @@
 import { TRPCError } from "@trpc/server";
-import { getEmailVerificationRequestByEmail } from "repository/email-verification";
-import { updateUser } from "repository/user";
+import { EmailVerificationRequest } from "db/email-verification";
+import { User } from "db/user";
 import { publicProcedure } from "trpc";
 import { verifyEmailSchema } from "validators/auth";
 
 export const verifyEmailHandler = publicProcedure
   .input(verifyEmailSchema)
   .mutation(async ({ input: body }) => {
-    let verificationRequest;
+    const verificationRequest = await EmailVerificationRequest.findByEmail(
+      body.email,
+    );
 
-    try {
-      verificationRequest = await getEmailVerificationRequestByEmail(
-        body.email,
-      );
-    } catch {
+    if (!verificationRequest) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message:
@@ -21,15 +19,19 @@ export const verifyEmailHandler = publicProcedure
       });
     }
 
-    if (Date.now() > verificationRequest.expires_at.getTime()) {
+    if (Date.now() > verificationRequest.expiresAt.getTime()) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "The OTP has expired. Please request a new verification code.",
       });
     }
 
-    await updateUser(verificationRequest.user_id, { email_verified: true });
-    getEmailVerificationRequestByEmail(body.email).catch(console.error);
+    await Promise.all([
+      User.update(verificationRequest.userId, { emailVerified: true }),
+      EmailVerificationRequest.remove(verificationRequest.id).catch(
+        console.error,
+      ),
+    ]);
 
     return {
       message:

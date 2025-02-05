@@ -30,6 +30,8 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
+      "@typescript-eslint/no-namespace": "off",
+
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
       // TypeError: context.getAncestors is not a function

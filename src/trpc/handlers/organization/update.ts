@@ -1,13 +1,12 @@
-import type { InsertOrganizationInterface } from "repository/organization";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
-import { updateOrganization } from "repository/organization";
+import { Organization } from "db/organization";
 import { getSignedUrlPutObject } from "storage";
 import { protectedOrgProcedure } from "trpc";
 import { updateOrganizationMutationSchema } from "validators/organization/update";
 
 interface UpdateResponse {
-  organization?: Awaited<ReturnType<typeof updateOrganization>>;
+  organization?: Organization.Model;
   logoUploadUrl?: string;
 }
 
@@ -18,10 +17,7 @@ export const organizationUpdateHandler = protectedOrgProcedure
       let logoUploadUrl;
 
       const { updateLogo, ...destructeredInput } = input;
-      const values: Omit<
-        Partial<InsertOrganizationInterface>,
-        "id"
-      > = destructeredInput;
+      const values: Organization.UpdateInput = destructeredInput;
 
       if (updateLogo) {
         const filename = encodeURI(`${createId()}-${input.slug}`);
@@ -30,7 +26,7 @@ export const organizationUpdateHandler = protectedOrgProcedure
         values.logo = logoUrl;
       }
 
-      const organization = await updateOrganization(
+      const organization = await Organization.update(
         ctx.member.organization_id,
         values,
       );
