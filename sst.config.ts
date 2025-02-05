@@ -13,10 +13,16 @@ export default $config({
     };
   },
   async run() {
-    await import("./infra/vpc");
-    await Promise.all([import("./infra/email"), import("./infra/storage")]);
+    const { vpc } = await import("./infra/vpc");
+    const [{}, { postgres }] = await Promise.all([
+      import("./infra/email"),
+      import("./infra/storage"),
+    ]);
+
     await import("./infra/app");
     await import("./infra/command");
+
+    (await import("./infra/migration")).buildAndRunMigrator(vpc, postgres);
   },
   console: {
     autodeploy: {
