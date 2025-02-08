@@ -1,0 +1,24 @@
+{
+  "name": "@plobbo/auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250204.0",
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@openauthjs/openauth": "^0.3.7",
+    "valibot": "1.0.0-beta.15",
+    "hono": "catalog:"
+  }
+}

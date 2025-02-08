@@ -1,0 +1,10 @@
+{
+  "extends": "@plobbo/tsconfig/internal-package.json",
+  "include": [
+    "sst.config.ts",
+    "sst-env.d.ts",
+    "infra/**/*.ts",
+    ".sst/**/*.ts",
+    "eslint.config.js"
+  ]
+}

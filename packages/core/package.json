@@ -1,0 +1,24 @@
+{
+  "name": "@plobbo/core",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./*": "./src/**/*.ts"
+  },
+  "scripts": {
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.2"
+  },
+  "prettier": "@plobbo/prettier-config"
+}

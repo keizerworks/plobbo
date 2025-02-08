@@ -1,0 +1,8 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "workers",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-02-08",
+  "compatibility_flags": ["nodejs_compat"]
+}
+

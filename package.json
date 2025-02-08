@@ -1,0 +1,22 @@
+{
+  "name": "plobbo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:push": "pnpm sst shell --target plobbo-drizzle-studio -- pnpm --filter=core db:push",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.0.0",
+  "dependencies": {
+    "sst": "3.7.15"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20250204.0",
+    "@plobbo/tsconfig": "workspace:*",
+    "@plobbo/eslint-config": "workspace:*"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "dash",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "vite --port=3001",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start": "vite"
+  },
+  "devDependencies": {
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "@tanstack/router-plugin": "^1.99.14",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.2",
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "vite": "^6.0.3"
+  },
+  "dependencies": {
+    "@openauthjs/openauth": "^0.3.7",
+    "@tailwindcss/vite": "^4.0.4",
+    "@tanstack/react-router": "^1.99.13",
+    "@tanstack/router-devtools": "^1.99.13",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "catalog:",
+    "zustand": "^5.0.3"
+  },
+  "prettier": "@plobbo/prettier-config"
+}
