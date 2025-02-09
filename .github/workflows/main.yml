@@ -51,4 +51,4 @@ jobs:
           LANGDB_OPENAI_BASE_URL: ${{ secrets.LANGDB_OPENAI_BASE_URL }}
           LANGDB_PROJECT_ID: ${{ secrets.LANGDB_PROJECT_ID }}
           LANGDB_API_KEY: ${{ secrets.LANGDB_API_KEY }}
-        run: pnpm dlx sst deploy --stage production
+        run: pnpm dlx sst@3.6.17 deploy --stage production
