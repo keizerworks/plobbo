@@ -48,4 +48,4 @@ jobs:
           NODE_ENV: production
           CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: pnpm run deploy --stage production
+        run: pnpm run sst deploy --stage production
