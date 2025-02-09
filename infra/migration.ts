@@ -7,7 +7,7 @@ export function buildAndRunMigrator(vpc: sst.aws.Vpc, rds: sst.aws.Postgres) {
       handler: "migrator.handler",
       timeout: "300 seconds",
       link: [rds],
-      vpc: vpc,
+      vpc: $app.stage === "production" ? vpc : undefined,
       copyFiles: [
         {
           from: "migrations",

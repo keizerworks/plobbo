@@ -10,7 +10,7 @@ import {
 import { vpc } from "./vpc";
 
 export const app = new sst.aws.Nextjs("www", {
-  vpc,
+  vpc: $app.stage === "production" ? vpc : undefined,
   link: [
     postgres,
     bucket,

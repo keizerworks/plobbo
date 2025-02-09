@@ -54,6 +54,7 @@ export const CreateOrganization = () => {
       await uploadToPresignedUrl(logoUploadUrl, logo);
       await queryClient.refetchQueries({ queryKey: orgListQueryKey });
     },
+    onError: console.error,
   });
 
   function onSubmit(values: CreateOrganizationInterface) {

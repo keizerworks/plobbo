@@ -19,7 +19,7 @@ export const organizationMemberUpdateHandler = protectedOrgProcedure
 
       if (updateProfilePicture) {
         const filename = encodeURI(`${createId()}-${input.displayName}`);
-        const profilePictureUrl = `organizations/${filename}`;
+        const profilePictureUrl = `${filename}`;
         profilePictureUploadUrl = await getSignedUrlPutObject({
           filename,
         });

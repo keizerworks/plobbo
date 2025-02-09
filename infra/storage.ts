@@ -2,6 +2,9 @@ import { vpc } from "./vpc";
 
 export const bucket = new sst.aws.Bucket("bucket", {
   access: "public",
+  transform: {
+    publicAccessBlock: false,
+  },
 });
 
 export const postgres = new sst.aws.Postgres("pg", {

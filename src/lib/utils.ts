@@ -6,15 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const uploadToPresignedUrl = async (url: string, file: File) => {
-  return await fetch(url, {
+export const uploadToPresignedUrl = async (url: string, file: File) =>
+  await fetch(url, {
     method: "PUT",
+    headers: { "Content-Length": String(new Blob([file]).size) },
     body: file,
-    headers: {
-      "Content-Type": file.type,
-    },
   });
-};
 
 export function formatDate(
   date: Date | string | number,

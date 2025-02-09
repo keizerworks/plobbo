@@ -21,7 +21,7 @@ export const organizationUpdateHandler = protectedOrgProcedure
 
       if (updateLogo) {
         const filename = encodeURI(`${createId()}-${input.slug}`);
-        const logoUrl = `organizations/${filename}`;
+        const logoUrl = `${filename}`;
         logoUploadUrl = await getSignedUrlPutObject({ filename });
         values.logo = logoUrl;
       }

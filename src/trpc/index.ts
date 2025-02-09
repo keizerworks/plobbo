@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import { getActiveOrg } from "actions/cookies/active-org";
-import { getCurrentSession } from "auth/session";
+import { getCurrentSession, logout } from "auth/session";
 import { db } from "db";
 import { OrganizationMember } from "db/organization/member";
 import superjson from "superjson";
@@ -29,9 +29,10 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
 export const createCallerFactory = t.createCallerFactory;
 export const createTRPCRouter = t.router;
 
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   const user = ctx.user;
   if (!user) {
+    await logout();
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be logged in to access this resource",

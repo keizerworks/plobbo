@@ -10,7 +10,7 @@ export const organizationCreateHandler = protectedProcedure
   .mutation(async ({ input, ctx }) => {
     try {
       const filename = encodeURI(`${createId()}-${input.slug}`);
-      const logoUrl = `organizations/${filename}`;
+      const logoUrl = `${filename}`;
 
       const organization = await Organization.create({
         name: input.name,

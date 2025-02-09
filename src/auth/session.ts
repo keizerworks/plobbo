@@ -17,7 +17,7 @@ export function generateSessionToken(): string {
   return token;
 }
 
-export const getCurrentSession = cache(async () => {
+export const getCurrentSession = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value ?? null;
   if (token === null) {
@@ -25,7 +25,7 @@ export const getCurrentSession = cache(async () => {
   }
   const result = await validateSessionToken(token);
   return result;
-});
+};
 
 export async function createSession(token: string, userId: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
@@ -51,7 +51,7 @@ export async function createSession(token: string, userId: string) {
   return session;
 }
 
-export async function validateSessionToken(token: string) {
+export const validateSessionToken = cache(async (token: string) => {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await Session.findById(sessionId);
   if (typeof result === "undefined") return null;
@@ -68,7 +68,19 @@ export async function validateSessionToken(token: string) {
   }
 
   return session;
-}
+});
+
+export const logout = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session")?.value ?? null;
+  if (token) {
+    const sessionId = encodeHexLowerCase(
+      sha256(new TextEncoder().encode(token)),
+    );
+    if (sessionId) await Session.remove(sessionId);
+  }
+  cookieStore.delete("session");
+};
 
 export async function invalidateSession(sessionId: string): Promise<void> {
   await Session.remove(sessionId);

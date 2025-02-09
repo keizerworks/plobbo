@@ -11,7 +11,7 @@ export const createBlogHandler = protectedOrgProcedure
   .mutation(async ({ input, ctx }) => {
     try {
       const filename = encodeURI(`${createId()}-${input.slug}`);
-      const imageUrl = `blogs/${filename}`;
+      const imageUrl = `${filename}`;
 
       const blog = await Blog.create({
         slug: input.slug,

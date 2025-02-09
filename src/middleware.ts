@@ -1,21 +1,48 @@
+import type { validateSessionToken } from "auth/session";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { env } from "env";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const authToken = request.cookies.get("session")?.value ?? null;
+  const token = request.cookies.get("session")?.value ?? null;
+
+  if (pathname.startsWith("/api/validate-session")) {
+    if (env.NODE_ENV === "production")
+      return new NextResponse("This route is only available in development", {
+        status: 500,
+      });
+    else return NextResponse.next();
+  }
 
   if (pathname.startsWith("/signup") || pathname.startsWith("/signin")) {
-    if (authToken) return NextResponse.redirect(new URL("/", request.url));
+    if (token) return NextResponse.redirect(new URL("/", request.url));
     return NextResponse.next();
   }
 
-  if (!authToken) {
+  if (!token) {
     return NextResponse.rewrite(new URL("/signin", request.url));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const session: Awaited<ReturnType<typeof validateSessionToken>> =
+    await (env.NODE_ENV === "production"
+      ? validateSession(token)
+      : fetch(new URL("/api/validate-session", request.url))
+          .then((res) => {
+            if (!res.ok) return undefined;
+            return res.json();
+          })
+          .catch(() => undefined));
+
+  if (!session) {
+    return NextResponse.redirect(new URL("/signup", request.url), {
+      url: new URL("/signup", request.url).toString(),
+    });
+  }
+
   const response = NextResponse.next();
-  response.cookies.set("session", authToken, {
+  response.cookies.set("session", token, {
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
     sameSite: "lax",

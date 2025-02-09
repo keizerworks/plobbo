@@ -1,6 +1,7 @@
+import type { User } from "db/user";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { db } from "db";
-import { User } from "db/user";
+import { UserTable } from "db/user/user.sql";
 import { eq, getTableColumns, getTableName, sql } from "drizzle-orm";
 
 import { SessionTable } from "./session.sql";
@@ -32,17 +33,20 @@ export namespace Session {
       .select({
         ...getTableColumns(SessionTable),
         user: sql<User.Model>`(
-					SELECT to_json(obj)
-					FROM (
-						SELECT *
-						FROM "${User.tableName}"
-						WHERE "${User.tableName}"."id" = "${tableName}"."user_id"
-					) AS obj
-				)`,
+            SELECT to_json(obj)
+            FROM (
+              SELECT *
+              FROM ${UserTable}
+              WHERE ${UserTable.id} = ${SessionTable.userId}
+            ) AS obj
+          )`.as("user"),
       })
       .from(SessionTable)
       .where(eq(SessionTable.id, id))
       .limit(1);
+
+    console.log("session");
+    console.log(session);
     return session;
   }
 

@@ -31,12 +31,10 @@ export const getSignedUrlGetObject = async ({
 
 export const getSignedUrlPutObject = async ({
   filename,
-}: PutObjectSignedUrlProps) =>
-  await getSignedUrl(
-    new S3Client(),
-    new PutObjectCommand({
-      Bucket: Resource.bucket.name,
-      Key: filename,
-      ACL: "public-read",
-    }),
-  );
+}: PutObjectSignedUrlProps) => {
+  const command = new PutObjectCommand({
+    Bucket: Resource.bucket.name,
+    Key: filename,
+  });
+  return await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+};
