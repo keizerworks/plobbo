@@ -29,6 +29,7 @@ export const app = new sst.aws.Nextjs("www", {
         }
       : undefined,
   server: {
+    install: ["@node-rs/argon2"],
     runtime: "nodejs22.x",
   },
 });

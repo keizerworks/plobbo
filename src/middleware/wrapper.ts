@@ -1,3 +1,5 @@
+"use server";
+
 import streamingWrapper from "@opennextjs/aws/overrides/wrappers/aws-lambda.js";
 import { validateSessionToken } from "auth/session";
 

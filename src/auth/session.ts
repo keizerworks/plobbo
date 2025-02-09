@@ -1,6 +1,5 @@
-import "server-only";
+"use server";
 
-import { cache } from "react";
 import { cookies } from "next/headers";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
@@ -10,7 +9,8 @@ import {
 import { SESSION_EXPIRE_TIME, SESSION_EXPIRING_SOON } from "constants/auth";
 import { Session } from "db/session";
 
-export function generateSessionToken(): string {
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function generateSessionToken() {
   const bytes = new Uint8Array(20);
   crypto.getRandomValues(bytes);
   const token = encodeBase32LowerCaseNoPadding(bytes);
@@ -51,7 +51,7 @@ export async function createSession(token: string, userId: string) {
   return session;
 }
 
-export const validateSessionToken = cache(async (token: string) => {
+export const validateSessionToken = async (token: string) => {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await Session.findById(sessionId);
   if (typeof result === "undefined") return null;
@@ -68,7 +68,7 @@ export const validateSessionToken = cache(async (token: string) => {
   }
 
   return session;
-});
+};
 
 export const logout = async () => {
   const cookieStore = await cookies();
