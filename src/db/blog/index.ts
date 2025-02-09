@@ -78,7 +78,7 @@ export namespace Blog {
 						FROM "${BlogMetadata.tableName}"
 						WHERE "${BlogMetadata.tableName}"."blog_id" = "${tableName}"."id"
 					) AS obj
-				)`,
+				)`.as("metadata"),
         organization: sql<Organization.Model>`(
 					SELECT to_json(obj)
 					FROM (
@@ -86,7 +86,7 @@ export namespace Blog {
 						FROM "${Organization.tableName}"
 						WHERE "${Organization.tableName}"."id" = "${tableName}"."organization_id"
 					) AS obj
-				)`,
+				)`.as("organization"),
         author: sql<OrganizationMember.Model>`(
 					SELECT to_json(obj)
 					FROM (
@@ -94,7 +94,7 @@ export namespace Blog {
 						FROM "${OrganizationMember.tableName}"
 						WHERE "${OrganizationMember.tableName}"."id" = "${tableName}"."author_id"
 					) AS obj
-				)`,
+				)`.as("author"),
       })
       .from(BlogTable)
       .$dynamic();
