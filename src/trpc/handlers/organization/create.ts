@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { Organization } from "db/organization";
-import { OrganizationMember } from "db/organization-member";
+import { OrganizationMember } from "db/organization/member";
 import { getSignedUrlPutObject } from "storage";
 import { protectedProcedure } from "trpc";
 

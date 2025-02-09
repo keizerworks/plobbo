@@ -1,6 +1,6 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { drizzleDb } from "db";
-import { count, eq, getTableColumns } from "drizzle-orm";
+import { db } from "db";
+import { count, eq, getTableColumns, getTableName } from "drizzle-orm";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 
 import { OrganizationMemberTable, OrganizationTable } from "./organization.sql";
@@ -9,6 +9,8 @@ export namespace Organization {
   export type Model = InferSelectModel<typeof OrganizationTable>;
   export type CreateInput = InferInsertModel<typeof OrganizationTable>;
   export type UpdateInput = Partial<CreateInput>;
+
+  export const tableName = getTableName(OrganizationTable);
 
   export const createSchema = createInsertSchema(OrganizationTable, {
     name: (schema) =>
@@ -20,6 +22,7 @@ export namespace Organization {
         message:
           "Slug must contain only lowercase letters, numbers, and hyphens.",
       }),
+    logo: (s) => s.optional(),
   });
 
   export const updateSchema = createUpdateSchema(OrganizationTable, {
@@ -35,13 +38,11 @@ export namespace Organization {
   });
 
   export async function create(values: CreateInput) {
-    return (
-      await drizzleDb.insert(OrganizationTable).values(values).returning()
-    )[0];
+    return (await db.insert(OrganizationTable).values(values).returning())[0];
   }
 
   export async function update(id: string, input: UpdateInput): Promise<Model> {
-    const [organization] = await drizzleDb
+    const [organization] = await db
       .update(OrganizationTable)
       .set({ ...input, updatedAt: new Date() })
       .where(eq(OrganizationTable.id, id))
@@ -52,7 +53,7 @@ export namespace Organization {
   }
 
   export async function findById(id: string): Promise<Model | undefined> {
-    const [organization] = await drizzleDb
+    const [organization] = await db
       .select()
       .from(OrganizationTable)
       .where(eq(OrganizationTable.id, id))
@@ -61,7 +62,7 @@ export namespace Organization {
   }
 
   export async function findBySlug(slug: string): Promise<Model | undefined> {
-    const [organization] = await drizzleDb
+    const [organization] = await db
       .select()
       .from(OrganizationTable)
       .where(eq(OrganizationTable.slug, slug))
@@ -70,7 +71,7 @@ export namespace Organization {
   }
 
   export async function findAllByUserId(userId: string): Promise<Model[]> {
-    return await drizzleDb
+    return await db
       .select({ ...getTableColumns(OrganizationTable) })
       .from(OrganizationTable)
       .innerJoin(
@@ -83,7 +84,7 @@ export namespace Organization {
   export async function countByUserId(
     userId: string,
   ): Promise<number | undefined> {
-    const [res] = await drizzleDb
+    const [res] = await db
       .select({ count: count() })
       .from(OrganizationTable)
       .innerJoin(
@@ -96,8 +97,6 @@ export namespace Organization {
   }
 
   export async function remove(id: string): Promise<void> {
-    await drizzleDb
-      .delete(OrganizationTable)
-      .where(eq(OrganizationTable.id, id));
+    await db.delete(OrganizationTable).where(eq(OrganizationTable.id, id));
   }
 }

@@ -1,5 +1,5 @@
 import type { BlogList } from "components/blogs/list";
-import { blog_status } from "db/enums";
+import { BlogStatusEnum } from "db/blog/blog.sql";
 import {
   getFiltersStateParser,
   getSortingStateParser,
@@ -17,12 +17,10 @@ export const blogsSearchParamsCache = createSearchParamsCache({
   page: parseAsInteger.withDefault(1),
   perPage: parseAsInteger.withDefault(10),
   sort: getSortingStateParser<BlogList>().withDefault([
-    { id: "created_at", desc: true },
+    { id: "createdAt", desc: true },
   ]),
   blog_metadata: parseAsString.withDefault(""),
-  status: parseAsArrayOf(
-    z.enum([blog_status.PUBLISHED, blog_status.DRAFT]),
-  ).withDefault([]),
+  status: parseAsArrayOf(z.enum(BlogStatusEnum.enumValues)).withDefault([]),
   from: parseAsString.withDefault(""),
   to: parseAsString.withDefault(""),
 

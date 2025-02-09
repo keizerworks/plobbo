@@ -1,8 +1,7 @@
 "use client";
 
 import type { PlateProps } from "@udecode/plate/react";
-import type { DB } from "db/types";
-import type { Selectable } from "kysely";
+import type { Blog } from "db/blog";
 import React from "react";
 import { serializeMd } from "@udecode/plate-markdown";
 import { Plate } from "@udecode/plate/react";
@@ -14,12 +13,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { api } from "trpc/react";
 
 interface Props {
-  blog: Selectable<DB["blog"]>;
+  blog: Blog.Model;
 }
 
 export function PlateEditor({ blog }: Props) {
   const editor = useCreateEditor({
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     value: blog.body ?? undefined,
   });
 

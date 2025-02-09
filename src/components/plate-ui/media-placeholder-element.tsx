@@ -120,7 +120,7 @@ export const MediaPlaceholderElement = withHOC(
         });
 
         api.placeholder.removeUploadingFile(element.id as string);
-      }, [uploadedFile, element.id]);
+      }, [uploadedFile, element.id, editor, element, api.placeholder]);
 
       // React dev mode will call useEffect twice
       const isReplaced = useRef(false);
@@ -137,7 +137,7 @@ export const MediaPlaceholderElement = withHOC(
         if (!currentFiles) return;
 
         replaceCurrentPlaceholder(currentFiles).catch(console.log);
-      }, [isReplaced]);
+      }, [api.placeholder, element.id, isReplaced, replaceCurrentPlaceholder]);
 
       return (
         <PlateElement ref={ref} className={cn(className, "my-1")} {...props}>

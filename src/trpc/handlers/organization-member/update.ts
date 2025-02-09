@@ -1,37 +1,32 @@
-import type { InsertOrganizationMemberInterface } from "repository/organization-member";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
-import { updateOrganizationMember } from "repository/organization-member";
+import { OrganizationMember } from "db/organization/member";
 import { getSignedUrlPutObject } from "storage";
 import { protectedOrgProcedure } from "trpc";
 import { updateUserProfileMutationSchema } from "validators/organization-member/update";
 
-interface UpdateResponse {
-  member?: Awaited<ReturnType<typeof updateOrganizationMember>>;
-  profilePictureUploadUrl?: string;
-}
-
 export const organizationMemberUpdateHandler = protectedOrgProcedure
   .input(updateUserProfileMutationSchema)
-  .mutation(async ({ input, ctx }): Promise<UpdateResponse> => {
+  .mutation(async ({ input, ctx }) => {
     try {
       let profilePictureUploadUrl;
 
-      const { update_profile_picture, ...destructeredInput } = input;
-      const values: Partial<InsertOrganizationMemberInterface> =
-        destructeredInput;
+      const { updateProfilePicture, ...destructeredInput } = input;
+      const values: OrganizationMember.UpdateInput = {
+        ...destructeredInput,
+        id: ctx.member.id,
+      };
 
-      if (update_profile_picture) {
-        const filename = encodeURI(`${createId()}-${input.display_name}`);
+      if (updateProfilePicture) {
+        const filename = encodeURI(`${createId()}-${input.displayName}`);
         const profilePictureUrl = `organizations/${filename}`;
         profilePictureUploadUrl = await getSignedUrlPutObject({
           filename,
         });
-        values.profile_picture = profilePictureUrl;
+        values.profilePicture = profilePictureUrl;
       }
 
-      const member = await updateOrganizationMember(ctx.member.id, values);
-
+      const member = await OrganizationMember.update(values);
       return { member, profilePictureUploadUrl };
     } catch (error) {
       throw new TRPCError({

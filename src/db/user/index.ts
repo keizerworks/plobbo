@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { drizzleDb } from "db";
+import { db } from "db";
 import { eq, getTableName } from "drizzle-orm";
 
 import { UserTable } from "./user.sql";
@@ -12,11 +12,11 @@ export namespace User {
   export const tableName = getTableName(UserTable);
 
   export async function create(values: CreateInput) {
-    return (await drizzleDb.insert(UserTable).values(values).returning())[0];
+    return (await db.insert(UserTable).values(values).returning())[0];
   }
 
   export async function update(id: string, input: UpdateInput): Promise<Model> {
-    const [user] = await drizzleDb
+    const [user] = await db
       .update(UserTable)
       .set({ ...input, updatedAt: new Date() })
       .where(eq(UserTable.id, id))
@@ -27,7 +27,7 @@ export namespace User {
   }
 
   export async function findById(id: string): Promise<Model | undefined> {
-    const [user] = await drizzleDb
+    const [user] = await db
       .select()
       .from(UserTable)
       .where(eq(UserTable.id, id))
@@ -36,7 +36,7 @@ export namespace User {
   }
 
   export async function findByEmail(email: string): Promise<Model | undefined> {
-    const [user] = await drizzleDb
+    const [user] = await db
       .select()
       .from(UserTable)
       .where(eq(UserTable.email, email))
@@ -45,6 +45,6 @@ export namespace User {
   }
 
   export async function remove(id: string): Promise<void> {
-    await drizzleDb.delete(UserTable).where(eq(UserTable.id, id));
+    await db.delete(UserTable).where(eq(UserTable.id, id));
   }
 }

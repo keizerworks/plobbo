@@ -1,14 +1,20 @@
+import { OrganizationMemberTable } from "db/organization/organization.sql";
+import { createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const updateUserProfileSchema = z.object({
-  display_name: z.string().min(2),
-  bio: z.string().min(2).optional(),
-  profile_picture: z.instanceof(File).optional(),
+export const updateUserProfileSchema = createUpdateSchema(
+  OrganizationMemberTable,
+  {
+    displayName: (s) => s.min(2),
+    bio: (s) => s.min(2).optional(),
+  },
+).extend({
+  profilePicture: z.instanceof(File).optional(),
 });
 
 export const updateUserProfileMutationSchema = updateUserProfileSchema
-  .omit({ profile_picture: true })
-  .extend({ update_profile_picture: z.boolean().default(false) });
+  .omit({ profilePicture: true })
+  .extend({ updateProfilePicture: z.boolean().default(false) });
 
 export type UpdateUserProfileInterface = z.infer<
   typeof updateUserProfileSchema

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Tag } from "emblor";
+import type { Tag, TagInputProps } from "emblor";
 import type { z } from "zod";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,15 +17,23 @@ import {
   SheetTrigger,
 } from "components/ui/sheet";
 import { Textarea } from "components/ui/textarea";
+import { BlogMetadataTable } from "db/blog/blog.sql";
+import { createInsertSchema } from "drizzle-zod";
 import { TagInput } from "emblor";
 import { FileText } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { api } from "trpc/react";
 import { uuidv7 } from "uuidv7";
-import { upsertBlogMetadataInputSchema } from "validators/blog-metadata/upsert";
 
-type FormData = z.infer<typeof upsertBlogMetadataInputSchema>;
+const createSchema = createInsertSchema(BlogMetadataTable, {
+  title: (s) =>
+    s.min(2, {
+      message: "Title must be at least 2 characters.",
+    }),
+});
+
+type FormData = z.infer<typeof createSchema>;
 
 const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
   const [open, setOpen] = useState(false);
@@ -33,21 +41,21 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
 
   const form = useForm<FormData>({
-    resolver: zodResolver(upsertBlogMetadataInputSchema),
+    resolver: zodResolver(createSchema),
     defaultValues: {
-      blog_id: blogId,
+      blogId: blogId,
       title: "",
       description: "",
       keywords: "",
-      og_title: "",
-      og_description: "",
-      og_image: "",
-      og_url: "",
+      ogTitle: "",
+      ogDescription: "",
+      ogImage: "",
+      ogUrl: "",
     },
   });
 
   const { data, isPending: loadingMetadata } = api.blogMetadata.get.useQuery({
-    blog_id: blogId,
+    blogId: blogId,
   });
 
   const { mutate, isPending } = api.blogMetadata.upsert.useMutation({
@@ -66,9 +74,9 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
     if (data) {
       form.setValue("title", data.title);
       form.setValue("description", data.description);
-      form.setValue("og_title", data.og_title ?? undefined);
-      form.setValue("og_description", data.og_description ?? undefined);
-      form.setValue("og_url", data.og_url ?? undefined);
+      form.setValue("ogTitle", data.ogTitle ?? undefined);
+      form.setValue("ogDescription", data.ogDescription ?? undefined);
+      form.setValue("ogUrl", data.ogUrl ?? undefined);
       if (data.keywords) {
         form.setValue("keywords", data.keywords);
         setTags(
@@ -137,9 +145,10 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
               control={form.control}
               name="keywords"
               label="Keywords"
-              render={({ field }) => (
+              render={({ field: { value, ...field } }) => (
                 <TagInput
                   {...field}
+                  value={value as unknown as TagInputProps["value"]}
                   styleClasses={{ input: "border-0 shadow-none" }}
                   placeholder="e.g., programming, coding, software development"
                   tags={tags}
@@ -159,10 +168,11 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
 
             <FormField
               control={form.control}
-              name="og_title"
+              name="ogTitle"
               label="Open-Graph Title"
-              render={({ field }) => (
+              render={({ field: { value, ...field } }) => (
                 <Input
+                  value={value ?? ""}
                   placeholder="e.g., Boost Your Programming Skills: 10 Essential Tips"
                   {...field}
                 />
@@ -171,10 +181,11 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
 
             <FormField
               control={form.control}
-              name="og_description"
+              name="ogDescription"
               label="Open-Graph Descripton"
-              render={({ field }) => (
+              render={({ field: { value, ...field } }) => (
                 <Textarea
+                  value={value ?? ""}
                   rows={3}
                   {...field}
                   placeholder="e.g., Learn proven strategies and best practices to enhance your programming abilities and write better code"

@@ -41,7 +41,7 @@ export const signUpHanlder = publicProcedure
         otp,
       }).catch(console.error);
 
-      sendMail({
+      await sendMail({
         destination: { ToAddresses: [body.email] },
         subject: "Confirm your email address",
         template: await getVerifyHtml({ validationCode: otp }),

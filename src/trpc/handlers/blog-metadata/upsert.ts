@@ -1,28 +1,23 @@
 import { TRPCError } from "@trpc/server";
-import {
-  getBlogMetadata,
-  insertBlogMetadata,
-  updateBlogMetadata,
-} from "repository/blog-metadata";
+import { BlogMetadata } from "db/blog/metadata";
 import { protectedOrgProcedure } from "trpc";
-import { upsertBlogMetadataInputSchema } from "validators/blog-metadata/upsert";
 
 export const upsertBlogMetadataHandler = protectedOrgProcedure
-  .input(upsertBlogMetadataInputSchema)
+  .input(BlogMetadata.createSchema)
   .mutation(async ({ input }) => {
-    const { blog_id, ...metadata } = input;
-
     try {
-      const existingMetadata = await getBlogMetadata({ blog_id });
+      const existingMetadata = await BlogMetadata.findOne({
+        blogId: input.blogId,
+      });
+
       if (existingMetadata) {
-        await updateBlogMetadata(existingMetadata.id, metadata);
+        await BlogMetadata.update(input);
         return { message: "Metadata updated successfully" };
       }
 
-      const newMetadata = await insertBlogMetadata(input);
       return {
         message: "Metadata created successfully",
-        data: newMetadata,
+        data: await BlogMetadata.create(input),
       };
     } catch (error) {
       throw new TRPCError({

@@ -1,12 +1,8 @@
-import type { DB } from "db/types";
-import type { Selectable } from "kysely";
-import { getOrganizationMembers } from "repository/organization-member";
+import { OrganizationMember } from "db/organization/member";
 import { protectedProcedure } from "trpc";
 
 export const organizationMemberListHandler = protectedProcedure.query(
   async ({ ctx: { user } }) => {
-    return (await getOrganizationMembers({ userId: user.id })) as Selectable<
-      DB["organization_member"]
-    >[];
+    return await OrganizationMember.findAll({ userId: user.id });
   },
 );

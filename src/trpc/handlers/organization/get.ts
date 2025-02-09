@@ -3,6 +3,6 @@ import { protectedOrgProcedure } from "trpc";
 
 export const organizationGetHandler = protectedOrgProcedure.query(
   async ({ ctx: { member } }) => {
-    return await Organization.findById(member.organization_id);
+    return await Organization.findById(member.organizationId);
   },
 );

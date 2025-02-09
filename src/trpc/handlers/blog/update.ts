@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { updateBlog } from "repository/blog";
+import { Blog } from "db/blog";
 import { protectedProcedure } from "trpc";
 import { updateBlogSchema } from "validators/blog/update";
 
@@ -7,8 +7,7 @@ export const updateBlogHandler = protectedProcedure
   .input(updateBlogSchema)
   .mutation(async ({ input }) => {
     try {
-      const { id, ...values } = input;
-      await updateBlog(id, values);
+      await Blog.update(input);
       return { success: true };
     } catch (error) {
       throw new TRPCError({

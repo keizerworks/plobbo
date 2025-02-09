@@ -1,15 +1,15 @@
-import { deleteBlog, deleteBlogs } from "repository/blog";
+import { Blog } from "db/blog";
 import { protectedOrgProcedure } from "trpc";
 import { z } from "zod";
 
 export const deleteMultipleBlogHandler = protectedOrgProcedure
   .input(z.object({ ids: z.array(z.string()) }))
   .mutation(async ({ input }) => {
-    await deleteBlogs(input.ids);
+    await Promise.all(input.ids.map((id) => Blog.remove(id)));
   });
 
 export const deleteBlogHandler = protectedOrgProcedure
   .input(z.object({ id: z.string() }))
   .mutation(async ({ input }) => {
-    await deleteBlog(input.id);
+    await Blog.remove(input.id);
   });

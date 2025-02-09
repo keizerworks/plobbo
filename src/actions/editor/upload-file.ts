@@ -43,7 +43,7 @@ export async function uploadFile(
 
     await s3Client.send(
       new PutObjectCommand({
-        Bucket: Resource["plobbo-bucket"].name,
+        Bucket: Resource.bucket.name,
         Key: filename,
         Body: buffer,
         ContentType: file.type,

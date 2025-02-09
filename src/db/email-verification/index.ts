@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { drizzleDb } from "db";
+import { db } from "db";
 import { eq } from "drizzle-orm";
 
 import { EmailVerificationRequestTable } from "./email-verification.sql";
@@ -13,15 +13,12 @@ export namespace EmailVerificationRequest {
 
   export async function create(values: CreateInput) {
     return (
-      await drizzleDb
-        .insert(EmailVerificationRequestTable)
-        .values(values)
-        .returning()
+      await db.insert(EmailVerificationRequestTable).values(values).returning()
     )[0];
   }
 
   export async function update(id: number, input: UpdateInput): Promise<Model> {
-    const [emailVerificationRequest] = await drizzleDb
+    const [emailVerificationRequest] = await db
       .update(EmailVerificationRequestTable)
       .set(input)
       .where(eq(EmailVerificationRequestTable.id, id))
@@ -32,7 +29,7 @@ export namespace EmailVerificationRequest {
   }
 
   export async function findById(id: number): Promise<Model | undefined> {
-    const [emailVerificationRequest] = await drizzleDb
+    const [emailVerificationRequest] = await db
       .select()
       .from(EmailVerificationRequestTable)
       .where(eq(EmailVerificationRequestTable.id, id))
@@ -41,7 +38,7 @@ export namespace EmailVerificationRequest {
   }
 
   export async function findByEmail(email: string): Promise<Model | undefined> {
-    const [emailVerificationRequest] = await drizzleDb
+    const [emailVerificationRequest] = await db
       .select()
       .from(EmailVerificationRequestTable)
       .where(eq(EmailVerificationRequestTable.email, email))
@@ -50,13 +47,13 @@ export namespace EmailVerificationRequest {
   }
 
   export async function remove(id: number): Promise<void> {
-    await drizzleDb
+    await db
       .delete(EmailVerificationRequestTable)
       .where(eq(EmailVerificationRequestTable.id, id));
   }
 
   export async function removeByEmail(email: string): Promise<void> {
-    await drizzleDb
+    await db
       .delete(EmailVerificationRequestTable)
       .where(eq(EmailVerificationRequestTable.email, email));
   }

@@ -1,4 +1,4 @@
-import { blog_status } from "db/enums";
+import { BlogStatusEnum } from "db/blog/blog.sql";
 import { z } from "zod";
 
 export const updateBlogSchema = z.object({
@@ -13,7 +13,7 @@ export const updateBlogSchema = z.object({
   content: z.string().optional(),
   image: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  status: z.enum([blog_status.PUBLISHED, blog_status.DRAFT]).optional(),
+  status: z.enum(BlogStatusEnum.enumValues).optional(),
 });
 
 export type UpdateBlogInterface = z.infer<typeof updateBlogSchema>;

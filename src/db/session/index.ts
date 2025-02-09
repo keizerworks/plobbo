@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { drizzleDb } from "db";
+import { db } from "db";
 import { User } from "db/user";
 import { eq, getTableColumns, getTableName, sql } from "drizzle-orm";
 
@@ -13,11 +13,11 @@ export namespace Session {
   export const tableName = getTableName(SessionTable);
 
   export async function create(values: CreateInput) {
-    return (await drizzleDb.insert(SessionTable).values(values).returning())[0];
+    return (await db.insert(SessionTable).values(values).returning())[0];
   }
 
   export async function update(id: string, input: UpdateInput): Promise<Model> {
-    const [session] = await drizzleDb
+    const [session] = await db
       .update(SessionTable)
       .set({ ...input, updatedAt: new Date() })
       .where(eq(SessionTable.id, id))
@@ -28,7 +28,7 @@ export namespace Session {
   }
 
   export async function findById(id: string) {
-    const [session] = await drizzleDb
+    const [session] = await db
       .select({
         ...getTableColumns(SessionTable),
         user: sql<User.Model>`(
@@ -49,7 +49,7 @@ export namespace Session {
   export async function findByUserId(
     userId: string,
   ): Promise<Model | undefined> {
-    const [session] = await drizzleDb
+    const [session] = await db
       .select()
       .from(SessionTable)
       .where(eq(SessionTable.userId, userId))
@@ -58,10 +58,10 @@ export namespace Session {
   }
 
   export async function remove(id: string): Promise<void> {
-    await drizzleDb.delete(SessionTable).where(eq(SessionTable.id, id));
+    await db.delete(SessionTable).where(eq(SessionTable.id, id));
   }
 
   export async function removeUserSessions(userId: string): Promise<void> {
-    await drizzleDb.delete(SessionTable).where(eq(SessionTable.userId, userId));
+    await db.delete(SessionTable).where(eq(SessionTable.userId, userId));
   }
 }

@@ -1,4 +1,5 @@
 import { baseTable } from "db/base-table";
+import { relations } from "drizzle-orm";
 import {
   integer,
   json,
@@ -37,6 +38,7 @@ export const BlogTable = pgTable("blog", {
 });
 
 export const BlogMetadataTable = pgTable("blog_metadata", {
+  ...baseTable,
   blogId: uuid()
     .unique()
     .notNull()
@@ -49,6 +51,10 @@ export const BlogMetadataTable = pgTable("blog_metadata", {
   ogImage: text(),
   ogUrl: text(),
 });
+
+export const BlogsRelation = relations(BlogTable, ({ one }) => ({
+  blog_metadata: one(BlogMetadataTable),
+}));
 
 // export const BlogRelations = relations(BlogTable, ({ one }) => ({
 //   organizationMember: one(organizationMember, {

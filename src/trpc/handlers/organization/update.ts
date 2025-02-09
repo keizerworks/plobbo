@@ -27,7 +27,7 @@ export const organizationUpdateHandler = protectedOrgProcedure
       }
 
       const organization = await Organization.update(
-        ctx.member.organization_id,
+        ctx.member.organizationId,
         values,
       );
 

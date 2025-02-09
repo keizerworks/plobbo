@@ -53,7 +53,7 @@ export function NavUser() {
             >
               <Avatar className="size-8 rounded-lg">
                 <AvatarImage
-                  src={user.profile_picture ?? undefined}
+                  src={user.profilePicture ?? undefined}
                   alt={user.name}
                 />
 
@@ -82,7 +82,7 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="size-8 rounded-lg">
                   <AvatarImage
-                    src={user.profile_picture ?? undefined}
+                    src={user.profilePicture ?? undefined}
                     alt={user.name}
                   />
 

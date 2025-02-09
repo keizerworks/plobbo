@@ -35,9 +35,9 @@ import { updateUserProfileSchema } from "validators/organization-member/update";
 interface UpdateOrgMemberProfileProps {
   data:
     | {
-        display_name: string | null;
+        displayName: string | null;
         bio: string | null;
-        profile_picture: string | null;
+        profilePicture: string | null;
       }
     | undefined;
 }
@@ -53,14 +53,14 @@ export const UpdateOrgMemberProfile = ({
   const form = useForm<UpdateUserProfileInterface>({
     resolver: zodResolver(updateUserProfileSchema),
     defaultValues: {
-      display_name: data?.display_name ?? "",
+      displayName: data?.displayName ?? "",
       bio: data?.bio ?? "",
     },
   });
 
   const { mutateAsync } = api.organization.member.update.useMutation({
     onSuccess: async ({ profilePictureUploadUrl }) => {
-      const logo = form.getValues("profile_picture");
+      const logo = form.getValues("profilePicture");
       if (logo && profilePictureUploadUrl) {
         await uploadToPresignedUrl(profilePictureUploadUrl, logo);
       }
@@ -73,9 +73,9 @@ export const UpdateOrgMemberProfile = ({
     toast.promise(
       async () =>
         mutateAsync({
-          display_name: values.display_name,
+          displayName: values.displayName,
           bio: values.bio,
-          update_profile_picture: updateProfilePicture,
+          updateProfilePicture,
         }),
       {
         loading: (
@@ -100,7 +100,7 @@ export const UpdateOrgMemberProfile = ({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <BaseFormField
               control={form.control}
-              name="profile_picture"
+              name="profilePicture"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Profile Picture</FormLabel>
@@ -108,10 +108,10 @@ export const UpdateOrgMemberProfile = ({
                     <ImageUpload
                       edit
                       defaultSrc={
-                        data?.profile_picture
+                        data?.profilePicture
                           ? env.NEXT_PUBLIC_S3_DOMAIN +
                             "/" +
-                            data.profile_picture
+                            data.profilePicture
                           : undefined
                       }
                       onChange={(file) => {
@@ -127,10 +127,14 @@ export const UpdateOrgMemberProfile = ({
 
             <FormField
               control={form.control}
-              name="display_name"
+              name="displayName"
               label="Name"
-              render={({ field }) => (
-                <Input placeholder="Enter name" {...field} />
+              render={({ field: { value, ...field } }) => (
+                <Input
+                  placeholder="Enter name"
+                  value={value ?? ""}
+                  {...field}
+                />
               )}
             />
 
@@ -138,8 +142,12 @@ export const UpdateOrgMemberProfile = ({
               control={form.control}
               name="bio"
               label="Bio"
-              render={({ field }) => (
-                <Textarea placeholder="Enter bio" {...field} />
+              render={({ field: { value, ...field } }) => (
+                <Textarea
+                  placeholder="Enter bio"
+                  value={value ?? ""}
+                  {...field}
+                />
               )}
             />
 
