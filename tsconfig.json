@@ -30,6 +30,7 @@
     }
   },
   "include": [
+    "drizzle.config.ts",
     "eslint.config.js",
     "prettier.config.js",
     "tailwind.config.ts",
@@ -44,7 +45,9 @@
     "src/**/*.cjs",
     "src/**/*.js",
     ".next/types/**/*.ts",
-    ".sst/**/*.ts"
+    "migrator.ts",
+    ".sst/**/*.ts",
+    "migrator.ts"
   ],
   "exclude": ["node_modules"]
 }

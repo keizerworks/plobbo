@@ -104,7 +104,7 @@ export const UpdateOrganization = () => {
       form.setValue("name", data.name);
       form.setValue("slug", data.slug);
     }
-  }, [data]);
+  }, [data, form]);
 
   return (
     <Credenza open={open} onOpenChange={setOpen}>
@@ -116,8 +116,8 @@ export const UpdateOrganization = () => {
             <CredenzaHeader className="max-mb:pb-4 gap-x-0 gap-y-1 space-y-0 px-4 text-left md:px-6">
               <CredenzaTitle>Update Organization</CredenzaTitle>
               <CredenzaDescription>
-                Enter the details for your Organization. Click save when you're
-                done.
+                Enter the details for your Organization. Click save when
+                you&apos;re done.
               </CredenzaDescription>
             </CredenzaHeader>
             <Separator />

@@ -1,6 +1,8 @@
 /// <reference types="./types.d.ts" />
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
-import nextPlugin from "@next/eslint-plugin-next";
 import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
@@ -8,18 +10,24 @@ import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
 export default tseslint.config(
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     languageOptions: {
       globals: globals.builtin,
     },
-    ignores: ["./src/db/types.ts", "./src/db/enums.ts"],
     files: ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports,
       unicorn: eslintPluginUnicorn,
-      "@next/next": nextPlugin,
     },
     extends: [
       eslint.configs.recommended,
@@ -30,10 +38,9 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
-      // TypeError: context.getAncestors is not a function
+      "@typescript-eslint/no-namespace": "off",
       "@next/next/no-duplicate-head": "off",
+      "react/display-name": "off",
 
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [

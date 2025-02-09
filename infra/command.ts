@@ -1,9 +1,10 @@
-import { DATABASE_URL } from "./storage";
+import { DATABASE_URL, postgres } from "./storage";
 
-export const primsaCommand = new sst.x.DevCommand("Prisma", {
+export const drizzleStudio = new sst.x.DevCommand("drizzle-studio", {
+  link: [postgres],
   environment: { DATABASE_URL },
   dev: {
     autostart: false,
-    command: "npx prisma studio",
+    command: "pnpm dlx drizzle-kit studio",
   },
 });

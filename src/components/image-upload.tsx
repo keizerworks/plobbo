@@ -79,7 +79,7 @@ export function ImageUpload({
             <p className="text-sm">Drop the image here ...</p>
           ) : (
             <p className="text-sm">
-              Drag 'n' drop an image here, or click to select one
+              Drag &apos;n&apos; drop an image here, or click to select one
             </p>
           )}
         </div>

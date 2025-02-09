@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./.sst/platform/config.d.ts" />
 
 export default $config({
@@ -5,7 +6,7 @@ export default $config({
     return {
       name: "plobbo",
       removal: input.stage === "production" ? "retain" : "remove",
-      protect: ["production"].includes(input.stage),
+      protected: ["production"].includes(input.stage),
       home: "aws",
       providers: {
         aws: { region: "us-east-1" },
@@ -13,22 +14,19 @@ export default $config({
     };
   },
   async run() {
-    await import("./infra/vpc");
-    await Promise.all([import("./infra/email"), import("./infra/storage")]);
-    await import("./infra/app");
+    const { vpc } = await import("./infra/vpc");
+    const [{ postgres }] = await Promise.all([
+      import("./infra/storage"),
+      import("./infra/email"),
+    ]);
+
+    (await import("./infra/migration")).buildAndRunMigrator(vpc, postgres);
+
+    const { app } = await import("./infra/app");
     await import("./infra/command");
-  },
-  console: {
-    autodeploy: {
-      target(event) {
-        if (
-          event.type === "branch" &&
-          event.branch === "main" &&
-          event.action === "pushed"
-        ) {
-          return { stage: "production" };
-        }
-      },
-    },
+
+    return {
+      www: app.url,
+    };
   },
 });

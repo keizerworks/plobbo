@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
-import { insertBlog } from "repository/blog";
-import { insertBlogMetadata } from "repository/blog-metadata";
+import { Blog } from "db/blog";
+import { BlogMetadata } from "db/blog/metadata";
 import { getSignedUrlPutObject } from "storage";
 import { protectedOrgProcedure } from "trpc";
 import { createBlogMutationSchema } from "validators/blog/create";
@@ -13,27 +13,28 @@ export const createBlogHandler = protectedOrgProcedure
       const filename = encodeURI(`${createId()}-${input.slug}`);
       const imageUrl = `blogs/${filename}`;
 
-      let blog;
-      try {
-        blog = await insertBlog({
-          slug: input.slug,
-          body: input.body ?? [],
-          image: imageUrl,
-          tags: input.tags,
-          status: input.status,
-          organization_id: ctx.member.organization_id,
-          author_id: ctx.member.id,
-        });
+      const blog = await Blog.create({
+        slug: input.slug,
+        body: input.body ?? [],
+        image: imageUrl,
+        tags: input.tags,
+        status: input.status,
+        organizationId: ctx.member.organizationId,
+        authorId: ctx.member.id,
+      });
 
-        await insertBlogMetadata({
-          blog_id: blog.id,
-          title: input.title,
-          description: "",
+      if (!blog) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create blog",
         });
-      } catch (e) {
-        console.log(e);
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
       }
+
+      await BlogMetadata.update({
+        blogId: blog.id,
+        title: input.title,
+        description: "",
+      });
 
       const imageUploadUrl = await getSignedUrlPutObject({
         filename,

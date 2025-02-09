@@ -102,7 +102,8 @@ export const CreateBlog = () => {
         <CredenzaHeader className="max-mb:pb-4 gap-x-0 gap-y-1 space-y-0 px-4 text-left md:px-6">
           <CredenzaTitle>New Blog</CredenzaTitle>
           <CredenzaDescription>
-            Enter the details for your new blog. Click save when you're done.
+            Enter the details for your new blog. Click save when you&apos;re
+            done.
           </CredenzaDescription>
         </CredenzaHeader>
         <Separator />

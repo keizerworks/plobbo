@@ -1,16 +1,17 @@
 "use client";
 
-import type { DB } from "db/types";
+import type { Blog } from "db/blog";
+import type { BlogMetadata } from "db/blog/metadata";
+import type { OrganizationMember } from "db/organization/member";
 import type {
   DataTableFilterField,
   DataTableRowAction,
 } from "interface/data-table";
-import type { Selectable } from "kysely";
 import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import { useMemo, useState } from "react";
 import { DataTable } from "components/data-table";
 import { DataTableSkeleton } from "components/data-table/skeleton";
-import { blog_status } from "db/enums";
+import { BlogStatusEnum } from "db/blog/blog.sql";
 import { useDataTable } from "hooks/use-data-table";
 import { toSentenceCase } from "lib/utils";
 import { api } from "trpc/react";
@@ -20,9 +21,9 @@ import { getColumns, getStatusIcon } from "./columns";
 import { DeleteBlogsDialog } from "./delete-blogs-dialog";
 import { BlogsTableToolbarActions } from "./tool-bar-actions";
 
-export interface BlogList extends Selectable<DB["blog"]> {
-  author: Selectable<DB["organization_member"]>;
-  blog_metadata: Selectable<DB["blog_metadata"]>;
+export interface BlogList extends Blog.Model {
+  author: OrganizationMember.Model;
+  metadata: BlogMetadata.Model;
 }
 
 export const BlogsTable = ({
@@ -49,14 +50,14 @@ export const BlogsTable = ({
 
   const filterFields: DataTableFilterField<BlogList>[] = [
     {
-      id: "blog_metadata",
+      id: "metadata",
       label: "Title",
       placeholder: "Filter titles...",
     },
     {
       id: "status",
       label: "Status",
-      options: [blog_status.PUBLISHED, blog_status.DRAFT].map((status) => ({
+      options: BlogStatusEnum.enumValues.map((status) => ({
         label: toSentenceCase(status),
         value: status,
         icon: getStatusIcon(status),
@@ -71,7 +72,7 @@ export const BlogsTable = ({
     pageCount: count / 10,
     rowCount: 10,
     initialState: {
-      sorting: [{ id: "created_at", desc: true }],
+      sorting: [{ id: "createdAt", desc: true }],
       columnPinning: { right: ["actions"] },
     },
     getRowId: (originalRow) => originalRow.id,

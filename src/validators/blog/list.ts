@@ -1,8 +1,8 @@
-import { blog_status } from "db/enums";
+import { BlogStatusEnum } from "db/blog/blog.sql";
 import { z } from "zod";
 
 export const listBlogFitlerSchema = z.object({
-  status: z.enum([blog_status.PUBLISHED, blog_status.DRAFT]).optional(),
+  status: z.enum(BlogStatusEnum.enumValues).optional(),
   user_id: z.string().optional(),
   search: z.string().optional(),
   organization_id: z.string().optional(),

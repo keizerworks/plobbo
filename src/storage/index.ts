@@ -23,7 +23,7 @@ export const getSignedUrlGetObject = async ({
   await getSignedUrl(
     s3Client,
     new GetObjectCommand({
-      Bucket: Resource["plobbo-bucket"].name,
+      Bucket: Resource.bucket.name,
       Key: filename,
     }),
     { expiresIn },
@@ -35,7 +35,7 @@ export const getSignedUrlPutObject = async ({
   await getSignedUrl(
     new S3Client(),
     new PutObjectCommand({
-      Bucket: Resource["plobbo-bucket"].name,
+      Bucket: Resource.bucket.name,
       Key: filename,
       ACL: "public-read",
     }),

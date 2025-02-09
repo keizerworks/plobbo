@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { getActiveOrg } from "actions/cookies/active-org";
 import { getCurrentSession } from "auth/session";
 import { db } from "db";
-import { getOrganizationMember } from "repository/organization-member";
+import { OrganizationMember } from "db/organization/member";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -58,9 +58,9 @@ const enforceUserHasOrgAccess = protectedProcedure.use(
       }
     ).state.id;
 
-    const member = await getOrganizationMember({
-      organization_id: activeOrgId,
-      user_id: ctx.user.id,
+    const member = await OrganizationMember.findOne({
+      organizationId: activeOrgId,
+      userId: ctx.user.id,
     });
 
     if (typeof member === "undefined") {

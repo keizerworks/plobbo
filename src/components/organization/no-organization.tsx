@@ -14,7 +14,7 @@ import { CreateOrganizationTrigger } from "./create/trigger";
 export default async function NoOrganization() {
   const count = await api.organization.count();
 
-  if (count > 0) {
+  if (count && count > 0) {
     redirect("/dashboard");
   }
 
@@ -23,7 +23,7 @@ export default async function NoOrganization() {
       <CardHeader className="text-center">
         <CardTitle>No Organizations</CardTitle>
         <CardDescription className="text-sm text-gray-500">
-          You're not a member of any organizations yet
+          You&apos;re not a member of any organizations yet
         </CardDescription>
       </CardHeader>
 

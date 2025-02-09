@@ -1,4 +1,4 @@
-import { blog_status } from "db/enums";
+import { BlogStatusEnum } from "db/blog/blog.sql";
 import { z } from "zod";
 
 export const createBlogSchema = z.object({
@@ -16,9 +16,7 @@ export const createBlogSchema = z.object({
     }),
   image: z.instanceof(File).optional(),
   tags: z.array(z.string()).default([]),
-  status: z
-    .enum([blog_status.PUBLISHED, blog_status.DRAFT])
-    .default(blog_status.DRAFT),
+  status: z.enum(BlogStatusEnum.enumValues).default("DRAFT"),
 });
 
 export const createBlogMutationSchema = z.object({
@@ -27,9 +25,7 @@ export const createBlogMutationSchema = z.object({
   content: z.string().optional(),
   body: z.array(z.any()).optional(),
   tags: z.array(z.string()).default([]),
-  status: z
-    .enum([blog_status.PUBLISHED, blog_status.DRAFT])
-    .default(blog_status.DRAFT),
+  status: z.enum(BlogStatusEnum.enumValues).default("DRAFT"),
 });
 
 export type CreateBlogInterface = z.infer<typeof createBlogSchema>;

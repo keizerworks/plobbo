@@ -1,14 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import { verifyPasswordHash } from "auth/password";
 import { createSession, generateSessionToken } from "auth/session";
-import { getUserByEmail } from "repository/user";
+import { User } from "db/user";
 import { publicProcedure } from "trpc";
 import { signInWithEmailSchema } from "validators/auth";
 
 export const signInWithEmailHandler = publicProcedure
   .input(signInWithEmailSchema)
   .mutation(async ({ input: body }) => {
-    const user = await getUserByEmail(body.email);
+    const user = await User.findByEmail(body.email);
     if (!user) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -16,7 +16,7 @@ export const signInWithEmailHandler = publicProcedure
       });
     }
 
-    if (!user.email_verified) {
+    if (!user.emailVerified) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message:
@@ -24,7 +24,7 @@ export const signInWithEmailHandler = publicProcedure
       });
     }
 
-    if (!user.password_hash) {
+    if (!user.passwordHash) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message:
@@ -33,7 +33,7 @@ export const signInWithEmailHandler = publicProcedure
     }
 
     const validPassword = await verifyPasswordHash(
-      user.password_hash,
+      user.passwordHash,
       body.password,
     );
 

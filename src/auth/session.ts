@@ -8,12 +8,7 @@ import {
   encodeHexLowerCase,
 } from "@oslojs/encoding";
 import { SESSION_EXPIRE_TIME, SESSION_EXPIRING_SOON } from "constants/auth";
-import {
-  deleteSession,
-  getSession,
-  insertSession,
-  updateSession,
-} from "repository/session";
+import { Session } from "db/session";
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);
@@ -34,11 +29,15 @@ export const getCurrentSession = cache(async () => {
 
 export async function createSession(token: string, userId: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const session = await insertSession({
+  const session = await Session.create({
     id: sessionId,
-    user_id: userId,
-    expires_at: new Date(Date.now() + SESSION_EXPIRE_TIME),
+    userId: userId,
+    expiresAt: new Date(Date.now() + SESSION_EXPIRE_TIME),
   });
+
+  if (!session) {
+    return;
+  }
 
   const cookieStore = await cookies();
   cookieStore.set("session", token, {
@@ -46,7 +45,7 @@ export async function createSession(token: string, userId: string) {
     path: "/",
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    expires: session.expires_at,
+    expires: session.expiresAt,
   });
 
   return session;
@@ -54,23 +53,23 @@ export async function createSession(token: string, userId: string) {
 
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const result = await getSession(sessionId, { user: true });
+  const result = await Session.findById(sessionId);
   if (typeof result === "undefined") return null;
   const session = result;
 
-  if (Date.now() >= session.expires_at.getTime()) {
-    await deleteSession(sessionId);
+  if (Date.now() >= session.expiresAt.getTime()) {
+    await Session.remove(sessionId);
     return null;
   }
 
-  if (Date.now() >= session.expires_at.getTime() - SESSION_EXPIRING_SOON) {
-    session.expires_at = new Date(Date.now() + SESSION_EXPIRE_TIME);
-    await updateSession(session.id, { expires_at: session.expires_at });
+  if (Date.now() >= session.expiresAt.getTime() - SESSION_EXPIRING_SOON) {
+    session.expiresAt = new Date(Date.now() + SESSION_EXPIRE_TIME);
+    await Session.update(session.id, { expiresAt: session.expiresAt });
   }
 
   return session;
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-  await deleteSession(sessionId);
+  await Session.remove(sessionId);
 }

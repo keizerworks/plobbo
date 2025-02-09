@@ -13,7 +13,7 @@ interface Props {
 export const sendMail = async (props: Props) => {
   await client.send(
     new SendEmailCommand({
-      FromEmailAddress: "auth@" + Resource["plobbo-ses"].sender,
+      FromEmailAddress: "auth@" + Resource.ses.sender,
       Destination: props.destination,
       Content: {
         Simple: {

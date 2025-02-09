@@ -9,7 +9,7 @@ import {
 } from "./storage";
 import { vpc } from "./vpc";
 
-export const app = new sst.aws.Nextjs("plobbo-www", {
+export const app = new sst.aws.Nextjs("www", {
   vpc,
   link: [
     postgres,

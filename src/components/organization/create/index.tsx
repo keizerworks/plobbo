@@ -91,8 +91,8 @@ export const CreateOrganization = () => {
         <CredenzaHeader className="max-mb:pb-4 gap-0 space-y-0 px-4 text-left md:px-6">
           <CredenzaTitle>Create Organization</CredenzaTitle>
           <CredenzaDescription>
-            Enter the details for your new organization. Click save when you're
-            done.
+            Enter the details for your new organization. Click save when
+            you&apos;re done.
           </CredenzaDescription>
         </CredenzaHeader>
         <Separator />

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import type { BlogStatusEnum } from "db/blog/blog.sql";
 import type { DataTableRowAction } from "interface/data-table";
 import type { LucideIcon } from "lucide-react";
 import * as React from "react";
@@ -17,7 +18,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
-import { blog_status } from "db/enums";
 import { cn, formatDate } from "lib/utils";
 import { CheckCircle2, Ellipsis, Timer } from "lucide-react";
 
@@ -29,8 +29,10 @@ interface GetColumnsProps {
   >;
 }
 
-export function getStatusIcon(status: blog_status) {
-  const statusIcons: Record<blog_status, LucideIcon> = {
+export function getStatusIcon(
+  status: (typeof BlogStatusEnum.enumValues)[number],
+): LucideIcon {
+  const statusIcons: Record<typeof status, LucideIcon> = {
     PUBLISHED: CheckCircle2,
     DRAFT: Timer,
   };
@@ -96,7 +98,7 @@ export function getColumns({
       cell: ({ cell }) => {
         return (
           <span className="max-w-[31.25rem] truncate font-medium">
-            {(cell.getValue() as BlogList["blog_metadata"]).title}
+            {(cell.getValue() as BlogList["metadata"]).title}
           </span>
         );
       },
@@ -107,7 +109,8 @@ export function getColumns({
         <DataTableColumnHeader column={column} title="Status" />
       ),
       cell: ({ row }) => {
-        const status: blog_status = row.getValue("status");
+        const status: (typeof BlogStatusEnum.enumValues)[number] =
+          row.getValue("status");
         const Icon = getStatusIcon(status);
 
         return (
@@ -116,9 +119,7 @@ export function getColumns({
               variant="secondary"
               className={cn(
                 "text-foreground",
-                status === blog_status.DRAFT
-                  ? "bg-yellow-500/20"
-                  : "bg-green-500/20",
+                status === "DRAFT" ? "bg-yellow-500/20" : "bg-green-500/20",
               )}
             >
               <Icon className="mr-1 size-3.5" aria-hidden="true" />
@@ -149,7 +150,7 @@ export function getColumns({
       ),
       cell: ({ cell }) => (
         <Link href="#" className="hover:underline">
-          {(cell.getValue() as BlogList["author"]).display_name}
+          {(cell.getValue() as BlogList["author"]).displayName}
         </Link>
       ),
     },
