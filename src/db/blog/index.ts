@@ -1,8 +1,12 @@
+import type { Organization } from "db/organization";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import type { ListBlogSortFilterInterface } from "validators/blog/list";
 import { db } from "db";
-import { Organization } from "db/organization";
 import { OrganizationMember } from "db/organization/member";
+import {
+  OrganizationMemberTable,
+  OrganizationTable,
+} from "db/organization/organization.sql";
 import {
   count as drizzleCount,
   eq,
@@ -75,24 +79,24 @@ export namespace Blog {
 					SELECT to_json(obj)
 					FROM (
 						SELECT *
-						FROM "${BlogMetadata.tableName}"
-						WHERE "${BlogMetadata.tableName}"."blog_id" = "${tableName}"."id"
+						FROM ${BlogMetadataTable}
+						WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
 					) AS obj
 				)`.as("metadata"),
         organization: sql<Organization.Model>`(
 					SELECT to_json(obj)
 					FROM (
 						SELECT *
-						FROM "${Organization.tableName}"
-						WHERE "${Organization.tableName}"."id" = "${tableName}"."organization_id"
+						FROM ${OrganizationTable}
+						WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
 					) AS obj
 				)`.as("organization"),
         author: sql<OrganizationMember.Model>`(
 					SELECT to_json(obj)
 					FROM (
 						SELECT *
-						FROM "${OrganizationMember.tableName}"
-						WHERE "${OrganizationMember.tableName}"."id" = "${tableName}"."author_id"
+						FROM ${OrganizationMemberTable}
+						WHERE ${OrganizationMemberTable.id} = ${BlogTable.authorId}
 					) AS obj
 				)`.as("author"),
       })
