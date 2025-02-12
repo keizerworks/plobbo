@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    "./db/*": "./src/db/*.ts"
+    "./db/*": "./src/db/*.ts",
+    "./mailer/*": "./src/mailer/*.ts",
+    "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
+    "aws4fetch": "^1.0.20",
     "drizzle-orm": "catalog:",
-    "ulid": "^2.3.0"
+    "drizzle-zod": "^0.7.0",
+    "mimetext": "^3.0.27",
+    "ulid": "^2.3.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@plobbo/eslint-config": "workspace:*",

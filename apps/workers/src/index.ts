@@ -1,9 +1,16 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
 
-const app = new Hono()
+import organizationRouter from "./routes/organization";
+import profileRouter from "./routes/user";
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+interface Bindings {
+  BUCKET: string;
+  R2: R2Bucket;
+}
 
-export default app
+const app = new Hono<{ Bindings: Bindings }>();
+
+app.route("/profile", profileRouter);
+app.route("/organization", organizationRouter);
+
+export default app;

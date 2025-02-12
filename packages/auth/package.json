@@ -2,13 +2,13 @@
   "name": "@plobbo/auth",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "exports": {
+    "./subjects": "./src/subjects.ts",
+    "./client": "./src/client.ts"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250204.0",
     "@plobbo/eslint-config": "workspace:*",
@@ -17,10 +17,10 @@
     "typescript": "catalog:"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.744.0",
     "@openauthjs/openauth": "^0.3.7",
     "@plobbo/core": "workspace:*",
     "hono": "catalog:",
+    "ulid": "^2.3.0",
     "valibot": "1.0.0-beta.15"
   }
 }

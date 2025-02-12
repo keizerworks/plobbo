@@ -1,23 +1,11 @@
-import * as React from "react";
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-import {
-  getIsLoggedIn,
-  getToken,
-  initializeAuth,
-  login,
-  useAuthStore,
-} from "../store/auth";
+import { initializeAuth, useAuthStore } from "../store/auth";
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
     await initializeAuth();
-    const isLogged = getIsLoggedIn();
-    const token = getToken();
-    if (!isLogged || !token) {
-      await login();
-    }
   },
   component: RootComponent,
 });
@@ -52,7 +40,7 @@ function RootComponent() {
 
       <hr />
 
-      {auth.loggedIn ? (
+      {auth.userId ? (
         <div>
           <p>
             <span>Logged in</span>

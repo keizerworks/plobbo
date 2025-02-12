@@ -5,16 +5,9 @@ import { CodeProvider } from "@openauthjs/openauth/provider/code";
 import { CodeUI } from "@openauthjs/openauth/ui/code";
 import { THEME_OPENAUTH } from "@openauthjs/openauth/ui/theme";
 import { Resource } from "sst/resource";
-import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { User } from "@plobbo/core/db/user/index";
-import { getDrizzle } from "@plobbo/core/db/index";
-
-interface SendEmailQueue {
-  to: string;
-  subject: string;
-  body: string;
-  type: "text" | "html";
-}
+import { getDrizzle } from "@plobbo/core/db/drizzle";
+import { sendMail } from "@plobbo/core/mailer/index";
 
 export default {
   fetch(request: Request, env: Env, ctx: ExecutionContext) {
@@ -35,20 +28,18 @@ export default {
               console.log(email, code);
 
               try {
-                const sqs = new SQSClient();
                 ctx.waitUntil(
-                  sqs.send(
-                    new SendMessageCommand({
-                      QueueUrl: Resource.queue.url,
-                      MessageBody: JSON.stringify({
-                        body: "Your login code is " + code,
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's there
-                        to: email!,
-                        type: "text",
-                        subject: "Confirm your email address",
-                      } satisfies SendEmailQueue),
-                    }),
-                  ),
+                  sendMail({
+                    accessKeyId: env.AWS_ACCESS_KEY_ID,
+                    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+                    message: {
+                      data: "Your login code is " + code,
+                      type: "string",
+                    },
+                    subject: "Confirm your email address",
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's there
+                    to: { addr: email! },
+                  }),
                 );
               } catch (error) {
                 console.error("Failed to send email:", error);

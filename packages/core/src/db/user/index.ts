@@ -1,7 +1,7 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { eq } from "drizzle-orm";
 
-import type { Drizzle } from "../index";
+import type { Drizzle } from "../drizzle";
 import { UserTable } from "./user.sql";
 
 export namespace User {

@@ -13,8 +13,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "env.d.ts",
-    "drizzle.config.ts",
     "eslint.config.js",
-    "sst-env.d.ts"
+    "sst-env.d.ts",
+    "drizzle.config.ts"
   ]
 }

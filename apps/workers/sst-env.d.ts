@@ -6,6 +6,34 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
+    "CLOUDFLARE_R2_BASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "auth": {
+      "publicKey": string
+      "type": "sst.cloudflare.Auth"
+      "url": string
+    }
+    "dashboard": {
+      "type": "sst.cloudflare.StaticSite"
+      "url": string
+    }
+    "email": {
+      "configSet": string
+      "sender": string
+      "type": "sst.aws.Email"
+    }
+  }
+}
+// cloudflare 
+import * as cloudflare from "@cloudflare/workers-types";
+declare module "sst" {
+  export interface Resource {
+    "authAuthenticator": cloudflare.Service
+    "d1": cloudflare.D1Database
+    "kv": cloudflare.KVNamespace
+    "workers": cloudflare.Service
   }
 }
 

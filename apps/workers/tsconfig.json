@@ -7,9 +7,12 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["ESNext"],
-    "types": ["@cloudflare/workers-types/2023-07-01"],
+    "types": ["@cloudflare/workers-types/2023-07-01", "node"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "~/*": ["../../apps/workers/src/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "eslint.config.js"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "eslint.config.js", "sst-env.d.ts"]
 }

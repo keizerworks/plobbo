@@ -1,3 +1,4 @@
+import cookies from "js-cookie";
 import { create } from "zustand";
 
 import { client } from "../lib/auth/client";
@@ -15,6 +16,11 @@ interface AuthState {
   fetchUser: () => Promise<void>;
   handleCallback: (code: string, state: string) => Promise<void>;
 }
+
+const cookieOptions: typeof cookies.attributes = {
+  domain: import.meta.env.PROD ? "*.plobbo.com" : undefined,
+  secure: import.meta.env.PROD,
+};
 
 export const useAuthStore = create<AuthState>()((set, get) => ({
   userId: undefined,
@@ -42,7 +48,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   refreshTokens: async () => {
-    const refresh = localStorage.getItem("refresh");
+    const refresh = cookies.get("refresh");
     const currentToken = get().token;
 
     if (!refresh) return;
@@ -54,8 +60,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     if (next.err) return;
     if (!next.tokens) return currentToken;
 
-    localStorage.setItem("refresh", next.tokens.refresh);
-    set({ token: next.tokens.access });
+    cookies.set("refresh", next.tokens.refresh, cookieOptions);
+    set({ token: next.tokens.access, loggedIn: true });
     return next.tokens.access;
   },
 
@@ -90,8 +96,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       );
 
       if (!exchanged.err) {
-        set({ token: exchanged.tokens.access });
-        localStorage.setItem("refresh", exchanged.tokens.refresh);
+        set({ token: exchanged.tokens.access, loggedIn: true });
+        cookies.set("refresh", exchanged.tokens.refresh, cookieOptions);
       }
     }
     window.location.replace("/");
@@ -119,7 +125,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   logout: () => {
-    localStorage.removeItem("refresh");
+    cookies.set("refresh", "", { ...cookieOptions, expires: new Date() });
     set({
       token: undefined,
       userId: undefined,

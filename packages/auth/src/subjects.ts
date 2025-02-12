@@ -1,4 +1,5 @@
 import { createSubjects } from "@openauthjs/openauth/subject";
+import type { InferOutput } from "valibot";
 import { boolean, nullable, object, string } from "valibot";
 
 export const subjects = createSubjects({
@@ -9,3 +10,5 @@ export const subjects = createSubjects({
     verified: boolean(),
   }),
 });
+
+export type Subjects = InferOutput<(typeof subjects)["user"]>;
