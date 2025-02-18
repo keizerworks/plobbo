@@ -7,28 +7,30 @@ import { useFocused, useReadOnly, useSelected } from "@udecode/plate/react";
 import { PlateElement } from "./plate-element";
 
 export const HrElement = withRef<typeof PlateElement>(
-  ({ className, nodeProps, ...props }, ref) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { children } = props;
+    ({ className, nodeProps, ...props }, ref) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { children } = props;
 
-    const readOnly = useReadOnly();
-    const selected = useSelected();
-    const focused = useFocused();
+        const readOnly = useReadOnly();
+        const selected = useSelected();
+        const focused = useFocused();
 
-    return (
-      <PlateElement ref={ref} className={className} {...props}>
-        <div className="py-6" contentEditable={false}>
-          <hr
-            {...nodeProps}
-            className={cn(
-              "h-0.5 rounded-sm border-none bg-muted bg-clip-content",
-              selected && focused && "ring-2 ring-ring ring-offset-2",
-              !readOnly && "cursor-pointer",
-            )}
-          />
-        </div>
-        {children}
-      </PlateElement>
-    );
-  },
+        return (
+            <PlateElement ref={ref} className={className} {...props}>
+                <div className="py-6" contentEditable={false}>
+                    <hr
+                        {...nodeProps}
+                        className={cn(
+                            "h-0.5 rounded-sm border-none bg-muted bg-clip-content",
+                            selected &&
+                                focused &&
+                                "ring-2 ring-ring ring-offset-2",
+                            !readOnly && "cursor-pointer",
+                        )}
+                    />
+                </div>
+                {children}
+            </PlateElement>
+        );
+    },
 );

@@ -4,15 +4,15 @@ import { cn } from "@udecode/cn";
 import { SlateLeaf } from "@udecode/plate";
 
 export function CodeSyntaxLeafStatic({
-  children,
-  className,
-  ...props
+    children,
+    className,
+    ...props
 }: SlateLeafProps) {
-  const syntaxClassName = `prism-token token ${props.leaf.tokenType as string}`;
+    const syntaxClassName = `prism-token token ${props.leaf.tokenType as string}`;
 
-  return (
-    <SlateLeaf className={cn(className, syntaxClassName)} {...props}>
-      {children}
-    </SlateLeaf>
-  );
+    return (
+        <SlateLeaf className={cn(className, syntaxClassName)} {...props}>
+            {children}
+        </SlateLeaf>
+    );
 }

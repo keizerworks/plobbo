@@ -6,9 +6,9 @@ import { DatePlugin } from "@udecode/plate-date/react";
 import { DocxPlugin } from "@udecode/plate-docx";
 import { EmojiPlugin } from "@udecode/plate-emoji/react";
 import {
-  FontBackgroundColorPlugin,
-  FontColorPlugin,
-  FontSizePlugin,
+    FontBackgroundColorPlugin,
+    FontColorPlugin,
+    FontSizePlugin,
 } from "@udecode/plate-font/react";
 import { HighlightPlugin } from "@udecode/plate-highlight/react";
 import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
@@ -19,8 +19,9 @@ import { MarkdownPlugin } from "@udecode/plate-markdown";
 import { SlashPlugin } from "@udecode/plate-slash-command/react";
 import { TogglePlugin } from "@udecode/plate-toggle/react";
 import { TrailingBlockPlugin } from "@udecode/plate-trailing-block";
-import { FixedToolbarPlugin } from "components/editor/plugins/fixed-toolbar-plugin";
-import { FloatingToolbarPlugin } from "components/editor/plugins/floating-toolbar-plugin";
+
+import { FixedToolbarPlugin } from "~/components/editor/plugins/fixed-toolbar-plugin";
+import { FloatingToolbarPlugin } from "~/components/editor/plugins/floating-toolbar-plugin";
 
 import { aiPlugins } from "./ai-plugins";
 import { alignPlugin } from "./align-plugin";
@@ -44,62 +45,62 @@ import { tablePlugin } from "./table-plugin";
 import { tocPlugin } from "./toc-plugin";
 
 export const viewPlugins = [
-  ...basicNodesPlugins,
-  HorizontalRulePlugin,
-  linkPlugin,
-  DatePlugin,
-  mentionPlugin,
-  tablePlugin,
-  TogglePlugin,
-  tocPlugin,
-  ...mediaPlugins,
-  ...equationPlugins,
-  CalloutPlugin,
-  ColumnPlugin,
+    ...basicNodesPlugins,
+    HorizontalRulePlugin,
+    linkPlugin,
+    DatePlugin,
+    mentionPlugin,
+    tablePlugin,
+    TogglePlugin,
+    tocPlugin,
+    ...mediaPlugins,
+    ...equationPlugins,
+    CalloutPlugin,
+    ColumnPlugin,
 
-  // Marks
-  FontColorPlugin,
-  FontBackgroundColorPlugin,
-  FontSizePlugin,
-  HighlightPlugin,
-  KbdPlugin,
+    // Marks
+    FontColorPlugin,
+    FontBackgroundColorPlugin,
+    FontSizePlugin,
+    HighlightPlugin,
+    KbdPlugin,
 
-  // Block Style
-  alignPlugin,
-  ...indentListPlugins,
-  lineHeightPlugin,
+    // Block Style
+    alignPlugin,
+    ...indentListPlugins,
+    lineHeightPlugin,
 
-  // Collaboration
-  commentsPlugin,
+    // Collaboration
+    commentsPlugin,
 ] as const;
 
 export const editorPlugins = [
-  // AI
-  ...aiPlugins,
+    // AI
+    ...aiPlugins,
 
-  // Nodes
-  ...viewPlugins,
+    // Nodes
+    ...viewPlugins,
 
-  // Functionality
-  SlashPlugin,
-  autoformatPlugin,
-  cursorOverlayPlugin,
-  ...blockMenuPlugins,
-  ...dndPlugins,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-  EmojiPlugin.configure({ options: { data: emojiMartData as any } }),
-  exitBreakPlugin,
-  resetBlockTypePlugin,
-  ...deletePlugins,
-  softBreakPlugin,
-  TrailingBlockPlugin,
+    // Functionality
+    SlashPlugin,
+    autoformatPlugin,
+    cursorOverlayPlugin,
+    ...blockMenuPlugins,
+    ...dndPlugins,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    EmojiPlugin.configure({ options: { data: emojiMartData as any } }),
+    exitBreakPlugin,
+    resetBlockTypePlugin,
+    ...deletePlugins,
+    softBreakPlugin,
+    TrailingBlockPlugin,
 
-  // Deserialization
-  DocxPlugin,
-  MarkdownPlugin.configure({ options: { indentList: true } }),
-  JuicePlugin,
+    // Deserialization
+    DocxPlugin,
+    MarkdownPlugin.configure({ options: { indentList: true } }),
+    JuicePlugin,
 
-  // UI
-  FixedToolbarPlugin,
-  FloatingToolbarPlugin,
+    // UI
+    FixedToolbarPlugin,
+    FloatingToolbarPlugin,
 ];

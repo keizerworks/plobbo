@@ -5,22 +5,22 @@ import { Resource } from "sst/resource";
 const client = new SESv2Client();
 
 interface Props {
-  destination: Destination;
-  template: string;
-  subject?: string;
+    destination: Destination;
+    template: string;
+    subject?: string;
 }
 
 export const sendMail = async (props: Props) => {
-  await client.send(
-    new SendEmailCommand({
-      FromEmailAddress: "auth@" + Resource.ses.sender,
-      Destination: props.destination,
-      Content: {
-        Simple: {
-          Subject: { Data: props.subject },
-          Body: { Html: { Data: props.template } },
-        },
-      },
-    }),
-  );
+    await client.send(
+        new SendEmailCommand({
+            FromEmailAddress: "~/auth@" + Resource.ses.sender,
+            Destination: props.destination,
+            Content: {
+                Simple: {
+                    Subject: { Data: props.subject },
+                    Body: { Html: { Data: props.template } },
+                },
+            },
+        }),
+    );
 };

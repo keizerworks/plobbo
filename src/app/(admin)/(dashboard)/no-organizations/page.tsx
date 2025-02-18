@@ -1,5 +1,5 @@
-import NoOrganization from "components/organization/no-organization";
+import NoOrganization from "~/components/organization/no-organization";
 
 export default function NoOrganizationsPage() {
-  return <NoOrganization />;
+    return <NoOrganization />;
 }

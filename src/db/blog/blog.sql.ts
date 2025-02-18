@@ -1,59 +1,60 @@
-import { baseTable } from "db/base-table";
 import { relations } from "drizzle-orm";
 import {
-  integer,
-  json,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  varchar,
+    integer,
+    json,
+    pgEnum,
+    pgTable,
+    text,
+    timestamp,
+    uuid,
+    varchar,
 } from "drizzle-orm/pg-core";
 
+import { baseTable } from "~/db/base-table";
+
 import {
-  OrganizationMemberTable,
-  OrganizationTable,
+    OrganizationMemberTable,
+    OrganizationTable,
 } from "../organization/organization.sql";
 
 export const BlogStatusEnum = pgEnum("blog_status", ["DRAFT", "PUBLISHED"]);
 
 export const BlogTable = pgTable("blog", {
-  ...baseTable,
-  publishedDate: timestamp({
-    mode: "string",
-    withTimezone: true,
-  }),
-  organizationId: uuid().references(() => OrganizationTable.id),
-  authorId: uuid()
-    .notNull()
-    .references(() => OrganizationMemberTable.id),
-  slug: varchar({ length: 255 }).notNull(),
-  image: varchar({ length: 255 }),
-  body: json().array(),
-  content: text().default(""),
-  tags: text().array().default([]),
-  likes: integer().default(0),
-  status: BlogStatusEnum().default("DRAFT"),
+    ...baseTable,
+    publishedDate: timestamp({
+        mode: "string",
+        withTimezone: true,
+    }),
+    organizationId: uuid().references(() => OrganizationTable.id),
+    authorId: uuid()
+        .notNull()
+        .references(() => OrganizationMemberTable.id),
+    slug: varchar({ length: 255 }).notNull(),
+    image: varchar({ length: 255 }),
+    body: json().array(),
+    content: text().default(""),
+    tags: text().array().default([]),
+    likes: integer().default(0),
+    status: BlogStatusEnum().default("DRAFT"),
 });
 
 export const BlogMetadataTable = pgTable("blog_metadata", {
-  ...baseTable,
-  blogId: uuid()
-    .unique()
-    .notNull()
-    .references(() => BlogTable.id),
-  title: text().notNull(),
-  description: text().notNull(),
-  keywords: text(),
-  ogTitle: text(),
-  ogDescription: text(),
-  ogImage: text(),
-  ogUrl: text(),
+    ...baseTable,
+    blogId: uuid()
+        .unique()
+        .notNull()
+        .references(() => BlogTable.id),
+    title: text().notNull(),
+    description: text().notNull(),
+    keywords: text(),
+    ogTitle: text(),
+    ogDescription: text(),
+    ogImage: text(),
+    ogUrl: text(),
 });
 
 export const BlogsRelation = relations(BlogTable, ({ one }) => ({
-  blog_metadata: one(BlogMetadataTable),
+    blog_metadata: one(BlogMetadataTable),
 }));
 
 // export const BlogRelations = relations(BlogTable, ({ one }) => ({

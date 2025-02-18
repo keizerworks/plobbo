@@ -14,7 +14,7 @@
     "prepare": "husky",
     "preview": "next build && next start",
     "start": "next start",
-    "db:migrate": "sst shell --target drizzle-studio -- npx drizzle-kit migrate"
+    "~/db:migrate": "sst shell --target drizzle-studio -- npx drizzle-kit migrate"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.0",
@@ -129,7 +129,7 @@
     "react-tweet": "^3.2.1",
     "server-only": "^0.0.1",
     "sonner": "^1.7.2",
-    "sst": "3.6.17",
+    "sst": "3.9.7",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar-hide": "^2.0.0",

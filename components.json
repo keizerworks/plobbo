@@ -1,31 +1,28 @@
 {
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "aliases": {
-    "components": "components",
-    "hooks": "hooks",
-    "lib": "lib",
-    "ui": "components/ui",
-    "utils": "lib/utils"
-  },
-  "iconLibrary": "lucide",
-  "rsc": true,
-  "style": "new-york",
-  "tailwind": {
-    "baseColor": "neutral",
-    "config": "tailwind.config.ts",
-    "css": "src/styles/globals.css",
-    "cssVariables": true,
-    "prefix": ""
-  },
-  "tsx": true,
-  "registries": {
-    "plate": {
-      "style": "default",
-      "aliases": {
-        "ui": "components/plate-ui"
-      },
-      "url": "https://platejs.org/r"
+    "$schema": "https://ui.shadcn.com/schema.json",
+    "rsc": true,
+    "tsx": true,
+    "style": "new-york",
+    "tailwind": {
+        "baseColor": "neutral",
+        "config": "tailwind.config.ts",
+        "css": "src/styles/globals.css",
+        "cssVariables": true,
+        "prefix": ""
+    },
+    "aliases": {
+        "components": "~/components",
+        "utils": "~/lib/utils",
+        "ui": "~/components/ui",
+        "lib": "~/lib",
+        "hooks": "~/hooks"
+    },
+    "iconLibrary": "lucide",
+    "registries": {
+        "plate": {
+            "style": "default",
+            "aliases": { "ui": "~/components/plate-ui" },
+            "url": "https://platejs.org/r"
+        }
     }
-  }
 }
-

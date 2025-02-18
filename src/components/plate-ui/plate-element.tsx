@@ -7,16 +7,16 @@ import { PlateElement as PlateElementPrimitive } from "@udecode/plate/react";
 import { BlockSelection } from "./block-selection";
 
 export const PlateElement = React.forwardRef<
-  HTMLDivElement,
-  PlateElementProps & { blockSelectionClassName?: string }
+    HTMLDivElement,
+    PlateElementProps & { blockSelectionClassName?: string }
 >(({ blockSelectionClassName, children, ...props }, ref) => {
-  return (
-    <PlateElementPrimitive ref={ref} {...props}>
-      {children}
+    return (
+        <PlateElementPrimitive ref={ref} {...props}>
+            {children}
 
-      {props.className?.includes("slate-selectable") && (
-        <BlockSelection className={blockSelectionClassName} />
-      )}
-    </PlateElementPrimitive>
-  );
+            {props.className?.includes("slate-selectable") && (
+                <BlockSelection className={blockSelectionClassName} />
+            )}
+        </PlateElementPrimitive>
+    );
 });

@@ -1,4 +1,4 @@
-import { createCallerFactory, createTRPCRouter } from "trpc";
+import { createCallerFactory, createTRPCRouter } from "~/trpc";
 
 import { authRouter } from "./router/auth";
 import { blogRouter } from "./router/blog";
@@ -11,10 +11,10 @@ import { organizationRouter } from "./router/organization";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  auth: authRouter,
-  organization: organizationRouter,
-  blog: blogRouter,
-  blogMetadata: blogMetadataRouter,
+    auth: authRouter,
+    organization: organizationRouter,
+    blog: blogRouter,
+    blogMetadata: blogMetadataRouter,
 });
 
 // export type definition of API

@@ -7,8 +7,8 @@ import { HeadingPlugin } from "@udecode/plate-heading/react";
 import Prism from "prismjs";
 
 export const basicNodesPlugins = [
-  HeadingPlugin.configure({ options: { levels: 3 } }),
-  BlockquotePlugin,
-  CodeBlockPlugin.configure({ options: { prism: Prism } }),
-  BasicMarksPlugin,
+    HeadingPlugin.configure({ options: { levels: 3 } }),
+    BlockquotePlugin,
+    CodeBlockPlugin.configure({ options: { prism: Prism } }),
+    BasicMarksPlugin,
 ] as const;

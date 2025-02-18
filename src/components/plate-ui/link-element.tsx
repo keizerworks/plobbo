@@ -8,24 +8,24 @@ import { useLink } from "@udecode/plate-link/react";
 import { PlateElement } from "./plate-element";
 
 export const LinkElement = withRef<typeof PlateElement>(
-  ({ children, className, ...props }, ref) => {
-    const element = props.element as TLinkElement;
-    const { props: linkProps } = useLink({ element });
+    ({ children, className, ...props }, ref) => {
+        const element = props.element as TLinkElement;
+        const { props: linkProps } = useLink({ element });
 
-    return (
-      <PlateElement
-        ref={ref}
-        as="a"
-        className={cn(
-          className,
-          "font-medium text-primary underline decoration-primary underline-offset-4",
-        )}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        {...(linkProps as any)}
-        {...props}
-      >
-        {children}
-      </PlateElement>
-    );
-  },
+        return (
+            <PlateElement
+                ref={ref}
+                as="a"
+                className={cn(
+                    className,
+                    "font-medium text-primary underline decoration-primary underline-offset-4",
+                )}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(linkProps as any)}
+                {...props}
+            >
+                {children}
+            </PlateElement>
+        );
+    },
 );

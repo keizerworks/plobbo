@@ -11,247 +11,264 @@ import { HEADING_KEYS } from "@udecode/plate-heading";
 import { TocPlugin } from "@udecode/plate-heading/react";
 import { INDENT_LIST_KEYS, ListStyleType } from "@udecode/plate-indent-list";
 import {
-  EquationPlugin,
-  InlineEquationPlugin,
+    EquationPlugin,
+    InlineEquationPlugin,
 } from "@udecode/plate-math/react";
 import { TablePlugin } from "@udecode/plate-table/react";
 import { TogglePlugin } from "@udecode/plate-toggle/react";
 import { ParagraphPlugin } from "@udecode/plate/react";
-import { insertBlock, insertInlineElement } from "components/editor/transforms";
 import {
-  CalendarIcon,
-  ChevronRightIcon,
-  Code2,
-  Columns3Icon,
-  Heading1Icon,
-  Heading2Icon,
-  Heading3Icon,
-  ListIcon,
-  ListOrdered,
-  PilcrowIcon,
-  Quote,
-  RadicalIcon,
-  SparklesIcon,
-  Square,
-  Table,
-  TableOfContentsIcon,
+    CalendarIcon,
+    ChevronRightIcon,
+    Code2,
+    Columns3Icon,
+    Heading1Icon,
+    Heading2Icon,
+    Heading3Icon,
+    ListIcon,
+    ListOrdered,
+    PilcrowIcon,
+    Quote,
+    RadicalIcon,
+    SparklesIcon,
+    Square,
+    Table,
+    TableOfContentsIcon,
 } from "lucide-react";
 
 import {
-  InlineCombobox,
-  InlineComboboxContent,
-  InlineComboboxEmpty,
-  InlineComboboxGroup,
-  InlineComboboxGroupLabel,
-  InlineComboboxInput,
-  InlineComboboxItem,
+    insertBlock,
+    insertInlineElement,
+} from "~/components/editor/transforms";
+
+import {
+    InlineCombobox,
+    InlineComboboxContent,
+    InlineComboboxEmpty,
+    InlineComboboxGroup,
+    InlineComboboxGroupLabel,
+    InlineComboboxInput,
+    InlineComboboxItem,
 } from "./inline-combobox";
 import { PlateElement } from "./plate-element";
 
 interface Group {
-  group: string;
-  items: Item[];
+    group: string;
+    items: Item[];
 }
 
 interface Item {
-  icon: React.ReactNode;
+    icon: React.ReactNode;
 
-  onSelect: (editor: PlateEditor, value: string) => void;
+    onSelect: (editor: PlateEditor, value: string) => void;
 
-  value: string;
-  className?: string;
-  focusEditor?: boolean;
-  keywords?: string[];
-  label?: string;
+    value: string;
+    className?: string;
+    focusEditor?: boolean;
+    keywords?: string[];
+    label?: string;
 }
 
 const groups: Group[] = [
-  {
-    group: "AI",
-    items: [
-      {
-        focusEditor: false,
-        icon: <SparklesIcon />,
-        value: "AI",
-        onSelect: (editor) => {
-          editor.getApi(AIChatPlugin).aiChat.show();
-        },
-      },
-    ],
-  },
-  {
-    group: "Basic blocks",
-    items: [
-      {
-        icon: <PilcrowIcon />,
-        keywords: ["paragraph"],
-        label: "Text",
-        value: ParagraphPlugin.key,
-      },
-      {
-        icon: <Heading1Icon />,
-        keywords: ["title", "h1"],
-        label: "Heading 1",
-        value: HEADING_KEYS.h1,
-      },
-      {
-        icon: <Heading2Icon />,
-        keywords: ["subtitle", "h2"],
-        label: "Heading 2",
-        value: HEADING_KEYS.h2,
-      },
-      {
-        icon: <Heading3Icon />,
-        keywords: ["subtitle", "h3"],
-        label: "Heading 3",
-        value: HEADING_KEYS.h3,
-      },
-      {
-        icon: <ListIcon />,
-        keywords: ["unordered", "ul", "-"],
-        label: "Bulleted list",
-        value: ListStyleType.Disc,
-      },
-      {
-        icon: <ListOrdered />,
-        keywords: ["ordered", "ol", "1"],
-        label: "Numbered list",
-        value: ListStyleType.Decimal,
-      },
-      {
-        icon: <Square />,
-        keywords: ["checklist", "task", "checkbox", "[]"],
-        label: "To-do list",
-        value: INDENT_LIST_KEYS.todo,
-      },
-      {
-        icon: <ChevronRightIcon />,
-        keywords: ["collapsible", "expandable"],
-        label: "Toggle",
-        value: TogglePlugin.key,
-      },
-      {
-        icon: <Code2 />,
-        keywords: ["```"],
-        label: "Code Block",
-        value: CodeBlockPlugin.key,
-      },
-      {
-        icon: <Table />,
-        label: "Table",
-        value: TablePlugin.key,
-      },
-      {
-        icon: <Quote />,
-        keywords: ["citation", "blockquote", "quote", ">"],
-        label: "Blockquote",
-        value: BlockquotePlugin.key,
-      },
-    ].map((item) => ({
-      ...item,
-      onSelect: (editor, value) => {
-        insertBlock(editor, value);
-      },
-    })),
-  },
-  {
-    group: "Advanced blocks",
-    items: [
-      {
-        icon: <TableOfContentsIcon />,
-        keywords: ["toc"],
-        label: "Table of contents",
-        value: TocPlugin.key,
-      },
-      {
-        icon: <Columns3Icon />,
-        label: "3 columns",
-        value: "action_three_columns",
-      },
-      {
-        focusEditor: false,
-        icon: <RadicalIcon />,
-        label: "Equation",
-        value: EquationPlugin.key,
-      },
-    ].map((item) => ({
-      ...item,
-      onSelect: (editor, value) => {
-        insertBlock(editor, value);
-      },
-    })),
-  },
-  {
-    group: "Inline",
-    items: [
-      {
-        focusEditor: true,
-        icon: <CalendarIcon />,
-        keywords: ["time"],
-        label: "Date",
-        value: DatePlugin.key,
-      },
-      {
-        focusEditor: false,
-        icon: <RadicalIcon />,
-        label: "Inline Equation",
-        value: InlineEquationPlugin.key,
-      },
-    ].map((item) => ({
-      ...item,
-      onSelect: (editor, value) => {
-        insertInlineElement(editor, value);
-      },
-    })),
-  },
+    {
+        group: "AI",
+        items: [
+            {
+                focusEditor: false,
+                icon: <SparklesIcon />,
+                value: "AI",
+                onSelect: (editor) => {
+                    editor.getApi(AIChatPlugin).aiChat.show();
+                },
+            },
+        ],
+    },
+    {
+        group: "Basic blocks",
+        items: [
+            {
+                icon: <PilcrowIcon />,
+                keywords: ["paragraph"],
+                label: "Text",
+                value: ParagraphPlugin.key,
+            },
+            {
+                icon: <Heading1Icon />,
+                keywords: ["title", "h1"],
+                label: "Heading 1",
+                value: HEADING_KEYS.h1,
+            },
+            {
+                icon: <Heading2Icon />,
+                keywords: ["subtitle", "h2"],
+                label: "Heading 2",
+                value: HEADING_KEYS.h2,
+            },
+            {
+                icon: <Heading3Icon />,
+                keywords: ["subtitle", "h3"],
+                label: "Heading 3",
+                value: HEADING_KEYS.h3,
+            },
+            {
+                icon: <ListIcon />,
+                keywords: ["unordered", "ul", "-"],
+                label: "Bulleted list",
+                value: ListStyleType.Disc,
+            },
+            {
+                icon: <ListOrdered />,
+                keywords: ["ordered", "ol", "1"],
+                label: "Numbered list",
+                value: ListStyleType.Decimal,
+            },
+            {
+                icon: <Square />,
+                keywords: ["checklist", "task", "checkbox", "[]"],
+                label: "To-do list",
+                value: INDENT_LIST_KEYS.todo,
+            },
+            {
+                icon: <ChevronRightIcon />,
+                keywords: ["collapsible", "expandable"],
+                label: "Toggle",
+                value: TogglePlugin.key,
+            },
+            {
+                icon: <Code2 />,
+                keywords: ["```"],
+                label: "Code Block",
+                value: CodeBlockPlugin.key,
+            },
+            {
+                icon: <Table />,
+                label: "Table",
+                value: TablePlugin.key,
+            },
+            {
+                icon: <Quote />,
+                keywords: ["citation", "blockquote", "quote", ">"],
+                label: "Blockquote",
+                value: BlockquotePlugin.key,
+            },
+        ].map((item) => ({
+            ...item,
+            onSelect: (editor, value) => {
+                insertBlock(editor, value);
+            },
+        })),
+    },
+    {
+        group: "Advanced blocks",
+        items: [
+            {
+                icon: <TableOfContentsIcon />,
+                keywords: ["toc"],
+                label: "Table of contents",
+                value: TocPlugin.key,
+            },
+            {
+                icon: <Columns3Icon />,
+                label: "3 columns",
+                value: "action_three_columns",
+            },
+            {
+                focusEditor: false,
+                icon: <RadicalIcon />,
+                label: "Equation",
+                value: EquationPlugin.key,
+            },
+        ].map((item) => ({
+            ...item,
+            onSelect: (editor, value) => {
+                insertBlock(editor, value);
+            },
+        })),
+    },
+    {
+        group: "Inline",
+        items: [
+            {
+                focusEditor: true,
+                icon: <CalendarIcon />,
+                keywords: ["time"],
+                label: "Date",
+                value: DatePlugin.key,
+            },
+            {
+                focusEditor: false,
+                icon: <RadicalIcon />,
+                label: "Inline Equation",
+                value: InlineEquationPlugin.key,
+            },
+        ].map((item) => ({
+            ...item,
+            onSelect: (editor, value) => {
+                insertInlineElement(editor, value);
+            },
+        })),
+    },
 ];
 
 export const SlashInputElement = withRef<typeof PlateElement>(
-  ({ className, ...props }, ref) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { children, editor, element } = props;
+    ({ className, ...props }, ref) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { children, editor, element } = props;
 
-    return (
-      <PlateElement
-        ref={ref}
-        as="span"
-        className={className}
-        data-slate-value={element.value}
-        {...props}
-      >
-        <InlineCombobox element={element} trigger="/">
-          <InlineComboboxInput />
+        return (
+            <PlateElement
+                ref={ref}
+                as="span"
+                className={className}
+                data-slate-value={element.value}
+                {...props}
+            >
+                <InlineCombobox element={element} trigger="/">
+                    <InlineComboboxInput />
 
-          <InlineComboboxContent>
-            <InlineComboboxEmpty>No results</InlineComboboxEmpty>
+                    <InlineComboboxContent>
+                        <InlineComboboxEmpty>No results</InlineComboboxEmpty>
 
-            {groups.map(({ group, items }) => (
-              <InlineComboboxGroup key={group}>
-                <InlineComboboxGroupLabel>{group}</InlineComboboxGroupLabel>
+                        {groups.map(({ group, items }) => (
+                            <InlineComboboxGroup key={group}>
+                                <InlineComboboxGroupLabel>
+                                    {group}
+                                </InlineComboboxGroupLabel>
 
-                {items.map(
-                  ({ focusEditor, icon, keywords, label, value, onSelect }) => (
-                    <InlineComboboxItem
-                      key={value}
-                      value={value}
-                      onClick={() => onSelect(editor, value)}
-                      label={label}
-                      focusEditor={focusEditor}
-                      group={group}
-                      keywords={keywords}
-                    >
-                      <div className="mr-2 text-muted-foreground">{icon}</div>
-                      {label ?? value}
-                    </InlineComboboxItem>
-                  ),
-                )}
-              </InlineComboboxGroup>
-            ))}
-          </InlineComboboxContent>
-        </InlineCombobox>
+                                {items.map(
+                                    ({
+                                        focusEditor,
+                                        icon,
+                                        keywords,
+                                        label,
+                                        value,
+                                        onSelect,
+                                    }) => (
+                                        <InlineComboboxItem
+                                            key={value}
+                                            value={value}
+                                            onClick={() =>
+                                                onSelect(editor, value)
+                                            }
+                                            label={label}
+                                            focusEditor={focusEditor}
+                                            group={group}
+                                            keywords={keywords}
+                                        >
+                                            <div className="mr-2 text-muted-foreground">
+                                                {icon}
+                                            </div>
+                                            {label ?? value}
+                                        </InlineComboboxItem>
+                                    ),
+                                )}
+                            </InlineComboboxGroup>
+                        ))}
+                    </InlineComboboxContent>
+                </InlineCombobox>
 
-        {children}
-      </PlateElement>
-    );
-  },
+                {children}
+            </PlateElement>
+        );
+    },
 );

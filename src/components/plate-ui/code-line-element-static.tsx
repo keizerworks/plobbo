@@ -3,8 +3,8 @@ import React from "react";
 import { SlateElement } from "@udecode/plate";
 
 export const CodeLineElementStatic = ({
-  children,
-  ...props
+    children,
+    ...props
 }: SlateElementProps) => {
-  return <SlateElement {...props}>{children}</SlateElement>;
+    return <SlateElement {...props}>{children}</SlateElement>;
 };

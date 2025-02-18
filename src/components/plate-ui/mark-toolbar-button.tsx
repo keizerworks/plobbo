@@ -3,21 +3,21 @@
 import React from "react";
 import { withRef } from "@udecode/cn";
 import {
-  useMarkToolbarButton,
-  useMarkToolbarButtonState,
+    useMarkToolbarButton,
+    useMarkToolbarButtonState,
 } from "@udecode/plate/react";
 
 import { ToolbarButton } from "./toolbar";
 
 export const MarkToolbarButton = withRef<
-  typeof ToolbarButton,
-  {
-    nodeType: string;
-    clear?: string[] | string;
-  }
+    typeof ToolbarButton,
+    {
+        nodeType: string;
+        clear?: string[] | string;
+    }
 >(({ clear, nodeType, ...rest }, ref) => {
-  const state = useMarkToolbarButtonState({ clear, nodeType });
-  const { props } = useMarkToolbarButton(state);
+    const state = useMarkToolbarButtonState({ clear, nodeType });
+    const { props } = useMarkToolbarButton(state);
 
-  return <ToolbarButton ref={ref} {...props} {...rest} />;
+    return <ToolbarButton ref={ref} {...props} {...rest} />;
 });

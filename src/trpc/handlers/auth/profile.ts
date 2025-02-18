@@ -1,5 +1,5 @@
-import { protectedProcedure } from "trpc";
+import { protectedProcedure } from "~/trpc";
 
 export const profileHandler = protectedProcedure.query(
-  ({ ctx: { user } }) => user,
+    ({ ctx: { user } }) => user,
 );

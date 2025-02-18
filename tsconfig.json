@@ -1,53 +1,53 @@
 {
-  "compilerOptions": {
-    /* Base Options: */
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "es2022",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
+    "compilerOptions": {
+        /* Base Options: */
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "target": "es2022",
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "moduleDetection": "force",
+        "isolatedModules": true,
 
-    /* Strictness */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "checkJs": true,
+        /* Strictness */
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "checkJs": true,
 
-    /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
-    "noEmit": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "preserve",
-    "plugins": [{ "name": "next" }],
-    "incremental": true,
+        /* Bundled projects */
+        "lib": ["dom", "dom.iterable", "ES2022"],
+        "noEmit": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "jsx": "preserve",
+        "plugins": [{ "name": "next" }],
+        "incremental": true,
 
-    /* Path Aliases */
-    "baseUrl": ".",
-    "paths": {
-      "*": ["./src/*"]
-    }
-  },
-  "include": [
-    "drizzle.config.ts",
-    "eslint.config.js",
-    "prettier.config.js",
-    "tailwind.config.ts",
-    "open-next.config.ts",
-    "next.config.js",
-    "next-env.d.ts",
-    "sst-env.d.ts",
-    "sst.config.ts",
-    "infra/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.cjs",
-    "src/**/*.js",
-    ".next/types/**/*.ts",
-    "migrator.ts",
-    ".sst/**/*.ts",
-    "migrator.ts"
-  ],
-  "exclude": ["node_modules"]
+        /* Path Aliases */
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["./src/*"]
+        }
+    },
+    "include": [
+        "drizzle.config.ts",
+        "eslint.config.js",
+        "prettier.config.js",
+        "tailwind.config.ts",
+        "open-next.config.ts",
+        "next.config.js",
+        "next-env.d.ts",
+        "sst-env.d.ts",
+        "sst.config.ts",
+        "infra/**/*.ts",
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.cjs",
+        "src/**/*.js",
+        ".next/types/**/*.ts",
+        "migrator.ts",
+        ".sst/**/*.ts",
+        "migrator.ts"
+    ],
+    "exclude": ["node_modules","sst.config.ts"]
 }
