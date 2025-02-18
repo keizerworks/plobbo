@@ -11,14 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
+import { Route as NoOrganizationImport } from './routes/no-organization'
 import { Route as IndexImport } from './routes/index'
+import { Route as BlogsIndexImport } from './routes/blogs/index'
+import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
+import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const NoOrganizationRoute = NoOrganizationImport.update({
+  id: '/no-organization',
+  path: '/no-organization',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -27,6 +30,26 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const BlogsIndexRoute = BlogsIndexImport.update({
+  id: '/blogs/',
+  path: '/blogs/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
+  id: '/users/$user-id',
+  path: '/users/$user-id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BlogsBlogIdRouteRoute = BlogsBlogIdRouteImport.update({
+  id: '/blogs/$blog-id',
+  path: '/blogs/$blog-id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/blogs/$blog-id/route.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -39,11 +62,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/no-organization': {
+      id: '/no-organization'
+      path: '/no-organization'
+      fullPath: '/no-organization'
+      preLoaderRoute: typeof NoOrganizationImport
+      parentRoute: typeof rootRoute
+    }
+    '/blogs/$blog-id': {
+      id: '/blogs/$blog-id'
+      path: '/blogs/$blog-id'
+      fullPath: '/blogs/$blog-id'
+      preLoaderRoute: typeof BlogsBlogIdRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/users/$user-id': {
+      id: '/users/$user-id'
+      path: '/users/$user-id'
+      fullPath: '/users/$user-id'
+      preLoaderRoute: typeof UsersUserIdRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/blogs/': {
+      id: '/blogs/'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof BlogsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +97,68 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/no-organization': typeof NoOrganizationRoute
+  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/users/$user-id': typeof UsersUserIdRouteRoute
+  '/blogs': typeof BlogsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/no-organization': typeof NoOrganizationRoute
+  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/users/$user-id': typeof UsersUserIdRouteRoute
+  '/blogs': typeof BlogsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/no-organization': typeof NoOrganizationRoute
+  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/users/$user-id': typeof UsersUserIdRouteRoute
+  '/blogs/': typeof BlogsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/no-organization'
+    | '/blogs/$blog-id'
+    | '/users/$user-id'
+    | '/blogs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/no-organization'
+    | '/blogs/$blog-id'
+    | '/users/$user-id'
+    | '/blogs'
+  id:
+    | '__root__'
+    | '/'
+    | '/no-organization'
+    | '/blogs/$blog-id'
+    | '/users/$user-id'
+    | '/blogs/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  NoOrganizationRoute: typeof NoOrganizationRoute
+  BlogsBlogIdRouteRoute: typeof BlogsBlogIdRouteRoute
+  UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
+  BlogsIndexRoute: typeof BlogsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  NoOrganizationRoute: NoOrganizationRoute,
+  BlogsBlogIdRouteRoute: BlogsBlogIdRouteRoute,
+  UsersUserIdRouteRoute: UsersUserIdRouteRoute,
+  BlogsIndexRoute: BlogsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +172,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/no-organization",
+        "/blogs/$blog-id",
+        "/users/$user-id",
+        "/blogs/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/no-organization": {
+      "filePath": "no-organization.tsx"
+    },
+    "/blogs/$blog-id": {
+      "filePath": "blogs/$blog-id/route.tsx"
+    },
+    "/users/$user-id": {
+      "filePath": "users/$user-id/route.tsx"
+    },
+    "/blogs/": {
+      "filePath": "blogs/index.tsx"
     }
   }
 }

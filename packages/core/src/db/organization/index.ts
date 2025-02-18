@@ -5,7 +5,6 @@ import {
   getTableColumns,
   getTableName,
 } from "drizzle-orm";
-import { z } from "zod";
 
 import type { Drizzle } from "../drizzle";
 import { OrganizationMemberTable, OrganizationTable } from "./organization.sql";
@@ -20,34 +19,6 @@ export namespace Organization {
   }
 
   export const tableName = getTableName(OrganizationTable);
-
-  export const createSchema = z.object({
-    name: z.string().min(2, {
-      message: "Organization name must be at least 2 characters.",
-    }),
-    slug: z
-      .string()
-      .min(2)
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-        message:
-          "Slug must contain only lowercase letters, numbers, and hyphens.",
-      }),
-    logo: z.instanceof(File),
-  });
-
-  export const updateSchema = z.object({
-    name: z.string().min(2, {
-      message: "Organization name must be at least 2 characters.",
-    }),
-    slug: z
-      .string()
-      .min(2)
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-        message:
-          "Slug must contain only lowercase letters, numbers, and hyphens.",
-      }),
-    logo: z.instanceof(File).optional(),
-  });
 
   export async function create(db: Drizzle, values: CreateInput) {
     return (await db.insert(OrganizationTable).values(values).returning())[0];
@@ -86,7 +57,7 @@ export namespace Organization {
     return organization;
   }
 
-  export async function findAllByUserId(db: Drizzle, filters: Filters) {
+  export async function findAll(db: Drizzle, filters: Filters) {
     let query = db
       .select({ ...getTableColumns(OrganizationTable) })
       .from(OrganizationTable)

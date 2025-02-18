@@ -1,13 +1,19 @@
 {
-  "name": "workers",
+  "name": "@plobbo/workers",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify"
   },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
+    "@ai-sdk/openai": "^1.1.12",
     "@hono/zod-validator": "^0.4.2",
     "@plobbo/auth": "workspace:*",
     "@plobbo/core": "workspace:*",
+    "@plobbo/validator": "workspace:*",
+    "ai": "^4.1.41",
     "hono": "catalog:",
     "ulid": "^2.3.0",
     "zod": "catalog:"

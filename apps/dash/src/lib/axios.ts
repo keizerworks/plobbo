@@ -1,7 +1,10 @@
 import axios from "axios";
 
+import { getToken } from "~/store/auth";
+
 const workersClient = axios.create({
   baseURL: import.meta.env.VITE_WORKERS_URL,
+  withCredentials: true,
 });
 
 export interface BaseResponse {
@@ -26,6 +29,9 @@ export interface ErrorResponse extends BaseResponse {
 }
 
 workersClient.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+
   if (config.data instanceof FormData) delete config.headers["Content-Type"];
   else {
     const contentType = config.headers["Content-Type"];

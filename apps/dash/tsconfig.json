@@ -8,6 +8,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["../../apps/dash/src/*"]
+    },
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "eslint.config.js", "sst-env.d.ts"]

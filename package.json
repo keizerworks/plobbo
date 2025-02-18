@@ -14,9 +14,11 @@
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250204.0",
     "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
     "@plobbo/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "sst": "3.8.3"
-  }
+    "sst": "3.8.4"
+  },
+  "prettier": "@plobbo/prettier-config"
 }

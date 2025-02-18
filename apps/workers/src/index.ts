@@ -1,16 +1,23 @@
-import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { Hono } from "hono/quick";
 
-import organizationRouter from "./routes/organization";
+import aiRouter from "./routes/ai";
+import blogsRouter from "./routes/blogs";
+import organizationsRouter from "./routes/organizations";
 import profileRouter from "./routes/user";
 
-interface Bindings {
-  BUCKET: string;
-  R2: R2Bucket;
-}
-
-const app = new Hono<{ Bindings: Bindings }>();
-
-app.route("/profile", profileRouter);
-app.route("/organization", organizationRouter);
+const app = new Hono()
+    .use(
+        cors({
+            origin: ["https://dash.plobbo.com", "http://localhost:3001"],
+            allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
+            credentials: true,
+        }),
+    )
+    .route("/profile", profileRouter)
+    .route("/organizations", organizationsRouter)
+    .route("/blogs", blogsRouter)
+    .route("/ai", aiRouter);
 
 export default app;
+export type AppType = typeof app;

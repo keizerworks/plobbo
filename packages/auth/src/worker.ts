@@ -8,6 +8,12 @@ import { Resource } from "sst/resource";
 import { User } from "@plobbo/core/db/user/index";
 import { getDrizzle } from "@plobbo/core/db/drizzle";
 import { sendMail } from "@plobbo/core/mailer/index";
+import { cors } from "hono/cors";
+
+const allowedOrigins = [
+  /^https:\/\/[a-zA-Z0-9-]+\.plobbo\.com$/,
+  /^http:\/\/localhost:\d+$/,
+];
 
 export default {
   fetch(request: Request, env: Env, ctx: ExecutionContext) {
@@ -60,6 +66,21 @@ export default {
 
         return ctx.subject("user", user);
       },
-    }).fetch(request, env, ctx);
+    })
+      .use(
+        cors({
+          origin: (origin) =>
+            typeof origin === "string" &&
+            allowedOrigins.some((pattern) => pattern.test(origin))
+              ? origin
+              : "https://dash.plobbo.com",
+          allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests"],
+          allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
+          exposeHeaders: ["Content-Length", "X-Kuma-Revision"],
+          maxAge: 600,
+          credentials: true,
+        }),
+      )
+      .fetch(request, env, ctx);
   },
 };

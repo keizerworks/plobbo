@@ -8,7 +8,9 @@
     "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "aws4fetch": "^1.0.20",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@plobbo/eslint-config": "workspace:*",
     "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/validator": "workspace:*",
     "@plobbo/tsconfig": "workspace:*",
     "@types/aws-lambda": "^8.10.147",
     "@types/node": "catalog:",

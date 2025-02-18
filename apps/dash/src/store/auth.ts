@@ -1,10 +1,14 @@
 import cookies from "js-cookie";
 import { create } from "zustand";
 
+import type { Profile } from "~/actions/profile";
+import { getProfile } from "~/actions/profile";
+
 import { client } from "../lib/auth/client";
+import { createSelectors } from "./zustand";
 
 interface AuthState {
-  userId?: string;
+  profile?: Profile;
   loaded: boolean;
   loggedIn: boolean;
   token?: string;
@@ -17,13 +21,8 @@ interface AuthState {
   handleCallback: (code: string, state: string) => Promise<void>;
 }
 
-const cookieOptions: typeof cookies.attributes = {
-  domain: import.meta.env.PROD ? "*.plobbo.com" : undefined,
-  secure: import.meta.env.PROD,
-};
-
-export const useAuthStore = create<AuthState>()((set, get) => ({
-  userId: undefined,
+export const _useAuthStore = create<AuthState>()((set, get) => ({
+  profile: undefined,
   loaded: false,
   loggedIn: false,
   token: undefined,
@@ -32,35 +31,24 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     const hash = new URLSearchParams(location.search.slice(1));
     const code = hash.get("code");
     const state = hash.get("state");
-    console.log("initialize", code, state);
-
-    if (code && state) {
-      await get().handleCallback(code, state);
-      return;
-    }
+    if (code && state) return await get().handleCallback(code, state);
 
     const token = await get().refreshTokens();
-    console.log("token", token);
-    if (token) {
-      await get().fetchUser();
-    }
+    if (token) await get().fetchUser();
+
     set({ loaded: true });
   },
 
   refreshTokens: async () => {
     const refresh = cookies.get("refresh");
-    const currentToken = get().token;
-
     if (!refresh) return;
 
-    const next = await client.refresh(refresh, {
-      access: currentToken,
-    });
-
+    const currentToken = get().token;
+    const next = await client.refresh(refresh, { access: currentToken });
     if (next.err) return;
     if (!next.tokens) return currentToken;
 
-    cookies.set("refresh", next.tokens.refresh, cookieOptions);
+    cookies.set("refresh", next.tokens.refresh);
     set({ token: next.tokens.access, loggedIn: true });
     return next.tokens.access;
   },
@@ -80,6 +68,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     });
     sessionStorage.setItem("challenge", JSON.stringify(challenge));
     location.href = url;
+    await new Promise((r) => setTimeout(r, 5000));
   },
 
   handleCallback: async (code: string, state: string) => {
@@ -97,46 +86,32 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
       if (!exchanged.err) {
         set({ token: exchanged.tokens.access, loggedIn: true });
-        cookies.set("refresh", exchanged.tokens.refresh, cookieOptions);
+        cookies.set("refresh", exchanged.tokens.refresh);
       }
     }
     window.location.replace("/");
   },
 
   fetchUser: async () => {
-    const token = get().token;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.ok) {
-        const user = (await res.json()) as { userId: string };
-        set({
-          userId: user.userId,
-          loggedIn: true,
-        });
-      }
+      const profile = await getProfile();
+      set({ profile, loggedIn: true });
     } catch (error) {
       console.log(error);
     }
   },
 
   logout: () => {
-    cookies.set("refresh", "", { ...cookieOptions, expires: new Date() });
-    set({
-      token: undefined,
-      userId: undefined,
-      loggedIn: false,
-    });
+    cookies.set("refresh", "", { expires: new Date() });
+    set({ profile: undefined, loggedIn: false, token: undefined });
     window.location.replace("/");
   },
 }));
 
-export const initializeAuth = useAuthStore.getState().initialize;
-export const getIsLoggedIn = () => useAuthStore.getState().loggedIn;
-export const getToken = () => useAuthStore.getState().token;
-export const login = useAuthStore.getState().login;
-export const logout = useAuthStore.getState().logout;
+export const initializeAuth = _useAuthStore.getState().initialize;
+export const getIsLoggedIn = () => _useAuthStore.getState().loggedIn;
+export const getToken = () => _useAuthStore.getState().token;
+export const login = _useAuthStore.getState().login;
+export const logout = _useAuthStore.getState().logout;
+
+export const useAuthStore = createSelectors(_useAuthStore);
