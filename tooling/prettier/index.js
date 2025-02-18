@@ -6,47 +6,46 @@ import { fileURLToPath } from "url";
 
 /** @type { PrettierConfig | SortImportsConfig | TailwindConfig } */
 const config = {
-    tabWidth: 4,
-    plugins: [
-        "@ianvs/prettier-plugin-sort-imports",
-        "prettier-plugin-tailwindcss",
-    ],
-    tailwindConfig: fileURLToPath(
-        new URL("../../packages/ui/tailwind.config.ts", import.meta.url),
-    ),
-    tailwindFunctions: ["cn", "cva"],
-    importOrder: [
-        "<TYPES>",
-        "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
-        "^(next/(.*)$)|^(next$)",
-        "^(expo(.*)$)|^(expo$)",
-        "<THIRD_PARTY_MODULES>",
-        "",
-        "<TYPES>^@plobbo",
-        "^@plobbo/(.*)$",
-        "",
-        "<TYPES>^[.|..|~]",
-        "^~/",
-        "",
-        "^[../]",
-        "^[./]",
-    ],
-    importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
-    importOrderTypeScriptVersion: "4.4.0",
-    overrides: [
-        {
-            files: "*.json.hbs",
-            options: {
-                parser: "json",
-            },
-        },
-        {
-            files: "*.js.hbs",
-            options: {
-                parser: "babel",
-            },
-        },
-    ],
+  plugins: [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
+  ],
+  tailwindConfig: fileURLToPath(
+    new URL("../../apps/www/tailwind.config.ts", import.meta.url),
+  ),
+  tailwindFunctions: ["cn", "cva"],
+  importOrder: [
+    "<TYPES>",
+    "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
+    "^(next/(.*)$)|^(next$)",
+    "^(expo(.*)$)|^(expo$)",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "<TYPES>^@plobbo",
+    "^@plobbo/(.*)$",
+    "",
+    "<TYPES>^[.|..|~]",
+    "^~/",
+    "",
+    "^[../]",
+    "^[./]",
+  ],
+  importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
+  importOrderTypeScriptVersion: "4.4.0",
+  overrides: [
+    {
+      files: "*.json.hbs",
+      options: {
+        parser: "json",
+      },
+    },
+    {
+      files: "*.js.hbs",
+      options: {
+        parser: "babel",
+      },
+    },
+  ],
 };
 
 export default config;

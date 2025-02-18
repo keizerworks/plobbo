@@ -1,0 +1,27 @@
+{
+  "name": "@plobbo/api",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.1.12",
+    "@aws-sdk/client-s3": "^3.750.0",
+    "@hono/zod-validator": "^0.4.2",
+    "@plobbo/auth": "workspace:*",
+    "@plobbo/core": "workspace:*",
+    "@plobbo/db": "workspace:*",
+    "@plobbo/validator": "workspace:*",
+    "ai": "^4.1.41",
+    "hono": "catalog:",
+    "ulid": "^2.3.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "wrangler": "^3.101.0"
+  },
+  "prettier": "@plobbo/prettier-config"
+}

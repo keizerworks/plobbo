@@ -14,7 +14,6 @@
     "src/**/*.tsx",
     "env.d.ts",
     "eslint.config.js",
-    "sst-env.d.ts",
-    "drizzle.config.ts"
+    "sst-env.d.ts"
   ]
 }

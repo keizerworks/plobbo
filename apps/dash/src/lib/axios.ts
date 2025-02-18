@@ -3,7 +3,7 @@ import axios from "axios";
 import { getToken } from "~/store/auth";
 
 const workersClient = axios.create({
-  baseURL: import.meta.env.VITE_WORKERS_URL,
+  baseURL: import.meta.env.VITE_URL,
   withCredentials: true,
 });
 

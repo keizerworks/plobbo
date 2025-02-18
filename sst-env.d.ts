@@ -3,15 +3,18 @@
 /* eslint-disable */
 /* deno-fmt-ignore-file */
 
-import "sst"
 declare module "sst" {
   export interface Resource {
-    "CLOUDFLARE_R2_BASE_URL": {
-      "type": "sst.sst.Secret"
-      "value": string
+    "auth": {
+      "type": "sst.aws.Auth"
+      "url": string
+    }
+    "bucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
     }
     "dashboard": {
-      "type": "sst.cloudflare.StaticSite"
+      "type": "sst.aws.StaticSite"
       "url": string
     }
     "email": {
@@ -19,21 +22,40 @@ declare module "sst" {
       "sender": string
       "type": "sst.aws.Email"
     }
+    "langdbApiKey": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "langdbOpenaiBaseUrl": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "langdbProjectId": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "migrator-pg": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
+    "pg": {
+      "database": string
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Postgres"
+      "username": string
+    }
+    "vpc": {
+      "type": "sst.aws.Vpc"
+    }
     "www": {
-      "type": "sst.aws.Astro"
+      "type": "sst.aws.Nextjs"
       "url": string
     }
   }
 }
-// cloudflare 
-import * as cloudflare from "@cloudflare/workers-types";
-declare module "sst" {
-  export interface Resource {
-    "d1": cloudflare.D1Database
-    "kv": cloudflare.KVNamespace
-    "r2": cloudflare.R2Bucket
-  }
-}
+/// <reference path="sst-env.d.ts" />
 
 import "sst"
 export {}

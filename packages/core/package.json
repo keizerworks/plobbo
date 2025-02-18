@@ -3,32 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    "./db/*": "./src/db/*.ts",
     "./mailer/*": "./src/mailer/*.ts",
     "./lib/*": "./src/lib/*.ts"
   },
-  "scripts": {
-    "db:push": "drizzle-kit push",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
-  },
+  "scripts": {},
   "dependencies": {
-    "aws4fetch": "^1.0.20",
-    "drizzle-orm": "catalog:",
-    "drizzle-zod": "^0.7.0",
-    "mimetext": "^3.0.27",
-    "ulid": "^2.3.0",
-    "zod": "catalog:"
+    "@aws-sdk/client-sesv2": "^3.750.0"
   },
   "devDependencies": {
     "@plobbo/eslint-config": "workspace:*",
     "@plobbo/prettier-config": "workspace:*",
-    "@plobbo/validator": "workspace:*",
     "@plobbo/tsconfig": "workspace:*",
-    "@types/aws-lambda": "^8.10.147",
-    "@types/node": "catalog:",
-    "drizzle-kit": "^0.30.4",
-    "tsx": "^4.19.2"
+    "@types/node": "catalog:"
   },
   "prettier": "@plobbo/prettier-config"
 }

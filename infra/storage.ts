@@ -1,6 +1,19 @@
-export const D1 = new sst.cloudflare.D1("d1");
-export const R2 = new sst.cloudflare.Bucket("r2");
-export const KV = new sst.cloudflare.Kv("kv");
+import { vpc } from "./vpc";
 
-export const BUCKET = $interpolate`${R2.name}`;
-export const D1_DATABASE_ID = $interpolate`${D1.id}`;
+export const bucket = new sst.aws.Bucket("bucket", {
+  access: "public",
+});
+
+export const postgres = new sst.aws.Postgres("pg", {
+  vpc,
+  dev: {
+    username: "postgres",
+    password: "password",
+    database: "plobbo",
+    host: "localhost",
+    port: 5432,
+  },
+});
+
+export const NEXT_PUBLIC_S3_DOMAIN = $interpolate`https://${bucket.domain}`;
+export const DATABASE_URL = $interpolate`postgresql://${postgres.username}:${postgres.password}@${postgres.host}:${postgres.port}/${postgres.database}`;

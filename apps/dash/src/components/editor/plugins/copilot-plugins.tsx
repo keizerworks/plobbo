@@ -16,30 +16,30 @@ const system = `You are an advanced AI writing assistant, similar to VSCode Copi
   - If no context is provided or you can't generate a continuation, return "0" without explanation.`;
 
 export const copilotPlugins = [
-    CopilotPlugin.configure(({ api }) => ({
-        options: {
-            completeOptions: {
-                api: import.meta.env.VITE_WORKERS_URL + "/ai/copilot",
-                body: { system },
-                onError: console.error,
-                onFinish: (_, completion) => {
-                    if (completion === "0") return;
-                    api.copilot.setBlockSuggestion({
-                        text: stripMarkdown(completion),
-                    });
-                },
-            },
-            debounceDelay: 500,
-            renderGhostText: GhostText,
-            getPrompt: ({ editor }) => {
-                const contextEntry = editor.api.block({ highest: true });
-                if (!contextEntry) return "";
-                const prompt = serializeMdNodes([contextEntry[0]]);
-                return `Continue the text up to the next punctuation mark:
+  CopilotPlugin.configure(({ api }) => ({
+    options: {
+      completeOptions: {
+        api: import.meta.env.VITE_URL + "/ai/copilot",
+        body: { system },
+        onError: console.error,
+        onFinish: (_, completion) => {
+          if (completion === "0") return;
+          api.copilot.setBlockSuggestion({
+            text: stripMarkdown(completion),
+          });
+        },
+      },
+      debounceDelay: 500,
+      renderGhostText: GhostText,
+      getPrompt: ({ editor }) => {
+        const contextEntry = editor.api.block({ highest: true });
+        if (!contextEntry) return "";
+        const prompt = serializeMdNodes([contextEntry[0]]);
+        return `Continue the text up to the next punctuation mark:
 """
 ${prompt}
 """`;
-            },
-        },
-    })),
+      },
+    },
+  })),
 ] as const;
