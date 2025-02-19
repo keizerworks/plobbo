@@ -11,8 +11,7 @@ const app = new Hono()
   .basePath("/api")
   .use(
     process.env.NODE_ENV === "production"
-      ? // eslint-disable-next-line @typescript-eslint/no-empty-function
-        async () => {}
+      ? async (_, next) => next()
       : cors({
           origin: "*",
           allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
