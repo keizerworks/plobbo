@@ -11,7 +11,10 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "*", // Set your origin
+            value:
+              process.env.NODE_ENV === "production"
+                ? "https://dash.plobbo.com"
+                : "http://localhost:3001",
           },
           {
             key: "Access-Control-Allow-Methods",
@@ -19,7 +22,8 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
+            value:
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Authorization, Date, X-Api-Version",
           },
         ],
       },
