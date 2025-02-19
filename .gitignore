@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+.open-next
 
 # Local env files
 .env

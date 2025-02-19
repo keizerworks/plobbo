@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import workersClient from "~/lib/axios";
+import apiClient from "~/lib/axios";
 
 export interface Profile {
   id: string;
@@ -10,5 +10,5 @@ export interface Profile {
 }
 
 export const getProfile = cache(async () => {
-  return workersClient.get<Profile>("profile").then((r) => r.data);
+  return apiClient.get<Profile>("profile").then((r) => r.data);
 });

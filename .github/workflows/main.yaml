@@ -1,46 +1,46 @@
-# name: Build and Deploy with SST
-#
-# on:
-#     push:
-#         branches: [main]
+name: Build and Deploy with SST
 
-# jobs:
-# build-and-push:
-#     runs-on: ubuntu-latest
-#     permissions:
-#         id-token: write
-#         contents: read
-#     steps:
-#         - name: Checkout repository
-#           uses: actions/checkout@v4
-#
-#         - name: Configure AWS credentials
-#           uses: aws-actions/configure-aws-credentials@v4
-#           with:
-#               aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#               aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#               aws-region: us-east-1
-#
-#         - name: Setup pnpm
-#           uses: pnpm/action-setup@v2
-#           with:
-#               version: latest
-#
-#         - name: Setup Node.js
-#           uses: actions/setup-node@v4
-#           with:
-#               node-version: "lts/*"
-#               cache: "pnpm"
-#
-#         - name: Install dependencies
-#           run: pnpm install --frozen-lockfile
-#
-#         - name: Deploy
-#           env:
-#               NODE_ENV: production
-#               CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
-#               CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-#               LANGDB_OPENAI_BASE_URL: ${{ secrets.LANGDB_OPENAI_BASE_URL }}
-#               LANGDB_PROJECT_ID: ${{ secrets.LANGDB_PROJECT_ID }}
-#               LANGDB_API_KEY: ${{ secrets.LANGDB_API_KEY }}
-#           run: pnpm dlx sst@3.8.3 deploy --stage production
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy
+        env:
+          NODE_ENV: production
+          CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          LANGDB_OPENAI_BASE_URL: ${{ secrets.LANGDB_OPENAI_BASE_URL }}
+          LANGDB_PROJECT_ID: ${{ secrets.LANGDB_PROJECT_ID }}
+          LANGDB_API_KEY: ${{ secrets.LANGDB_API_KEY }}
+        run: pnpm dlx sst@3.9.7 deploy --stage production

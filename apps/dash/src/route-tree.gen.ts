@@ -8,14 +8,21 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as NoOrganizationImport } from './routes/no-organization'
-import { Route as IndexImport } from './routes/index'
 import { Route as BlogsIndexImport } from './routes/blogs/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
 import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
+
+// Create Virtual Routes
+
+const IndexLazyImport = createFileRoute('/')()
+const UsersIndexLazyImport = createFileRoute('/users/')()
+const ProfileIndexLazyImport = createFileRoute('/profile/')()
 
 // Create/Update Routes
 
@@ -25,17 +32,29 @@ const NoOrganizationRoute = NoOrganizationImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const UsersIndexLazyRoute = UsersIndexLazyImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
+
+const ProfileIndexLazyRoute = ProfileIndexLazyImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/profile/index.lazy').then((d) => d.Route))
 
 const BlogsIndexRoute = BlogsIndexImport.update({
   id: '/blogs/',
   path: '/blogs/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/blogs/index.lazy').then((d) => d.Route))
 
 const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
   id: '/users/$user-id',
@@ -59,7 +78,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/no-organization': {
@@ -90,34 +109,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/users/': {
+      id: '/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs': typeof BlogsIndexRoute
+  '/profile': typeof ProfileIndexLazyRoute
+  '/users': typeof UsersIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs': typeof BlogsIndexRoute
+  '/profile': typeof ProfileIndexLazyRoute
+  '/users': typeof UsersIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs/': typeof BlogsIndexRoute
+  '/profile/': typeof ProfileIndexLazyRoute
+  '/users/': typeof UsersIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -128,6 +167,8 @@ export interface FileRouteTypes {
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
+    | '/profile'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -135,6 +176,8 @@ export interface FileRouteTypes {
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
+    | '/profile'
+    | '/users'
   id:
     | '__root__'
     | '/'
@@ -142,23 +185,29 @@ export interface FileRouteTypes {
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs/'
+    | '/profile/'
+    | '/users/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  IndexLazyRoute: typeof IndexLazyRoute
   NoOrganizationRoute: typeof NoOrganizationRoute
   BlogsBlogIdRouteRoute: typeof BlogsBlogIdRouteRoute
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
+  ProfileIndexLazyRoute: typeof ProfileIndexLazyRoute
+  UsersIndexLazyRoute: typeof UsersIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  IndexLazyRoute: IndexLazyRoute,
   NoOrganizationRoute: NoOrganizationRoute,
   BlogsBlogIdRouteRoute: BlogsBlogIdRouteRoute,
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
   BlogsIndexRoute: BlogsIndexRoute,
+  ProfileIndexLazyRoute: ProfileIndexLazyRoute,
+  UsersIndexLazyRoute: UsersIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -175,11 +224,13 @@ export const routeTree = rootRoute
         "/no-organization",
         "/blogs/$blog-id",
         "/users/$user-id",
-        "/blogs/"
+        "/blogs/",
+        "/profile/",
+        "/users/"
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "index.lazy.tsx"
     },
     "/no-organization": {
       "filePath": "no-organization.tsx"
@@ -192,6 +243,12 @@ export const routeTree = rootRoute
     },
     "/blogs/": {
       "filePath": "blogs/index.tsx"
+    },
+    "/profile/": {
+      "filePath": "profile/index.lazy.tsx"
+    },
+    "/users/": {
+      "filePath": "users/index.lazy.tsx"
     }
   }
 }

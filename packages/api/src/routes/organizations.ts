@@ -26,6 +26,7 @@ organizationsRouter.get("/count", async ({ var: { user }, json }) => {
   try {
     return json({ count: await Organization.count({ userId: user.id }) });
   } catch (error) {
+    console.log(error);
     throw new HTTPException(500, {
       message: "Failed to count organizations",
       cause: error,
@@ -41,8 +42,13 @@ organizationsRouter.post(
       const body = c.req.valid("form");
       const user = c.var.user;
       const filename = encodeURI(`organization/${ulid()}-${body.slug}`);
-      const logoUrl = c.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
-      await uploadFile(filename, body.logo);
+      const logoUrl = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
+
+      try {
+        await uploadFile(filename, body.logo);
+      } catch (e) {
+        console.error(e);
+      }
 
       const organization = await Organization.create({
         name: body.name,
@@ -50,6 +56,7 @@ organizationsRouter.post(
         logo: logoUrl,
       });
 
+      console.log("error");
       if (!organization) {
         throw new HTTPException(500, {
           message: "Failed to create organization",
@@ -65,6 +72,7 @@ organizationsRouter.post(
 
       return c.json(organization);
     } catch (error) {
+      console.log(error);
       throw new HTTPException(500, {
         message: "Failed to create organization",
         cause: error,
@@ -89,7 +97,7 @@ organizationsRouter.patch(
           const logoPath = organization.logo.split(".com/").pop();
           if (logoPath) await deleteFile(logoPath);
         }
-        input.logo = c.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
+        input.logo = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
         await uploadFile(filename, logo);
       }
 
@@ -103,7 +111,7 @@ organizationsRouter.patch(
       return c.json(updatedOrganization);
     } catch (error) {
       throw new HTTPException(500, {
-        message: "Failed to create organization",
+        message: "Failed to update organization",
         cause: error,
       });
     }

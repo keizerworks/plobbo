@@ -30,22 +30,20 @@ export const enforeHasOrgMiddleware = createMiddleware<Env>(async (c, next) => {
     });
   }
 
-  let organization: Env["Variables"]["organization"] | undefined;
+  let organization;
   try {
-    const res = (
+    organization = (
       await db
         .select({
           ...getTableColumns(OrganizationTable),
-          member: sql<string>`
-						json_object(
-							'id', ${OrganizationMemberTable.id},
-							'organizationId', ${OrganizationMemberTable.organizationId},
-							'userId', ${OrganizationMemberTable.userId},
-							'role', ${OrganizationMemberTable.role},
-							'createdAt', ${OrganizationMemberTable.createdAt},
-							'updatedAt', ${OrganizationMemberTable.updatedAt}
-						)
-					`.as("member"),
+          member: sql<OrganizationMember.Model>`(
+            SELECT to_json(obj)
+            FROM (
+              SELECT *
+              FROM ${OrganizationMemberTable}
+              WHERE ${OrganizationMemberTable.organizationId} = ${OrganizationTable.id}
+            ) AS obj
+          )`.as("member"),
         })
         .from(OrganizationTable)
         .innerJoin(
@@ -59,12 +57,6 @@ export const enforeHasOrgMiddleware = createMiddleware<Env>(async (c, next) => {
           ),
         )
     )[0];
-
-    if (res)
-      organization = {
-        ...res,
-        member: JSON.parse(res.member) as OrganizationMember.Model,
-      };
   } catch (e) {
     console.error(e);
     throw new HTTPException(500, {

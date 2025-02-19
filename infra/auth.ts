@@ -18,7 +18,7 @@ export const auth = new sst.aws.Auth("auth", {
     $app.stage === "production"
       ? {
           name: "auth." + domain,
-          dns: sst.cloudflare.dns({ override: true, proxy: true }),
+          dns: sst.cloudflare.dns({ proxy: true }),
         }
       : undefined,
 });

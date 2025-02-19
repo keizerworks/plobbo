@@ -45,27 +45,19 @@ export namespace Blog {
     const [blog] = await db
       .select({
         ...columns,
-        metadata: sql<string>`
-										json_object(
-												'ogUrl', ${BlogMetadataTable.ogUrl},
-												'ogImage', ${BlogMetadataTable.ogImage},
-												'ogTitle', ${BlogMetadataTable.ogTitle},
-												'ogDescription', ${BlogMetadataTable.ogDescription},
-												'keywords', ${BlogMetadataTable.keywords},
-												'description', ${BlogMetadataTable.description},
-												'blogId', ${BlogMetadataTable.blogId}
-										)
-								`.as("metadata"),
+        metadata: sql<BlogMetadata.Model>`(
+					SELECT to_json(obj)
+					FROM (
+						SELECT *
+						FROM ${BlogMetadataTable}
+						WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
+					) AS obj
+				)`.as("metadata"),
       })
       .from(BlogTable)
       .where(eq(BlogTable.id, id))
-      .limit(1)
-      .then((blogs) =>
-        blogs.map((b) => ({
-          ...b,
-          metadata: JSON.parse(b.metadata) as unknown as BlogMetadata.Model,
-        })),
-      );
+      .limit(1);
+
     return blog;
   }
 
@@ -97,16 +89,14 @@ export namespace Blog {
     let query = db
       .select({
         ...columns,
-        author: sql<string>`
-										json_object(
-												'id', ${OrganizationMemberTable.id},
-												'organizationId', ${OrganizationMemberTable.organizationId},
-												'userId', ${OrganizationMemberTable.userId},
-												'role', ${OrganizationMemberTable.role},
-												'createdAt', ${OrganizationMemberTable.createdAt},
-												'updatedAt', ${OrganizationMemberTable.updatedAt}
-										)
-								`.as("author"),
+        author: sql<OrganizationMember.Model>`(
+					SELECT to_json(obj)
+					FROM (
+						SELECT *
+						FROM ${OrganizationMemberTable}
+						WHERE ${OrganizationMemberTable.id} = ${BlogTable.authorId}
+					) AS obj
+				)`.as("author"),
       })
       .from(BlogTable)
       .innerJoin(
@@ -169,10 +159,7 @@ export namespace Blog {
       );
     }
 
-    return (await query).map((blog) => ({
-      ...blog,
-      author: JSON.parse(blog.author) as unknown as OrganizationMember.Model,
-    }));
+    return await query;
   };
 
   export const count = async (

@@ -10,7 +10,7 @@ import { AppSidebar } from "~/components/sidebar/app-sidebar";
 import DashboardHeader from "~/components/sidebar/header";
 import { SidebarInset, SidebarProvider } from "~/components/sidebar/sidebar";
 import { Separator } from "~/components/ui/separator";
-import workersClient from "~/lib/axios";
+import apiClient from "~/lib/axios";
 
 import { getIsLoggedIn, initializeAuth, login } from "../store/auth";
 
@@ -25,7 +25,7 @@ export const Route = createRootRoute({
     const loggedIn = getIsLoggedIn();
     if (!loggedIn) return await login();
 
-    const { count } = await workersClient
+    const { count } = await apiClient
       .get<{ count: number }>("organizations/count")
       .then((r) => r.data);
 

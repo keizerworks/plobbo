@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono/quick";
 import { z } from "zod";
 
+import { openAiOptions } from "../lib/openai";
 import { enforeAuthMiddleware } from "../middleware/auth";
 
 const aiRouter = new Hono<{
@@ -23,17 +24,7 @@ aiRouter.post(
   ),
   (c) => {
     const { messages, system } = c.req.valid("json");
-    console.log({
-      apiKey: c.env.LANGDB_API_KEY,
-      baseURL: c.env.LANGDB_OPENAI_BASE_URL,
-      headers: { "x-project-id": c.env.LANGDB_PROJECT_ID },
-    });
-
-    const openai = createOpenAI({
-      apiKey: c.env.LANGDB_API_KEY,
-      baseURL: c.env.LANGDB_OPENAI_BASE_URL,
-      headers: { "x-project-id": c.env.LANGDB_PROJECT_ID },
-    });
+    const openai = createOpenAI(openAiOptions);
 
     try {
       const result = streamText({
@@ -64,11 +55,7 @@ aiRouter.post(
   async (c) => {
     const { prompt, system } = c.req.valid("json");
 
-    const openai = createOpenAI({
-      apiKey: c.env.LANGDB_API_KEY,
-      baseURL: c.env.LANGDB_OPENAI_BASE_URL,
-      headers: { "x-project-id": c.env.LANGDB_PROJECT_ID },
-    });
+    const openai = createOpenAI(openAiOptions);
 
     try {
       const result = await generateText({

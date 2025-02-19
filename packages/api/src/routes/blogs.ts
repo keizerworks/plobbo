@@ -40,7 +40,7 @@ blogsRouter.post(
 
     if (body.image) {
       const filename = "blogs/" + encodeURI(ulid() + "-" + body.slug);
-      input.image = c.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
+      input.image = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
       await uploadFile(filename, body.image);
     }
 
@@ -111,7 +111,7 @@ blogsRouter.put(
     const body = c.req.valid("form");
     const filename = "blogs/placeholder-images" + encodeURI(ulid());
     await uploadFile(filename, body.file);
-    return c.json({ url: c.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename });
+    return c.json({ url: process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename });
   },
 );
 
@@ -155,7 +155,7 @@ blogsRouter.patch(
 
     if (image) {
       const filename = "blogs/" + encodeURI(ulid() + "-" + body.slug);
-      input.image = c.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
+      input.image = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
       await uploadFile(filename, image);
     }
 

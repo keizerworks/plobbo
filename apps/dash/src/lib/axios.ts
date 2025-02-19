@@ -2,33 +2,9 @@ import axios from "axios";
 
 import { getToken } from "~/store/auth";
 
-const workersClient = axios.create({
-  baseURL: import.meta.env.VITE_URL,
-  withCredentials: true,
-});
+const apiClient = axios.create({ baseURL: import.meta.env.VITE_URL });
 
-export interface BaseResponse {
-  code: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
-  error: boolean;
-  message: string;
-  success: boolean;
-}
-
-export interface SuccessResponse<T> extends BaseResponse {
-  data: T;
-  error: false;
-  success: true;
-}
-
-export interface ErrorResponse extends BaseResponse {
-  data: null;
-  error: true;
-  success: false;
-}
-
-workersClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use((config) => {
   const token = getToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
@@ -42,4 +18,4 @@ workersClient.interceptors.request.use((config) => {
   return config;
 });
 
-export default workersClient;
+export default apiClient;
