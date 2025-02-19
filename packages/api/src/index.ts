@@ -13,7 +13,7 @@ const app = new Hono()
     cors({
       origin: ["https://dash.plobbo.com", "http://localhost:3001"],
       allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
-      credentials: true,
+      credentials: false,
     }),
   )
   .route("/profile", profileRouter)
