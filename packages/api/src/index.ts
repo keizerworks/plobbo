@@ -9,16 +9,15 @@ import profileRouter from "./routes/user";
 
 const app = new Hono()
   .basePath("/api")
-  .use(async (c, next) => {
-    c.res.headers.delete("Access-Control-Allow-Origin"); // Prevent duplicate headers
-    await next();
-  })
   .use(
-    cors({
-      origin: "*",
-      allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
-      credentials: false,
-    }),
+    process.env.NODE_ENV === "production"
+      ? // eslint-disable-next-line @typescript-eslint/no-empty-function
+        async () => {}
+      : cors({
+          origin: "*",
+          allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
+          credentials: false,
+        }),
   )
   .route("/profile", profileRouter)
   .route("/organizations", organizationsRouter)
