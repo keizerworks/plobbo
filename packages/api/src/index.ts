@@ -11,7 +11,11 @@ const app = new Hono()
   .basePath("/api")
   .use(
     cors({
-      origin: ["https://dash.plobbo.com", "http://localhost:3001"],
+      origin: [
+        process.env.NODE_ENV === "production"
+          ? "https://dash.plobbo.com"
+          : "http://localhost:3001",
+      ],
       allowMethods: ["POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"],
       credentials: false,
     }),
