@@ -9,6 +9,10 @@ import profileRouter from "./routes/user";
 
 const app = new Hono()
   .basePath("/api")
+  .use(async (c, next) => {
+    c.res.headers.delete("Access-Control-Allow-Origin"); // Prevent duplicate headers
+    await next();
+  })
   .use(
     cors({
       origin: "*",
