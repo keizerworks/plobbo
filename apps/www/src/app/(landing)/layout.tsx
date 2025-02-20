@@ -2,11 +2,11 @@ import "@plobbo/ui/globals.css";
 import "~/styles/globals.css";
 
 import type { Metadata } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
+import { Geist_Mono, Noto_Sans } from "next/font/google";
 
 import { ThemeProvider } from "~/providers/theme-provider";
 
-const inter = Inter({
+const inter = Noto_Sans({
   variable: "--font-sans",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",

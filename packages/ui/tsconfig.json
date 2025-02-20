@@ -2,6 +2,7 @@
   "extends": "@plobbo/tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "paths": {
       "@plobbo/ui/*": ["./src/*"]
     }
