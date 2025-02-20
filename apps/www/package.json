@@ -12,7 +12,12 @@
   },
   "dependencies": {
     "@plobbo/api": "workspace:*",
+    "@plobbo/ui": "workspace:*",
     "next": "15.1.7",
+    "lucide-react": "0.456.0",
+    "next-themes": "^0.4.3",
+    "tailwind-merge": "catalog:",
+    "tailwindcss-animate": "catalog:",
     "react": "catalog:react19",
     "react-dom": "catalog:react19"
   },
@@ -27,8 +32,8 @@
     "@types/react-dom": "catalog:react19",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "^5"
   },
   "prettier": "@plobbo/prettier-config"

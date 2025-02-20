@@ -16,7 +16,8 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": {
-      "~/*": ["../../apps/www/src/*"]
+      "~/*": ["../../apps/www/src/*"],
+      "@plobbo/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": [
@@ -24,7 +25,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "open-next.config.ts"
+    "open-next.config.ts",
+    "postcss.config.mjs",
+    "tailwind.config.ts"
   ],
   "exclude": ["node_modules"]
 }
