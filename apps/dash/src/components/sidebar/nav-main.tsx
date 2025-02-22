@@ -3,7 +3,7 @@
 import type { LucideIcon } from "lucide-react";
 import { useMemo } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { LayoutDashboard, Newspaper, User, Users } from "lucide-react";
+import { Cog, LayoutDashboard, Newspaper, Users } from "lucide-react";
 
 import { Collapsible } from "~/components/ui/collapsible";
 
@@ -47,10 +47,10 @@ export function NavMain() {
           isActive: pathname.startsWith("/users"),
         },
         {
-          title: "Profile",
-          url: "/profile",
-          icon: User,
-          isActive: pathname.startsWith("/profile"),
+          title: "configure",
+          url: "/configure",
+          icon: Cog,
+          isActive: pathname.startsWith("/configure"),
         },
       ] satisfies NavItemInterface[],
     [pathname],

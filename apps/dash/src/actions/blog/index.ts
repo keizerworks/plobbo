@@ -51,9 +51,9 @@ export const patchBlogs = async (
       formData.set(key, value.toUTCString());
     } else if (Array.isArray(value)) {
       for (const item of value) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         formData.append(
           key,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           parsedKey === "body" ? JSON.stringify(item) : item,
         );
       }

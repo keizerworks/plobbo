@@ -5,7 +5,6 @@ import { Loader } from "lucide-react";
 
 import { organizationsQueryOption } from "~/actions/organization/query-options";
 import { CreateOrganization } from "~/components/organization/create";
-import { UpdateOrganization } from "~/components/organization/update";
 import { AppSidebar } from "~/components/sidebar/app-sidebar";
 import DashboardHeader from "~/components/sidebar/header";
 import { SidebarInset, SidebarProvider } from "~/components/sidebar/sidebar";
@@ -59,8 +58,6 @@ function RootComponent() {
           <Outlet />
         </SidebarInset>
       </SidebarProvider>
-
-      <UpdateOrganization />
       <CreateOrganization />
     </>
   );

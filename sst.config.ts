@@ -17,22 +17,17 @@ export default $config({
     const { vpc } = await import("./infra/vpc");
     const [{ postgres }] = await Promise.all([
       import("./infra/storage"),
+      import("./infra/cache"),
       import("./infra/email"),
       await import("./infra/secrets"),
     ]);
     (await import("./infra/migrator")).buildAndRunMigrator(vpc, postgres);
-    const [{ www }, { dashboard }, { auth }] = await Promise.all([
+    await Promise.all([
       import("./infra/www"),
       import("./infra/dash"),
       import("./infra/auth"),
     ]);
 
     await import("./infra/commands");
-
-    return {
-      www: www.url,
-      dashboard: dashboard.url,
-      auth: auth.url,
-    };
   },
 });

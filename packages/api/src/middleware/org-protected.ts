@@ -21,8 +21,11 @@ interface Env {
 
 export const enforeHasOrgMiddleware = createMiddleware<Env>(async (c, next) => {
   const user = c.var.user;
-  const parsedBody = await c.req.parseBody();
-  const organizationId = parsedBody.organizationId ?? parsedBody.id;
+
+  const id = c.req.param("id");
+  const parsedBody =
+    c.req.method.toLowerCase() !== "get" ? await c.req.parseBody() : {};
+  const organizationId = id ?? parsedBody.organizationId ?? parsedBody.id;
 
   if (typeof organizationId !== "string") {
     throw new HTTPException(400, {

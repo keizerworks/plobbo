@@ -10,4 +10,14 @@ export const secrets = {
   ),
 
   langdbApiKey: new sst.Secret("langdbApiKey", process.env.LANGDB_API_KEY),
+
+  CloudfrontWWWUrl: new sst.Secret(
+    "CloudfrontWWWUrl",
+    process.env.CLOUDFRONT_WWW_URL,
+  ),
+
+  CloudfrontDistributionID: new sst.Secret(
+    "CloudfrontDistributionID",
+    process.env.CLOUDFRONT_DISTRIBUTIONID,
+  ),
 };

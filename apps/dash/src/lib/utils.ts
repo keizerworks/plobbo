@@ -47,3 +47,11 @@ export function composeEventHandlers<E>(
     }
   };
 }
+
+export const getRecordName = (name: string) => {
+  const parts = name.split(".");
+  if (parts.length <= 2) {
+    return name; // If it's "domain.com", return as is
+  }
+  return parts.slice(0, -2).join("."); // Remove the last two segments (domain + TLD)
+};

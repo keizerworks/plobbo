@@ -41,8 +41,7 @@ export const BlogTable = pgTable("blog", {
 
 export const BlogMetadataTable = pgTable("blog_metadata", {
   blogId: varchar({ length: 34 })
-    .unique()
-    .notNull()
+    .primaryKey()
     .references(() => BlogTable.id),
   description: text().notNull(),
   keywords: text(),

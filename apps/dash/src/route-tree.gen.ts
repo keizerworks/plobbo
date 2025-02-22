@@ -14,15 +14,20 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as NoOrganizationImport } from './routes/no-organization'
+import { Route as ConfigureImport } from './routes/_configure'
 import { Route as BlogsIndexImport } from './routes/blogs/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
 import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
+import { Route as ConfigureConfigureIndexImport } from './routes/_configure/configure/index'
+import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
+import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
+import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
 
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
+const ConfigureConfigureImport = createFileRoute('/_configure/configure')()
 const UsersIndexLazyImport = createFileRoute('/users/')()
-const ProfileIndexLazyImport = createFileRoute('/profile/')()
 
 // Create/Update Routes
 
@@ -32,23 +37,28 @@ const NoOrganizationRoute = NoOrganizationImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ConfigureRoute = ConfigureImport.update({
+  id: '/_configure',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const ConfigureConfigureRoute = ConfigureConfigureImport.update({
+  id: '/configure',
+  path: '/configure',
+  getParentRoute: () => ConfigureRoute,
+} as any)
+
 const UsersIndexLazyRoute = UsersIndexLazyImport.update({
   id: '/users/',
   path: '/users/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
-
-const ProfileIndexLazyRoute = ProfileIndexLazyImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/profile/index.lazy').then((d) => d.Route))
 
 const BlogsIndexRoute = BlogsIndexImport.update({
   id: '/blogs/',
@@ -70,6 +80,41 @@ const BlogsBlogIdRouteRoute = BlogsBlogIdRouteImport.update({
   import('./routes/blogs/$blog-id/route.lazy').then((d) => d.Route),
 )
 
+const ConfigureConfigureIndexRoute = ConfigureConfigureIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConfigureConfigureRoute,
+} as any)
+
+const ConfigureConfigureSettingsRoute = ConfigureConfigureSettingsImport.update(
+  {
+    id: '/_settings',
+    getParentRoute: () => ConfigureConfigureRoute,
+  } as any,
+)
+
+const ConfigureConfigureSettingsSettingsIndexRoute =
+  ConfigureConfigureSettingsSettingsIndexImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => ConfigureConfigureSettingsRoute,
+  } as any).lazy(() =>
+    import('./routes/_configure/configure/_settings/settings/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ConfigureConfigureSettingsSettingsCustomDomainIndexRoute =
+  ConfigureConfigureSettingsSettingsCustomDomainIndexImport.update({
+    id: '/settings/custom-domain/',
+    path: '/settings/custom-domain/',
+    getParentRoute: () => ConfigureConfigureSettingsRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_configure/configure/_settings/settings/custom-domain/index.lazy'
+    ).then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -79,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/_configure': {
+      id: '/_configure'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ConfigureImport
       parentRoute: typeof rootRoute
     }
     '/no-organization': {
@@ -109,13 +161,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogsIndexImport
       parentRoute: typeof rootRoute
     }
-    '/profile/': {
-      id: '/profile/'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/users/': {
       id: '/users/'
       path: '/users'
@@ -123,90 +168,192 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_configure/configure': {
+      id: '/_configure/configure'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureConfigureImport
+      parentRoute: typeof ConfigureImport
+    }
+    '/_configure/configure/_settings': {
+      id: '/_configure/configure/_settings'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureConfigureSettingsImport
+      parentRoute: typeof ConfigureConfigureRoute
+    }
+    '/_configure/configure/': {
+      id: '/_configure/configure/'
+      path: '/'
+      fullPath: '/configure/'
+      preLoaderRoute: typeof ConfigureConfigureIndexImport
+      parentRoute: typeof ConfigureConfigureImport
+    }
+    '/_configure/configure/_settings/settings/': {
+      id: '/_configure/configure/_settings/settings/'
+      path: '/settings'
+      fullPath: '/configure/settings'
+      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsIndexImport
+      parentRoute: typeof ConfigureConfigureSettingsImport
+    }
+    '/_configure/configure/_settings/settings/custom-domain/': {
+      id: '/_configure/configure/_settings/settings/custom-domain/'
+      path: '/settings/custom-domain'
+      fullPath: '/configure/settings/custom-domain'
+      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexImport
+      parentRoute: typeof ConfigureConfigureSettingsImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface ConfigureConfigureSettingsRouteChildren {
+  ConfigureConfigureSettingsSettingsIndexRoute: typeof ConfigureConfigureSettingsSettingsIndexRoute
+  ConfigureConfigureSettingsSettingsCustomDomainIndexRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+}
+
+const ConfigureConfigureSettingsRouteChildren: ConfigureConfigureSettingsRouteChildren =
+  {
+    ConfigureConfigureSettingsSettingsIndexRoute:
+      ConfigureConfigureSettingsSettingsIndexRoute,
+    ConfigureConfigureSettingsSettingsCustomDomainIndexRoute:
+      ConfigureConfigureSettingsSettingsCustomDomainIndexRoute,
+  }
+
+const ConfigureConfigureSettingsRouteWithChildren =
+  ConfigureConfigureSettingsRoute._addFileChildren(
+    ConfigureConfigureSettingsRouteChildren,
+  )
+
+interface ConfigureConfigureRouteChildren {
+  ConfigureConfigureSettingsRoute: typeof ConfigureConfigureSettingsRouteWithChildren
+  ConfigureConfigureIndexRoute: typeof ConfigureConfigureIndexRoute
+}
+
+const ConfigureConfigureRouteChildren: ConfigureConfigureRouteChildren = {
+  ConfigureConfigureSettingsRoute: ConfigureConfigureSettingsRouteWithChildren,
+  ConfigureConfigureIndexRoute: ConfigureConfigureIndexRoute,
+}
+
+const ConfigureConfigureRouteWithChildren =
+  ConfigureConfigureRoute._addFileChildren(ConfigureConfigureRouteChildren)
+
+interface ConfigureRouteChildren {
+  ConfigureConfigureRoute: typeof ConfigureConfigureRouteWithChildren
+}
+
+const ConfigureRouteChildren: ConfigureRouteChildren = {
+  ConfigureConfigureRoute: ConfigureConfigureRouteWithChildren,
+}
+
+const ConfigureRouteWithChildren = ConfigureRoute._addFileChildren(
+  ConfigureRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs': typeof BlogsIndexRoute
-  '/profile': typeof ProfileIndexLazyRoute
   '/users': typeof UsersIndexLazyRoute
+  '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
+  '/configure/': typeof ConfigureConfigureIndexRoute
+  '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
+  '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs': typeof BlogsIndexRoute
-  '/profile': typeof ProfileIndexLazyRoute
   '/users': typeof UsersIndexLazyRoute
+  '/configure': typeof ConfigureConfigureIndexRoute
+  '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
+  '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/_configure': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
   '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs/': typeof BlogsIndexRoute
-  '/profile/': typeof ProfileIndexLazyRoute
   '/users/': typeof UsersIndexLazyRoute
+  '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
+  '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
+  '/_configure/configure/': typeof ConfigureConfigureIndexRoute
+  '/_configure/configure/_settings/settings/': typeof ConfigureConfigureSettingsSettingsIndexRoute
+  '/_configure/configure/_settings/settings/custom-domain/': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/no-organization'
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
-    | '/profile'
     | '/users'
+    | '/configure'
+    | '/configure/'
+    | '/configure/settings'
+    | '/configure/settings/custom-domain'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
     | '/no-organization'
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
-    | '/profile'
     | '/users'
+    | '/configure'
+    | '/configure/settings'
+    | '/configure/settings/custom-domain'
   id:
     | '__root__'
     | '/'
+    | '/_configure'
     | '/no-organization'
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs/'
-    | '/profile/'
     | '/users/'
+    | '/_configure/configure'
+    | '/_configure/configure/_settings'
+    | '/_configure/configure/'
+    | '/_configure/configure/_settings/settings/'
+    | '/_configure/configure/_settings/settings/custom-domain/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  ConfigureRoute: typeof ConfigureRouteWithChildren
   NoOrganizationRoute: typeof NoOrganizationRoute
   BlogsBlogIdRouteRoute: typeof BlogsBlogIdRouteRoute
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
-  ProfileIndexLazyRoute: typeof ProfileIndexLazyRoute
   UsersIndexLazyRoute: typeof UsersIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  ConfigureRoute: ConfigureRouteWithChildren,
   NoOrganizationRoute: NoOrganizationRoute,
   BlogsBlogIdRouteRoute: BlogsBlogIdRouteRoute,
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
   BlogsIndexRoute: BlogsIndexRoute,
-  ProfileIndexLazyRoute: ProfileIndexLazyRoute,
   UsersIndexLazyRoute: UsersIndexLazyRoute,
 }
 
@@ -221,16 +368,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_configure",
         "/no-organization",
         "/blogs/$blog-id",
         "/users/$user-id",
         "/blogs/",
-        "/profile/",
         "/users/"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/_configure": {
+      "filePath": "_configure.tsx",
+      "children": [
+        "/_configure/configure"
+      ]
     },
     "/no-organization": {
       "filePath": "no-organization.tsx"
@@ -244,11 +397,36 @@ export const routeTree = rootRoute
     "/blogs/": {
       "filePath": "blogs/index.tsx"
     },
-    "/profile/": {
-      "filePath": "profile/index.lazy.tsx"
-    },
     "/users/": {
       "filePath": "users/index.lazy.tsx"
+    },
+    "/_configure/configure": {
+      "filePath": "_configure/configure",
+      "parent": "/_configure",
+      "children": [
+        "/_configure/configure/_settings",
+        "/_configure/configure/"
+      ]
+    },
+    "/_configure/configure/_settings": {
+      "filePath": "_configure/configure/_settings.tsx",
+      "parent": "/_configure/configure",
+      "children": [
+        "/_configure/configure/_settings/settings/",
+        "/_configure/configure/_settings/settings/custom-domain/"
+      ]
+    },
+    "/_configure/configure/": {
+      "filePath": "_configure/configure/index.tsx",
+      "parent": "/_configure/configure"
+    },
+    "/_configure/configure/_settings/settings/": {
+      "filePath": "_configure/configure/_settings/settings/index.tsx",
+      "parent": "/_configure/configure/_settings"
+    },
+    "/_configure/configure/_settings/settings/custom-domain/": {
+      "filePath": "_configure/configure/_settings/settings/custom-domain/index.tsx",
+      "parent": "/_configure/configure/_settings"
     }
   }
 }

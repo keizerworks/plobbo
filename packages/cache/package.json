@@ -1,0 +1,17 @@
+{
+  "name": "@plobbo/cache",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/prettier-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "@types/ioredis": "^5.0.0",
+    "@types/node": "catalog:"
+  },
+  "prettier": "@plobbo/prettier-config"
+}

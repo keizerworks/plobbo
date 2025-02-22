@@ -5,6 +5,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "CloudfrontDistributionID": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "CloudfrontWWWUrl": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "auth": {
       "type": "sst.aws.Auth"
       "url": string
@@ -40,6 +48,13 @@ declare module "sst" {
       "password": string
       "port": number
       "type": "sst.aws.Postgres"
+      "username": string
+    }
+    "valkey": {
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Redis"
       "username": string
     }
     "vpc": {

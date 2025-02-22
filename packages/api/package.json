@@ -5,9 +5,12 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.12",
+    "@aws-sdk/client-acm": "^3.750.0",
+    "@aws-sdk/client-cloudfront": "^3.750.0",
     "@aws-sdk/client-s3": "^3.750.0",
     "@hono/zod-validator": "^0.4.2",
     "@plobbo/auth": "workspace:*",
+    "@plobbo/cache": "workspace:*",
     "@plobbo/core": "workspace:*",
     "@plobbo/db": "workspace:*",
     "@plobbo/validator": "workspace:*",

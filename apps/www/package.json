@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@plobbo/api": "workspace:*",
+    "@plobbo/cache": "workspace:*",
     "@plobbo/ui": "workspace:*",
     "next": "15.1.7",
     "lucide-react": "0.456.0",

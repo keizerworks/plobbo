@@ -17,14 +17,6 @@
     "lib": "~/lib",
     "hooks": "~/hooks"
   },
-  "iconLibrary": "lucide",
-  "registries": {
-    "plate": {
-      "style": "default",
-      "aliases": {
-        "ui": "~/components/plate-ui"
-      },
-      "url": "https://platejs.org/r"
-    }
-  }
+  "iconLibrary": "lucide"
 }
+

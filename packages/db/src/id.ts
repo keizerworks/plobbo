@@ -4,6 +4,7 @@ export const type = {
   user: "usr",
   blog: "blg",
   org: "org",
+  org_domain: "dns",
   org_member: "mem",
 } as const;
 

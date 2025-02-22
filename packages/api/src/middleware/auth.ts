@@ -6,12 +6,8 @@ import { client } from "@plobbo/auth/client";
 import { subjects } from "@plobbo/auth/subjects";
 
 interface Env {
-  Variables: {
-    user: Subjects;
-  };
-  Bindings: {
-    AUTH_URL: string;
-  };
+  Variables: { user: Subjects };
+  Bindings: { AUTH_URL: string };
 }
 
 export const enforeAuthMiddleware = createMiddleware<Env>(async (c, next) => {

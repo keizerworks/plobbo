@@ -1,15 +1,13 @@
 "use client";
 
-import type { DOMAttributes } from "react";
 import { useEffect, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import find from "lodash.find";
-import { ChevronsUpDown, Plus, Settings } from "lucide-react";
+import { ChevronsUpDown, Plus } from "lucide-react";
 
 import type { Organization } from "~/types/organization";
 import { organizationsQueryOption } from "~/actions/organization/query-options";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,12 +53,6 @@ export function OrgSwitcher() {
 
   const handleCreateOrg = () => {
     emitter.emit("create:org", true);
-  };
-
-  const handleUpdateOrg: DOMAttributes<HTMLButtonElement>["onClick"] = (e) => {
-    e.stopPropagation();
-    setOpen(false);
-    emitter.emit("update:org", true);
   };
 
   if (!orgs.length || !activeOrg) {
@@ -128,10 +120,6 @@ export function OrgSwitcher() {
                 <span className="truncate font-semibold">{activeOrg.name}</span>
                 <span className="truncate text-xs">{activeOrg.slug}</span>
               </div>
-
-              <Button onClick={handleUpdateOrg} size="icon" variant="outline">
-                <Settings className="size-4" />
-              </Button>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

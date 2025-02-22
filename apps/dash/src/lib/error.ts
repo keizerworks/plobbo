@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -9,6 +10,10 @@ export function getErrorMessage(err: unknown) {
       return issue.message;
     });
     return errors.join("\n");
+  } else if (err instanceof AxiosError) {
+    return typeof err.response?.data === "string"
+      ? err.response.data
+      : unknownError;
   } else if (err instanceof Error) {
     return err.message;
   } else {

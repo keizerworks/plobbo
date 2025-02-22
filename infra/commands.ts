@@ -5,6 +5,6 @@ export const drizzleStudio = new sst.x.DevCommand("drizzle-studio", {
   environment: { DATABASE_URL },
   dev: {
     autostart: false,
-    command: "pnpm dlx drizzle-kit studio",
+    command: "pnpm drizzle-kit studio -F db",
   },
 });

@@ -4,6 +4,7 @@
   "scripts": {
     "db:generate": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:generate",
     "db:migrate": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:migrate",
+    "db:studio": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:studio",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

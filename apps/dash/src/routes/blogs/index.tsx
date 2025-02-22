@@ -57,7 +57,7 @@ export const Route = createFileRoute("/blogs/")({
       }
 
     const activeOrg = getActiveOrg();
-
+    // eslint-disable-next-line @typescript-eslint/only-throw-error
     if (!activeOrg) throw redirect({ to: "/" });
 
     const activeOrgId = (

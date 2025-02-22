@@ -14,8 +14,7 @@ export const updateOrganizationSchema = z
       }),
     logo: z.instanceof(File),
   })
-  .partial()
-  .extend({ id: z.string() });
+  .partial();
 
 export type UpdateOrganizationInterface = z.infer<
   typeof updateOrganizationSchema

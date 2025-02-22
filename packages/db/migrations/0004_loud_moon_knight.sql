@@ -1,0 +1,1 @@
+ALTER TABLE "organization_domain" DROP COLUMN "token";
