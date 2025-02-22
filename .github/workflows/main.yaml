@@ -40,6 +40,8 @@ jobs:
           NODE_ENV: production
           CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFRONT_WWW_URL: ${{ secrets.CLOUDFRONT_WWW_URL }}
+          CLOUDFRONT_DISTRIBUTIONID: ${{ secrets.CLOUDFRONT_DISTRIBUTIONID }}
           LANGDB_OPENAI_BASE_URL: ${{ secrets.LANGDB_OPENAI_BASE_URL }}
           LANGDB_PROJECT_ID: ${{ secrets.LANGDB_PROJECT_ID }}
           LANGDB_API_KEY: ${{ secrets.LANGDB_API_KEY }}
