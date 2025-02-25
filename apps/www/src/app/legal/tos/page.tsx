@@ -1,19 +1,24 @@
-export function TermsOfService() {
+import Link from "next/link";
+
+export default function TermsOfServicePage() {
   return (
-    <div>
+    <>
       <h1>TERMS OF SERVICE</h1>
       <p>
         <strong>Last Updated: February 23, 2025</strong>
       </p>
 
       <h2>AGREEMENT TO OUR LEGAL TERMS</h2>
+
       <p>
-        We are Keizerworks LLP, doing business as Plobbo ("Company," "we," "us,"
-        or "our"). We operate the website{" "}
-        <a href="http://plobbo.com">http://plobbo.com</a> (the "Site"), as well
-        as any other related products and services that refer or link to these
-        legal terms (the "Legal Terms") (collectively, the "Services").
+        We are Keizerworks LLP, doing business as Plobbo (&quot;Company,&quot;
+        &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). We operate the
+        website <Link href="http://plobbo.com">http://plobbo.com</Link> (the
+        &quot;Site&quot;), as well as any other related products and services
+        that refer or link to these legal terms (the &quot;Legal Terms&quot;)
+        (collectively, the &quot;Services&quot;).
       </p>
+
       <p>
         Plobbo is an AI-powered blogging platform designed to simplify content
         creation, enhance SEO optimization, and streamline team collaboration.
@@ -21,33 +26,38 @@ export function TermsOfService() {
         freelancers to create high-quality blogs with AI-assisted writing,
         built-in SEO tools, and performance tracking.
       </p>
+
       <p>
         You can contact us by email at{" "}
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
+
       <p>
         These Legal Terms constitute a legally binding agreement made between
-        you, whether personally or on behalf of an entity ("you"), and
+        you, whether personally or on behalf of an entity (&quot;you&quot;), and
         Keizerworks, concerning your access to and use of the Services. You
         agree that by accessing the Services, you have read, understood, and
         agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE WITH
         ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING
         THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
       </p>
+
       <p>
         Supplemental terms and conditions or documents that may be posted on the
         Services from time to time are hereby expressly incorporated herein by
         reference. We reserve the right, in our sole discretion, to make changes
         or modifications to these Legal Terms at any time and for any reason.
       </p>
+
       <p>
-        We will alert you about any changes by updating the "Last Updated" date
-        of these Legal Terms, and you waive any right to receive specific notice
-        of each such change. It is your responsibility to periodically review
-        these Legal Terms to stay informed of updates. You will be subject to,
-        and will be deemed to have been made aware of and to have accepted, the
-        changes in any revised Legal Terms by your continued use of the Services
-        after the date such revised Legal Terms are posted.
+        We will alert you about any changes by updating the &quot;Last
+        Updated&quot; date of these Legal Terms, and you waive any right to
+        receive specific notice of each such change. It is your responsibility
+        to periodically review these Legal Terms to stay informed of updates.
+        You will be subject to, and will be deemed to have been made aware of
+        and to have accepted, the changes in any revised Legal Terms by your
+        continued use of the Services after the date such revised Legal Terms
+        are posted.
       </p>
       <p>
         All users who are minors in the jurisdiction in which they reside
@@ -83,29 +93,36 @@ export function TermsOfService() {
 
       <h2>2. INTELLECTUAL PROPERTY RIGHTS</h2>
       <h3>Our Intellectual Property</h3>
+
       <p>
         We are the owner or the licensee of all intellectual property rights in
         our Services, including all source code, databases, functionality,
         software, website designs, audio, video, text, photographs, and graphics
-        in the Services (collectively, the "Content"), as well as the
-        trademarks, service marks, and logos contained therein (the "Marks").
+        in the Services (collectively, the &quot;Content&quot;), as well as the
+        trademarks, service marks, and logos contained therein (the
+        &quot;Marks&quot;).
       </p>
+
       <p>
         Our Content and Marks are protected by copyright and trademark laws (and
         various other intellectual property rights and unfair competition laws)
         and treaties in the United States and around the world.
       </p>
+
       <p>
-        The Content and Marks are provided in or through the Services "AS IS"
-        for your personal, non-commercial use or internal business purpose only.
+        The Content and Marks are provided in or through the Services &quot;AS
+        IS&quot; for your personal, non-commercial use or internal business
+        purpose only.
       </p>
 
       <h3>Your Use of Our Services</h3>
+
       <p>
         Subject to your compliance with these Legal Terms, including the
-        "PROHIBITED ACTIVITIES" section below, we grant you a non-exclusive,
-        non-transferable, revocable licence to:
+        &quot;PROHIBITED ACTIVITIES&quot; section below, we grant you a
+        non-exclusive, non-transferable, revocable licence to:
       </p>
+
       <ul>
         <li>Access the Services; and</li>
         <li>
@@ -114,6 +131,7 @@ export function TermsOfService() {
           use or internal business purpose.
         </li>
       </ul>
+
       <p>
         Except as set out in this section or elsewhere in our Legal Terms, no
         part of the Services and no Content or Marks may be copied, reproduced,
@@ -122,21 +140,24 @@ export function TermsOfService() {
         exploited for any commercial purpose whatsoever, without our express
         prior written permission.
       </p>
+
       <p>
         If you wish to make any use of the Services, Content, or Marks other
         than as set out in this section or elsewhere in our Legal Terms, please
         address your request to:{" "}
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>. If we ever
-        grant you the permission to post, reproduce, or publicly display any
-        part of our Services or Content, you must identify us as the owners or
-        licensors of the Services, Content, or Marks and ensure that any
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>. If
+        we ever grant you the permission to post, reproduce, or publicly display
+        any part of our Services or Content, you must identify us as the owners
+        or licensors of the Services, Content, or Marks and ensure that any
         copyright or proprietary notice appears or is visible on posting,
         reproducing, or displaying our Content.
       </p>
+
       <p>
         We reserve all rights not expressly granted to you in and to the
         Services, Content, and Marks.
       </p>
+
       <p>
         Any breach of these Intellectual Property Rights will constitute a
         material breach of our Legal Terms and your right to use our Services
@@ -144,7 +165,9 @@ export function TermsOfService() {
       </p>
 
       <h2>3. USER REPRESENTATIONS</h2>
+
       <p>By using the Services, you represent and warrant that:</p>
+
       <ol>
         <li>
           All registration information you submit will be true, accurate,
@@ -175,6 +198,7 @@ export function TermsOfService() {
           regulation.
         </li>
       </ol>
+
       <p>
         If you provide any information that is untrue, inaccurate, not current,
         or incomplete, we have the right to suspend or terminate your account
@@ -183,11 +207,13 @@ export function TermsOfService() {
       </p>
 
       <h2>4. USER REGISTRATION</h2>
+
       <p>
         You may be required to register to use the Services. You agree to keep
         your password confidential and will be responsible for all use of your
         account and password.
       </p>
+
       <p>
         We reserve the right to remove, reclaim, or change a username you select
         if we determine, in our sole discretion, that such username is
@@ -195,12 +221,15 @@ export function TermsOfService() {
       </p>
 
       <h2>5. PURCHASES AND PAYMENT</h2>
+
       <p>We accept the following forms of payment:</p>
+
       <ul>
         <li>Visa</li>
         <li>Mastercard</li>
         <li>American Express</li>
       </ul>
+
       <p>
         You agree to provide current, complete, and accurate purchase and
         account information for all purchases made via the Services. You further
@@ -208,11 +237,13 @@ export function TermsOfService() {
         email address, payment method, and payment card expiration date, so that
         we can complete your transactions and contact you as needed.
       </p>
+
       <p>
         Sales tax will be added to the price of purchases as deemed required by
         us. We may change prices at any time. All payments shall be in US
         dollars.
       </p>
+
       <p>
         You agree to pay all charges at the prices then in effect for your
         purchases and any applicable shipping fees, and you authorize us to
@@ -220,6 +251,7 @@ export function TermsOfService() {
         your order. We reserve the right to correct any errors or mistakes in
         pricing, even if we have already requested or received payment.
       </p>
+
       <p>
         We reserve the right to refuse any order placed through the Services. We
         may, in our sole discretion, limit or cancel quantities purchased per
@@ -227,20 +259,22 @@ export function TermsOfService() {
         orders placed by or under the same customer account, the same payment
         method, and/or orders that use the same billing or shipping address.
       </p>
+
       <p>
         We reserve the right to limit or prohibit orders that, in our sole
         judgment, appear to be placed by dealers, resellers, or distributors.
       </p>
 
       <h2>6. SUBSCRIPTIONS</h2>
-
       <h3>Billing and Renewal</h3>
+
       <p>
         Your subscription will continue and automatically renew unless
         cancelled. You consent to our charging your payment method on a
         recurring basis without requiring your prior approval for each recurring
         charge, until such time as you cancel the applicable order.
       </p>
+
       <p>
         The length of your billing cycle will depend on the type of subscription
         plan you choose when you subscribed to the Services.
@@ -252,7 +286,7 @@ export function TermsOfService() {
         any time by logging into your account. Your cancellation will take
         effect at the end of the current paid term. If you have any questions or
         are unsatisfied with our Services, please email us at
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
 
       <h3>Fee Changes</h3>
@@ -268,7 +302,9 @@ export function TermsOfService() {
         in connection with any commercial endeavours except those that are
         specifically endorsed or approved by us.
       </p>
+
       <p>As a user of the Services, you agree not to:</p>
+
       <ul>
         <li>
           Systematically retrieve data or other content from the Services to
@@ -306,9 +342,9 @@ export function TermsOfService() {
           Upload or transmit (or attempt to upload or to transmit) viruses,
           Trojan horses, or other material, including excessive use of capital
           letters and spamming (continuous posting of repetitive text), that
-          interferes with any party&apos;s uninterrupted use and enjoyment of the
-          Services or modifies, impairs, disrupts, alters, or interferes with
-          the use, features, functions, operation, or maintenance of the
+          interferes with any party&apos;s uninterrupted use and enjoyment of
+          the Services or modifies, impairs, disrupts, alters, or interferes
+          with the use, features, functions, operation, or maintenance of the
           Services.
         </li>
         <li>
@@ -328,9 +364,9 @@ export function TermsOfService() {
           Upload or transmit (or attempt to upload or to transmit) any material
           that acts as a passive or active information collection or
           transmission mechanism, including without limitation, clear graphics
-          interchange formats ("gifs"), 1x1 pixels, web bugs, cookies, or other
-          similar devices (sometimes referred to as "spyware" or "passive
-          collection mechanisms" or "pcms").
+          interchange formats (&quot;gifs&quot;), 1x1 pixels, web bugs, cookies,
+          or other similar devices (sometimes referred to as &quot;spyware&quot;
+          or &quot;passive collection mechanisms&quot; or &quot;pcms&quot;).
         </li>
         <li>
           Interfere with, disrupt, or create an undue burden on the Services or
@@ -345,8 +381,8 @@ export function TermsOfService() {
           restrict access to the Services, or any portion of the Services.
         </li>
         <li>
-          Copy or adapt the Services&apos; software, including but not limited to
-          Flash, PHP, HTML, JavaScript, or other code.
+          Copy or adapt the Services&apos; software, including but not limited
+          to Flash, PHP, HTML, JavaScript, or other code.
         </li>
         <li>
           Except as permitted by applicable law, decipher, decompile,
@@ -388,11 +424,12 @@ export function TermsOfService() {
         transmit, perform, publish, distribute, or broadcast content and
         materials to us or on the Services, including but not limited to text,
         writings, video, audio, photographs, graphics, comments, suggestions, or
-        personal information or other material (collectively, "Contributions").
-        Contributions may be viewable by other users of the Services and through
-        third-party websites. As such, any Contributions you transmit may be
-        treated as non-confidential and non-proprietary. When you create or make
-        available any Contributions, you thereby represent and warrant that:
+        personal information or other material (collectively,
+        &quot;Contributions&quot;). Contributions may be viewable by other users
+        of the Services and through third-party websites. As such, any
+        Contributions you transmit may be treated as non-confidential and
+        non-proprietary. When you create or make available any Contributions,
+        you thereby represent and warrant that:
       </p>
       <ul>
         <li>
@@ -516,11 +553,11 @@ export function TermsOfService() {
       <p>
         As part of the functionality of the Services, you may link your account
         with online accounts you have with third-party service providers (each
-        such account, a "Third-Party Account") by either: (1) providing your
-        Third-Party Account login information through the Services; or (2)
-        allowing us to access your Third-Party Account, as is permitted under
-        the applicable terms and conditions that govern your use of each
-        Third-Party Account.
+        such account, a &quot;Third-Party Account&quot;) by either: (1)
+        providing your Third-Party Account login information through the
+        Services; or (2) allowing us to access your Third-Party Account, as is
+        permitted under the applicable terms and conditions that govern your use
+        of each Third-Party Account.
       </p>
       <p>
         You represent and warrant that you are entitled to disclose your
@@ -535,11 +572,11 @@ export function TermsOfService() {
         By granting us access to any Third-Party Accounts, you understand that
         (1) we may access, make available, and store (if applicable) any content
         that you have provided to and stored in your Third-Party Account (the
-        "Social Network Content") so that it is available on and through the
-        Services via your account, including without limitation any friend lists
-        and (2) we may submit to and receive from your Third-Party Account
-        additional information to the extent you are notified when you link your
-        account with the Third-Party Account.
+        &quot;Social Network Content&quot;) so that it is available on and
+        through the Services via your account, including without limitation any
+        friend lists and (2) we may submit to and receive from your Third-Party
+        Account additional information to the extent you are notified when you
+        link your account with the Third-Party Account.
       </p>
       <p>
         Depending on the Third-Party Accounts you choose and subject to the
@@ -611,9 +648,9 @@ export function TermsOfService() {
       <p>
         We care about data privacy and security. Please review our Privacy
         Policy:
-        <a href="https://plobbo.com/privacypolicy" target="_blank">
+        <Link href="https://plobbo.com/privacypolicy" target="_blank">
           plobbo.com/privacypolicy
-        </a>
+        </Link>
         . By using the Services, you agree to be bound by our Privacy Policy,
         which is incorporated into these Legal Terms.
       </p>
@@ -694,13 +731,14 @@ export function TermsOfService() {
       <h3>Informal Negotiations</h3>
       <p>
         To expedite resolution and control the cost of any dispute, controversy,
-        or claim related to these Legal Terms (each a "Dispute" and
-        collectively, the "Disputes") brought by either you or us (individually,
-        a "Party" and collectively, the "Parties"), the Parties agree to first
-        attempt to negotiate any Dispute (except those Disputes expressly
-        provided below) informally for at least thirty (30) days before
-        initiating arbitration. Such informal negotiations commence upon written
-        notice from one Party to the other Party.
+        or claim related to these Legal Terms (each a &quot;Dispute&quot; and
+        collectively, the &quot;Disputes&quot;) brought by either you or us
+        (individually, a &quot;Party&quot; and collectively, the
+        &quot;Parties&quot;), the Parties agree to first attempt to negotiate
+        any Dispute (except those Disputes expressly provided below) informally
+        for at least thirty (30) days before initiating arbitration. Such
+        informal negotiations commence upon written notice from one Party to the
+        other Party.
       </p>
 
       <h3>Binding Arbitration</h3>
@@ -786,9 +824,9 @@ export function TermsOfService() {
 
       <p>
         We make no warranties or representations about the accuracy or
-        completeness of the Services&apos; content or the content of any websites or
-        mobile applications linked to the Services and we will assume no
-        liability or responsibility for any:
+        completeness of the Services&apos; content or the content of any
+        websites or mobile applications linked to the Services and we will
+        assume no liability or responsibility for any:
       </p>
       <ul>
         <li>Errors, mistakes, or inaccuracies of content and materials;</li>
@@ -854,8 +892,8 @@ export function TermsOfService() {
         You agree to defend, indemnify, and hold us harmless, including our
         subsidiaries, affiliates, and all of our respective officers, agents,
         partners, and employees, from and against any loss, damage, liability,
-        claim, or demand, including reasonable attorneys&apos; fees and expenses,
-        made by any third party due to or arising out of:
+        claim, or demand, including reasonable attorneys&apos; fees and
+        expenses, made by any third party due to or arising out of:
       </p>
       <ul>
         <li>Your Contributions;</li>
@@ -970,8 +1008,9 @@ export function TermsOfService() {
         further information regarding use of the Services, please contact us at:
       </p>
       <p>
-        Email: <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>
+        Email:{" "}
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>
       </p>
-    </div>
+    </>
   );
 }

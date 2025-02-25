@@ -1,6 +1,8 @@
-export function PrivacyPolicy() {
+import Link from "next/link";
+
+export default function PrivacyPolicyPage() {
   return (
-    <div>
+    <>
       <h1>PRIVACY POLICY</h1>
       <p>
         <strong>Last updated February 23, 2025</strong>
@@ -8,17 +10,18 @@ export function PrivacyPolicy() {
 
       <p>
         This Privacy Notice for Keizerworks LLP (doing business as Plobbo)
-        ("we," "us," or "our") describes how and why we might access, collect,
-        store, use, and/or share ("process") your personal information when you
-        use our services ("Services"), including when you:
+        (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) describes how and
+        why we might access, collect, store, use, and/or share
+        (&quot;process&quot;) your personal information when you use our
+        services (&quot;Services&quot;), including when you:
       </p>
 
       <ul>
         <li>
           Visit our website at{" "}
-          <a href="http://plobbo.com" target="_blank">
-            http://plobbo.com
-          </a>
+          <Link href="https://plobbo.com" target="_blank">
+            https://plobbo.com
+          </Link>
           , or any website of ours that links to this Privacy Notice.
         </li>
         <li>
@@ -41,7 +44,7 @@ export function PrivacyPolicy() {
         If you do not agree with our policies and practices, please do not use
         our Services. If you still have any questions or concerns, please
         contact us at{" "}
-        <a href="mailto:Biz@keizerworks.com">Biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
 
       <h2>SUMMARY OF KEY POINTS</h2>
@@ -59,17 +62,17 @@ export function PrivacyPolicy() {
           information depending on how you interact with us and the Services,
           the choices you make, and the products and features you use. Learn
           more about personal information you disclose to us
-          <a href="#1-what-information-do-we-collect">
+          <Link href="#1-what-information-do-we-collect">
             (#1-what-information-do-we-collect)
-          </a>
+          </Link>
           .
         </li>
         <li>
           <strong>Do we process any sensitive personal information?</strong>{" "}
-          Some of the information may be considered "special" or "sensitive" in
-          certain jurisdictions, for example your racial or ethnic origins,
-          sexual orientation, and religious beliefs. We do not process sensitive
-          personal information.
+          Some of the information may be considered &quot;special&quot; or
+          &quot;sensitive&quot; in certain jurisdictions, for example your
+          racial or ethnic origins, sexual orientation, and religious beliefs.
+          We do not process sensitive personal information.
         </li>
         <li>
           <strong>Do we collect any information from third parties?</strong> We
@@ -83,9 +86,9 @@ export function PrivacyPolicy() {
           your consent. We process your information only when we have a valid
           legal reason to do so. Learn more about how we process your
           information
-          <a href="#2-how-do-we-process-your-information">
+          <Link href="#2-how-do-we-process-your-information">
             (#2-how-do-we-process-your-information)
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -96,9 +99,9 @@ export function PrivacyPolicy() {
           We may share information in specific situations and with specific
           third parties. Learn more about when and with whom we share your
           personal information
-          <a href="#4-when-and-with-whom-do-we-share-your-personal-information">
+          <Link href="#4-when-and-with-whom-do-we-share-your-personal-information">
             (#4-when-and-with-whom-do-we-share-your-personal-information)
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -111,9 +114,9 @@ export function PrivacyPolicy() {
           not be able to defeat our security and improperly collect, access,
           steal, or modify your information. Learn more about how we keep your
           information safe
-          <a href="#9-how-do-we-keep-your-information-safe">
+          <Link href="#9-how-do-we-keep-your-information-safe">
             (#9-how-do-we-keep-your-information-safe)
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -121,9 +124,9 @@ export function PrivacyPolicy() {
           located geographically, the applicable privacy law may mean you have
           certain rights regarding your personal information. Learn more about
           your privacy rights
-          <a href="#11-what-are-your-privacy-rights">
+          <Link href="#11-what-are-your-privacy-rights">
             (#11-what-are-your-privacy-rights)
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -177,9 +180,9 @@ export function PrivacyPolicy() {
         social media account. If you choose to register in this way, we will
         collect certain profile information about you from the social media
         provider, as described in the section called
-        <a href="#7-how-do-we-handle-your-social-logins">
+        <Link href="#7-how-do-we-handle-your-social-logins">
           HOW DO WE HANDLE YOUR SOCIAL LOGINS?
-        </a>
+        </Link>
         .
       </p>
 
@@ -245,9 +248,9 @@ export function PrivacyPolicy() {
           given us permission (i.e., consent) to use your personal information
           for a specific purpose. You can withdraw your consent at any time.
           Learn more about withdrawing your consent
-          <a href="#11-what-are-your-privacy-rights">
+          <Link href="#11-what-are-your-privacy-rights">
             (#11-what-are-your-privacy-rights)
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -355,13 +358,13 @@ export function PrivacyPolicy() {
 
       <p>
         To the extent these online tracking technologies are deemed to be a
-        "sale"/"sharing" (which includes targeted advertising, as defined under
-        the applicable laws) under applicable US state laws, you can opt out of
-        these online tracking technologies by submitting a request as described
-        below under section
-        <a href="#13-do-united-states-residents-have-specific-privacy-rights">
+        &quot;sale&quot;/&quot;sharing&quot; (which includes targeted
+        advertising, as defined under the applicable laws) under applicable US
+        state laws, you can opt out of these online tracking technologies by
+        submitting a request as described below under section
+        <Link href="#13-do-united-states-residents-have-specific-privacy-rights">
           DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
-        </a>
+        </Link>
       </p>
 
       <p>
@@ -378,9 +381,10 @@ export function PrivacyPolicy() {
       <p>
         As part of our Services, we offer products, features, or tools powered
         by artificial intelligence, machine learning, or similar technologies
-        (collectively, "AI Products"). These tools are designed to enhance your
-        experience and provide you with innovative solutions. The terms in this
-        Privacy Notice govern your use of the AI Products within our Services.
+        (collectively, &quot;AI Products&quot;). These tools are designed to
+        enhance your experience and provide you with innovative solutions. The
+        terms in this Privacy Notice govern your use of the AI Products within
+        our Services.
       </p>
 
       <h3>Our AI Products</h3>
@@ -490,7 +494,7 @@ export function PrivacyPolicy() {
         will deactivate the account and take reasonable measures to promptly
         delete such data from our records. If you become aware of any data we
         may have collected from children under age 18, please contact us at{" "}
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
 
       <h2>11. WHAT ARE YOUR PRIVACY RIGHTS?</h2>
@@ -522,9 +526,9 @@ export function PrivacyPolicy() {
         In certain circumstances, you may also have the right to object to the
         processing of your personal information. You can make such a request by
         contacting us by using the contact details provided in the section
-        <a href="#15-how-can-you-contact-us-about-this-notice">
+        <Link href="#15-how-can-you-contact-us-about-this-notice">
           HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-        </a>{" "}
+        </Link>{" "}
         below.
       </p>
 
@@ -552,9 +556,9 @@ export function PrivacyPolicy() {
         law, you have the right to withdraw your consent at any time. You can
         withdraw your consent at any time by contacting us by using the contact
         details provided in the section
-        <a href="#15-how-can-you-contact-us-about-this-notice">
+        <Link href="#15-how-can-you-contact-us-about-this-notice">
           HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-        </a>
+        </Link>
         below or updating your preferences.
       </p>
 
@@ -570,9 +574,9 @@ export function PrivacyPolicy() {
         You can unsubscribe from our marketing and promotional communications at
         any time by clicking on the unsubscribe link in the emails that we send,
         or by contacting us using the details provided in the section
-        <a href="#15-how-can-you-contact-us-about-this-notice">
+        <Link href="#15-how-can-you-contact-us-about-this-notice">
           HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-        </a>{" "}
+        </Link>{" "}
         below. You will then be removed from the marketing lists. However, we
         may still communicate with you — for example, to send you
         service-related messages that are necessary for the administration and
@@ -607,21 +611,22 @@ export function PrivacyPolicy() {
       <p>
         If you have questions or comments about your privacy rights, you may
         email us at
-        <a href="mailto:Biz@keizerworks.com">Biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
 
       <h2>12. CONTROLS FOR DO-NOT-TRACK FEATURES</h2>
       <p>
         Most web browsers and some mobile operating systems and mobile
-        applications include a Do-Not-Track ("DNT") feature or setting you can
-        activate to signal your privacy preference not to have data about your
-        online browsing activities monitored and collected. At this stage, no
-        uniform technology standard for recognizing and implementing DNT signals
-        has been finalized. As such, we do not currently respond to DNT browser
-        signals or any other mechanism that automatically communicates your
-        choice not to be tracked online. If a standard for online tracking is
-        adopted that we must follow in the future, we will inform you about that
-        practice in a revised version of this Privacy Notice.
+        applications include a Do-Not-Track (&quot;DNT&quot;) feature or setting
+        you can activate to signal your privacy preference not to have data
+        about your online browsing activities monitored and collected. At this
+        stage, no uniform technology standard for recognizing and implementing
+        DNT signals has been finalized. As such, we do not currently respond to
+        DNT browser signals or any other mechanism that automatically
+        communicates your choice not to be tracked online. If a standard for
+        online tracking is adopted that we must follow in the future, we will
+        inform you about that practice in a revised version of this Privacy
+        Notice.
       </p>
 
       <p>
@@ -794,8 +799,10 @@ export function PrivacyPolicy() {
       <h3>How to Exercise Your Rights</h3>
       <p>
         To exercise these rights, you can contact us by emailing us at
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>, or by
-        referring to the contact details at the bottom of this document.
+        <Link target="_blank" href="mailto:biz@keizerworks.com">
+          biz@keizerworks.com
+        </Link>
+        , or by referring to the contact details at the bottom of this document.
       </p>
 
       <h3>Request Verification</h3>
@@ -814,27 +821,29 @@ export function PrivacyPolicy() {
         Under certain US state data protection laws, if we decline to take
         action regarding your request, you may appeal our decision by emailing
         us at
-        <a href="mailto:Biz@keizerworks.com">Biz@keizerworks.com</a>. We will
-        inform you in writing of any action taken or not taken in response to
-        the appeal, including a written explanation of the reasons for the
-        decisions. If your appeal is denied, you may submit a complaint to your
-        state attorney general.
+        <Link target="_blank" href="mailto:biz@keizerworks.com">
+          biz@keizerworks.com
+        </Link>
+        . We will inform you in writing of any action taken or not taken in
+        response to the appeal, including a written explanation of the reasons
+        for the decisions. If your appeal is denied, you may submit a complaint
+        to your state attorney general.
       </p>
 
-      <h3>California "Shine The Light" Law</h3>
+      <h3>California &quot;Shine The Light&quot; Law</h3>
       <p>
-        California Civil Code Section 1798.83, also known as the "Shine The
-        Light" law, permits our users who are California residents to request
-        and obtain from us, once a year and free of charge, information about
-        categories of personal information (if any) we disclosed to third
+        California Civil Code Section 1798.83, also known as the &quot;Shine The
+        Light&quot; law, permits our users who are California residents to
+        request and obtain from us, once a year and free of charge, information
+        about categories of personal information (if any) we disclosed to third
         parties for direct marketing purposes and the names and addresses of all
         third parties with which we shared personal information in the
         immediately preceding calendar year. If you are a California resident
         and would like to make such a request, please submit your request in
         writing to us by using the contact details provided in the section{" "}
-        <a href="#15-how-can-you-contact-us-about-this-notice">
+        <Link href="#15-how-can-you-contact-us-about-this-notice">
           HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-        </a>
+        </Link>
         .
       </p>
 
@@ -846,18 +855,18 @@ export function PrivacyPolicy() {
 
       <p>
         We may update this Privacy Notice from time to time. The updated version
-        will be indicated by an updated "Revised" date at the top of this
-        Privacy Notice. If we make material changes to this Privacy Notice, we
-        may notify you either by prominently posting a notice of such changes or
-        by directly sending you a notification. We encourage you to review this
-        Privacy Notice frequently to be informed of how we are protecting your
-        information.
+        will be indicated by an updated &quot;Revised&quot; date at the top of
+        this Privacy Notice. If we make material changes to this Privacy Notice,
+        we may notify you either by prominently posting a notice of such changes
+        or by directly sending you a notification. We encourage you to review
+        this Privacy Notice frequently to be informed of how we are protecting
+        your information.
       </p>
 
       <h2>15. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h2>
       <p>
         If you have questions or comments about this notice, you may email us at
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
 
       <h2>
@@ -872,8 +881,8 @@ export function PrivacyPolicy() {
         personal information. These rights may be limited in some circumstances
         by applicable law. To request to review, update, or delete your personal
         information, please contact us:{" "}
-        <a href="mailto:biz@keizerworks.com">biz@keizerworks.com</a>.
+        <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
-    </div>
+    </>
   );
 }
