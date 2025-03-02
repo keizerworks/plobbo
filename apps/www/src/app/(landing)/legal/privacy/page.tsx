@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function PrivacyPolicyPage() {
   return (
-    <>
+    <main className="mx-auto w-full max-w-[1120px] space-y-4 px-6 py-28 lg:min-h-dvh lg:py-36">
       <h1>PRIVACY POLICY</h1>
       <p>
         <strong>Last updated February 23, 2025</strong>
@@ -883,6 +883,6 @@ export default function PrivacyPolicyPage() {
         information, please contact us:{" "}
         <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>.
       </p>
-    </>
+    </main>
   );
 }

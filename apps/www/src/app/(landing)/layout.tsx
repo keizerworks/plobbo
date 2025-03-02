@@ -4,6 +4,8 @@ import "~/styles/globals.css";
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans } from "next/font/google";
 
+import Footer from "~/components/footer";
+import Header from "~/components/header";
 import { ThemeProvider } from "~/providers/theme-provider";
 
 const inter = Noto_Sans({
@@ -30,7 +32,11 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable}`}>
       <body className={`antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
