@@ -13,7 +13,7 @@ const footerLinks = [
   { title: "Home", href: "/" },
   { title: "Features", href: "#features" },
   { title: "Pricing", href: "#pricing" },
-  { title: "Privacy Policy", href: "/legal/privacy-policy" },
+  { title: "Privacy Policy", href: "/legal/privacy" },
   { title: "Terms of Service", href: "/legal/tos" },
 ];
 

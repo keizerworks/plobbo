@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function TermsOfServicePage() {
   return (
-    <>
+    <main className="mx-auto w-full max-w-[1120px] space-y-4 px-6 py-28 lg:min-h-dvh lg:py-36">
       <h1>TERMS OF SERVICE</h1>
       <p>
         <strong>Last Updated: February 23, 2025</strong>
@@ -1011,6 +1011,6 @@ export default function TermsOfServicePage() {
         Email:{" "}
         <Link href="mailto:biz@keizerworks.com">biz@keizerworks.com</Link>
       </p>
-    </>
+    </main>
   );
 }
