@@ -31,7 +31,7 @@ export namespace OrganizationDomain {
     )[0];
   }
 
-  export async function get(organizationId: Model["organizationId"]) {
+  export async function findUnique(organizationId: Model["organizationId"]) {
     return (
       await db
         .select(columns)

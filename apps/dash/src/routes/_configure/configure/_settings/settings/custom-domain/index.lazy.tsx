@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { CircleCheck } from "lucide-react";
 
 import { getOrganizationsDomainQueryOption } from "~/actions/organization/domain/query-options";

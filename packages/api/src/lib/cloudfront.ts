@@ -46,3 +46,31 @@ export async function updateDistributionWithACMCert(
   const updateResponse = await cfClient.send(updateCommand);
   console.log("CloudFront distribution updated:", updateResponse);
 }
+
+export async function removeDistributionWithACMCert(customDomain: string) {
+  const getCommand = new GetDistributionCommand({ Id });
+  const distributionData = await cfClient.send(getCommand);
+  const etag = distributionData.ETag;
+  const config = distributionData.Distribution?.DistributionConfig;
+
+  if (!config?.Aliases?.Items) {
+    throw new Error(
+      "CloudFront distribution configuration is missing Aliases.Items",
+    );
+  }
+
+  const domainIndex = config.Aliases.Items.indexOf(customDomain);
+  if (domainIndex !== -1) {
+    config.Aliases.Items.splice(domainIndex, 1);
+    config.Aliases.Quantity = config.Aliases.Items.length;
+  }
+
+  const updateCommand = new UpdateDistributionCommand({
+    Id,
+    IfMatch: etag,
+    DistributionConfig: config,
+  });
+
+  const updateResponse = await cfClient.send(updateCommand);
+  console.log("CloudFront distribution updated:", updateResponse);
+}

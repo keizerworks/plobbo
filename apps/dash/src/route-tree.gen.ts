@@ -18,7 +18,8 @@ import { Route as ConfigureImport } from './routes/_configure'
 import { Route as BlogsIndexImport } from './routes/blogs/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
 import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
-import { Route as ConfigureConfigureIndexImport } from './routes/_configure/configure/index'
+import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
+import { Route as CheckoutStatusIndexImport } from './routes/checkout/status/index'
 import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
 import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
 import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
@@ -28,6 +29,11 @@ import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } fr
 const IndexLazyImport = createFileRoute('/')()
 const ConfigureConfigureImport = createFileRoute('/_configure/configure')()
 const UsersIndexLazyImport = createFileRoute('/users/')()
+const ConfigureConfigureIndexLazyImport = createFileRoute(
+  '/_configure/configure/',
+)()
+const ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport =
+  createFileRoute('/_configure/configure/_settings/settings/appearance/')()
 
 // Create/Update Routes
 
@@ -80,10 +86,25 @@ const BlogsBlogIdRouteRoute = BlogsBlogIdRouteImport.update({
   import('./routes/blogs/$blog-id/route.lazy').then((d) => d.Route),
 )
 
-const ConfigureConfigureIndexRoute = ConfigureConfigureIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ConfigureConfigureRoute,
+const ConfigureConfigureIndexLazyRoute =
+  ConfigureConfigureIndexLazyImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ConfigureConfigureRoute,
+  } as any).lazy(() =>
+    import('./routes/_configure/configure/index.lazy').then((d) => d.Route),
+  )
+
+const SubscribeProIndexRoute = SubscribeProIndexImport.update({
+  id: '/subscribe/pro/',
+  path: '/subscribe/pro/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CheckoutStatusIndexRoute = CheckoutStatusIndexImport.update({
+  id: '/checkout/status/',
+  path: '/checkout/status/',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ConfigureConfigureSettingsRoute = ConfigureConfigureSettingsImport.update(
@@ -102,6 +123,17 @@ const ConfigureConfigureSettingsSettingsIndexRoute =
     import('./routes/_configure/configure/_settings/settings/index.lazy').then(
       (d) => d.Route,
     ),
+  )
+
+const ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute =
+  ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport.update({
+    id: '/settings/appearance/',
+    path: '/settings/appearance/',
+    getParentRoute: () => ConfigureConfigureSettingsRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_configure/configure/_settings/settings/appearance/index.lazy'
+    ).then((d) => d.Route),
   )
 
 const ConfigureConfigureSettingsSettingsCustomDomainIndexRoute =
@@ -182,11 +214,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfigureConfigureSettingsImport
       parentRoute: typeof ConfigureConfigureRoute
     }
+    '/checkout/status/': {
+      id: '/checkout/status/'
+      path: '/checkout/status'
+      fullPath: '/checkout/status'
+      preLoaderRoute: typeof CheckoutStatusIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/subscribe/pro/': {
+      id: '/subscribe/pro/'
+      path: '/subscribe/pro'
+      fullPath: '/subscribe/pro'
+      preLoaderRoute: typeof SubscribeProIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_configure/configure/': {
       id: '/_configure/configure/'
       path: '/'
       fullPath: '/configure/'
-      preLoaderRoute: typeof ConfigureConfigureIndexImport
+      preLoaderRoute: typeof ConfigureConfigureIndexLazyImport
       parentRoute: typeof ConfigureConfigureImport
     }
     '/_configure/configure/_settings/settings/': {
@@ -203,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexImport
       parentRoute: typeof ConfigureConfigureSettingsImport
     }
+    '/_configure/configure/_settings/settings/appearance/': {
+      id: '/_configure/configure/_settings/settings/appearance/'
+      path: '/settings/appearance'
+      fullPath: '/configure/settings/appearance'
+      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport
+      parentRoute: typeof ConfigureConfigureSettingsImport
+    }
   }
 }
 
@@ -211,6 +264,7 @@ declare module '@tanstack/react-router' {
 interface ConfigureConfigureSettingsRouteChildren {
   ConfigureConfigureSettingsSettingsIndexRoute: typeof ConfigureConfigureSettingsSettingsIndexRoute
   ConfigureConfigureSettingsSettingsCustomDomainIndexRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute: typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 const ConfigureConfigureSettingsRouteChildren: ConfigureConfigureSettingsRouteChildren =
@@ -219,6 +273,8 @@ const ConfigureConfigureSettingsRouteChildren: ConfigureConfigureSettingsRouteCh
       ConfigureConfigureSettingsSettingsIndexRoute,
     ConfigureConfigureSettingsSettingsCustomDomainIndexRoute:
       ConfigureConfigureSettingsSettingsCustomDomainIndexRoute,
+    ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute:
+      ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute,
   }
 
 const ConfigureConfigureSettingsRouteWithChildren =
@@ -228,12 +284,12 @@ const ConfigureConfigureSettingsRouteWithChildren =
 
 interface ConfigureConfigureRouteChildren {
   ConfigureConfigureSettingsRoute: typeof ConfigureConfigureSettingsRouteWithChildren
-  ConfigureConfigureIndexRoute: typeof ConfigureConfigureIndexRoute
+  ConfigureConfigureIndexLazyRoute: typeof ConfigureConfigureIndexLazyRoute
 }
 
 const ConfigureConfigureRouteChildren: ConfigureConfigureRouteChildren = {
   ConfigureConfigureSettingsRoute: ConfigureConfigureSettingsRouteWithChildren,
-  ConfigureConfigureIndexRoute: ConfigureConfigureIndexRoute,
+  ConfigureConfigureIndexLazyRoute: ConfigureConfigureIndexLazyRoute,
 }
 
 const ConfigureConfigureRouteWithChildren =
@@ -260,9 +316,12 @@ export interface FileRoutesByFullPath {
   '/blogs': typeof BlogsIndexRoute
   '/users': typeof UsersIndexLazyRoute
   '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
-  '/configure/': typeof ConfigureConfigureIndexRoute
+  '/checkout/status': typeof CheckoutStatusIndexRoute
+  '/subscribe/pro': typeof SubscribeProIndexRoute
+  '/configure/': typeof ConfigureConfigureIndexLazyRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -273,9 +332,12 @@ export interface FileRoutesByTo {
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/blogs': typeof BlogsIndexRoute
   '/users': typeof UsersIndexLazyRoute
-  '/configure': typeof ConfigureConfigureIndexRoute
+  '/configure': typeof ConfigureConfigureIndexLazyRoute
+  '/checkout/status': typeof CheckoutStatusIndexRoute
+  '/subscribe/pro': typeof SubscribeProIndexRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -289,9 +351,12 @@ export interface FileRoutesById {
   '/users/': typeof UsersIndexLazyRoute
   '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
   '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
-  '/_configure/configure/': typeof ConfigureConfigureIndexRoute
+  '/checkout/status/': typeof CheckoutStatusIndexRoute
+  '/subscribe/pro/': typeof SubscribeProIndexRoute
+  '/_configure/configure/': typeof ConfigureConfigureIndexLazyRoute
   '/_configure/configure/_settings/settings/': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/_configure/configure/_settings/settings/custom-domain/': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/_configure/configure/_settings/settings/appearance/': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -305,9 +370,12 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/users'
     | '/configure'
+    | '/checkout/status'
+    | '/subscribe/pro'
     | '/configure/'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
+    | '/configure/settings/appearance'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -318,8 +386,11 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/users'
     | '/configure'
+    | '/checkout/status'
+    | '/subscribe/pro'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
+    | '/configure/settings/appearance'
   id:
     | '__root__'
     | '/'
@@ -331,9 +402,12 @@ export interface FileRouteTypes {
     | '/users/'
     | '/_configure/configure'
     | '/_configure/configure/_settings'
+    | '/checkout/status/'
+    | '/subscribe/pro/'
     | '/_configure/configure/'
     | '/_configure/configure/_settings/settings/'
     | '/_configure/configure/_settings/settings/custom-domain/'
+    | '/_configure/configure/_settings/settings/appearance/'
   fileRoutesById: FileRoutesById
 }
 
@@ -345,6 +419,8 @@ export interface RootRouteChildren {
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
   UsersIndexLazyRoute: typeof UsersIndexLazyRoute
+  CheckoutStatusIndexRoute: typeof CheckoutStatusIndexRoute
+  SubscribeProIndexRoute: typeof SubscribeProIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -355,6 +431,8 @@ const rootRouteChildren: RootRouteChildren = {
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
   BlogsIndexRoute: BlogsIndexRoute,
   UsersIndexLazyRoute: UsersIndexLazyRoute,
+  CheckoutStatusIndexRoute: CheckoutStatusIndexRoute,
+  SubscribeProIndexRoute: SubscribeProIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -373,7 +451,9 @@ export const routeTree = rootRoute
         "/blogs/$blog-id",
         "/users/$user-id",
         "/blogs/",
-        "/users/"
+        "/users/",
+        "/checkout/status/",
+        "/subscribe/pro/"
       ]
     },
     "/": {
@@ -413,11 +493,18 @@ export const routeTree = rootRoute
       "parent": "/_configure/configure",
       "children": [
         "/_configure/configure/_settings/settings/",
-        "/_configure/configure/_settings/settings/custom-domain/"
+        "/_configure/configure/_settings/settings/custom-domain/",
+        "/_configure/configure/_settings/settings/appearance/"
       ]
     },
+    "/checkout/status/": {
+      "filePath": "checkout/status/index.tsx"
+    },
+    "/subscribe/pro/": {
+      "filePath": "subscribe/pro/index.tsx"
+    },
     "/_configure/configure/": {
-      "filePath": "_configure/configure/index.tsx",
+      "filePath": "_configure/configure/index.lazy.tsx",
       "parent": "/_configure/configure"
     },
     "/_configure/configure/_settings/settings/": {
@@ -426,6 +513,10 @@ export const routeTree = rootRoute
     },
     "/_configure/configure/_settings/settings/custom-domain/": {
       "filePath": "_configure/configure/_settings/settings/custom-domain/index.tsx",
+      "parent": "/_configure/configure/_settings"
+    },
+    "/_configure/configure/_settings/settings/appearance/": {
+      "filePath": "_configure/configure/_settings/settings/appearance/index.lazy.tsx",
       "parent": "/_configure/configure/_settings"
     }
   }

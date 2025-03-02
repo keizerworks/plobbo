@@ -17,7 +17,8 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "~/*": ["../../apps/www/src/*"],
-      "@plobbo/ui/*": ["../../packages/ui/src/*"]
+      "@plobbo/ui/*": ["../../packages/ui/src/*"],
+      "@plobbo/api/*": ["../../packages/api/src/*"]
     }
   },
   "include": [

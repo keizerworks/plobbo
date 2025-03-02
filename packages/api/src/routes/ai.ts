@@ -5,16 +5,10 @@ import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono/quick";
 import { z } from "zod";
 
-import { openAiOptions } from "../lib/openai";
-import { enforeAuthMiddleware } from "../middleware/auth";
+import { openAiOptions } from "@plobbo/api/lib/openai";
+import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 
-const aiRouter = new Hono<{
-  Bindings: {
-    LANGDB_PROJECT_ID: string;
-    LANGDB_API_KEY: string;
-    LANGDB_OPENAI_BASE_URL: string;
-  };
-}>().use(enforeAuthMiddleware);
+const aiRouter = new Hono().use(enforeAuthMiddleware);
 
 aiRouter.post(
   "/command",

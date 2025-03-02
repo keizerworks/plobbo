@@ -20,4 +20,11 @@ export const secrets = {
     "CloudfrontDistributionID",
     process.env.CLOUDFRONT_DISTRIBUTIONID,
   ),
+
+  PolarPremiumProductId: new sst.Secret("PolarPremiumProductId"),
+  PolarAPIToken: new sst.Secret("PolarAPIToken"),
+  PolarWebhookSecret: new sst.Secret(
+    "PolarWebhookSecret",
+    process.env.POLAR_WEBHOOK_SECRET,
+  ),
 };

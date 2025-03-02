@@ -9,8 +9,11 @@ export const baseTable = (type: keyof typeof idType) => ({
     .$defaultFn(() => createId(type))
     .primaryKey(),
 
-  createdAt: timestamp({ mode: "date", withTimezone: true }).defaultNow(),
+  createdAt: timestamp({ mode: "date", withTimezone: true })
+    .defaultNow()
+    .notNull(),
   updatedAt: timestamp({ mode: "date", withTimezone: true })
     .defaultNow()
-    .$onUpdateFn(() => new Date()),
+    .$onUpdateFn(() => new Date())
+    .notNull(),
 });

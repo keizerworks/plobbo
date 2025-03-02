@@ -13,6 +13,18 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "PolarAPIToken": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "PolarPremiumProductId": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "PolarWebhookSecret": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "auth": {
       "type": "sst.aws.Auth"
       "url": string

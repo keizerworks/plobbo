@@ -5,7 +5,9 @@ import type { Subjects } from "@plobbo/auth/subjects";
 import type { Organization } from "@plobbo/db/organization/index";
 import type { OrganizationMember } from "@plobbo/db/organization/member";
 import { and, db, eq, getTableColumns, sql } from "@plobbo/db";
+import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import {
+  OrganizationDomainTable,
   OrganizationMemberTable,
   OrganizationTable,
 } from "@plobbo/db/organization/organization.sql";
@@ -13,13 +15,11 @@ import {
 interface Env {
   Variables: {
     user: Subjects;
-    organization: Organization.Model & {
-      member: OrganizationMember.Model;
-    };
+    orgDomain: OrganizationDomain.Model;
   };
 }
 
-export const enforeHasOrgMiddleware = (
+export const enforeHasDomainMiddleware = (
   type: "param" | "id" | "organizationId",
 ) =>
   createMiddleware<Env>(async (c, next) => {
@@ -27,7 +27,6 @@ export const enforeHasOrgMiddleware = (
 
     const parsedBody =
       c.req.method.toLowerCase() !== "get" ? await c.req.parseBody() : {};
-    console.log(parsedBody);
 
     const id =
       type === "param"
@@ -42,29 +41,19 @@ export const enforeHasOrgMiddleware = (
       });
     }
 
-    let organization;
+    let record;
     try {
-      organization = (
+      record = (
         await db
-          .select({
-            ...getTableColumns(OrganizationTable),
-            member: sql<OrganizationMember.Model>`(
-            SELECT to_json(obj)
-            FROM (
-              SELECT *
-              FROM ${OrganizationMemberTable}
-              WHERE ${OrganizationMemberTable.organizationId} = ${OrganizationTable.id}
-            ) AS obj
-          )`.as("member"),
-          })
-          .from(OrganizationTable)
+          .select(OrganizationDomain.columns)
+          .from(OrganizationDomainTable)
           .innerJoin(
             OrganizationMemberTable,
-            eq(OrganizationTable.id, OrganizationMemberTable.organizationId),
+            eq(OrganizationTable.id, OrganizationDomainTable.organizationId),
           )
           .where(
             and(
-              eq(OrganizationTable.id, id),
+              eq(OrganizationDomainTable.organizationId, id),
               eq(OrganizationMemberTable.userId, user.id),
             ),
           )
@@ -76,12 +65,12 @@ export const enforeHasOrgMiddleware = (
       });
     }
 
-    if (!organization) {
+    if (!record) {
       throw new HTTPException(403, {
         message: "You are not a member of this organization",
       });
     }
 
-    c.set("organization", organization);
+    c.set("orgDomain", record);
     await next();
   });

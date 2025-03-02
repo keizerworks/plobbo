@@ -2,6 +2,10 @@ import { relations } from "drizzle-orm";
 import { boolean, pgEnum, pgTable, varchar } from "drizzle-orm/pg-core";
 
 import { baseTable } from "../base-table";
+import {
+  OrganizationSubscriptionHistoryTable,
+  OrganizationSubscriptionTable,
+} from "../subscription/subscription.sql";
 import { UserTable } from "../user/user.sql";
 
 export const MemberRoleEnum = pgEnum("member_role", [
@@ -43,9 +47,11 @@ export const OrganizationDomainTable = pgTable("organization_domain", {
   certificateArn: varchar().notNull(),
 });
 
-export const OrganizationDomainRelation = relations(
+export const OrganizationRelations = relations(
   OrganizationTable,
-  ({ one }) => ({
+  ({ one, many }) => ({
     organization_domain: one(OrganizationDomainTable),
+    current_subscription: one(OrganizationSubscriptionTable),
+    subscription_history: many(OrganizationSubscriptionHistoryTable),
   }),
 );

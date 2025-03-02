@@ -1,4 +1,5 @@
 import { useActiveOrgStore } from "~/store/active-org";
+
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { OrgSwitcher } from "./org-switcher";
@@ -8,6 +9,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "./sidebar";
+import { SidebarSubscribeForm } from "./subscribe";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const activeOrgId = useActiveOrgStore.use.id();
@@ -19,6 +21,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>{activeOrgId ? <NavMain /> : null}</SidebarContent>
       <SidebarFooter>
+        <SidebarSubscribeForm />
         <NavUser />
       </SidebarFooter>
     </Sidebar>

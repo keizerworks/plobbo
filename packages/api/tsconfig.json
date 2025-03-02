@@ -9,7 +9,11 @@
     "lib": ["ESNext"],
     "types": ["node"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@plobbo/api/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "eslint.config.js", "sst-env.d.ts"]
 }

@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { ConfigureSidebarNav } from "~/components/configure/sidenav";
-import { ScrollArea } from "~/components/ui/scroll-area";
 
 export const Route = createFileRoute("/_configure/configure/_settings")({
   component: RouteComponent,

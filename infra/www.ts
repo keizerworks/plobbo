@@ -1,6 +1,6 @@
 import { auth } from "./auth";
 import { valkey } from "./cache";
-import { domain } from "./dns";
+import { altDomain, domain } from "./dns";
 import { email } from "./email";
 import { secrets } from "./secrets";
 import { bucket, NEXT_PUBLIC_S3_DOMAIN, postgres } from "./storage";
@@ -12,12 +12,17 @@ export const www = new sst.aws.Nextjs("www", {
   environment: {
     NEXT_PUBLIC_S3_DOMAIN,
     AUTH_URL: $interpolate`${auth.url}`,
+    DASH_URL:
+      $app.stage === "production"
+        ? "https://dash.plobbo.com"
+        : "http://localhost:3001",
   },
   domain:
     $app.stage === "production"
       ? {
           name: domain,
           dns: sst.cloudflare.dns({ proxy: true }),
+          aliases: [altDomain],
         }
       : undefined,
   link: [
@@ -31,6 +36,9 @@ export const www = new sst.aws.Nextjs("www", {
     secrets.langdbOpenAIBaseUrl,
     secrets.CloudfrontWWWUrl,
     secrets.CloudfrontDistributionID,
+    secrets.PolarPremiumProductId,
+    secrets.PolarAPIToken,
+    secrets.PolarWebhookSecret,
   ],
   server: { runtime: "nodejs22.x" },
   permissions: [

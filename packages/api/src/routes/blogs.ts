@@ -24,9 +24,12 @@ const blogsRouter = new Hono<{ Bindings: { NEXT_PUBLIC_S3_DOMAIN: string } }>();
 
 blogsRouter.post(
   "/",
-  zValidator("form", createBlogSchema),
+
   enforeAuthMiddleware,
-  enforeHasOrgMiddleware,
+  enforeHasOrgMiddleware("organizationId"),
+
+  zValidator("form", createBlogSchema),
+
   async (c) => {
     const member = c.var.organization.member;
 
@@ -127,6 +130,10 @@ blogsRouter.get(
 
 blogsRouter.patch(
   "/:id",
+
+  enforeAuthMiddleware,
+  enforeHasBlogMiddleware,
+
   validator("form", (value, c) => {
     const parsed = patchBlogSchema.safeParse({
       ...value,
@@ -144,9 +151,7 @@ blogsRouter.patch(
     if (!parsed.success) return c.json(parsed.error, 400);
     return parsed.data;
   }),
-  // zValidator("form", patchBlogSchema),
-  enforeAuthMiddleware,
-  enforeHasBlogMiddleware,
+
   async (c) => {
     const id = c.req.param("id");
     const { image, ...body } = c.req.valid("form");
