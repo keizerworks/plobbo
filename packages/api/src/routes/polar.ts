@@ -121,15 +121,17 @@ polarRouter.post(
             return;
           }
 
-          await removeDistributionWithACMCert(r.domain);
-          await OrganizationDomain.update({
-            organizationId: r.organizationId,
-            cnameVerified: false,
-            verified: false,
-          });
+          await Promise.all([
+            removeDistributionWithACMCert(r.domain),
+            OrganizationDomain.update({
+              organizationId: r.organizationId,
+              cnameVerified: false,
+              verified: false,
+            }),
+          ]);
         }),
 
-        await SubscriptionHistory.create({
+        SubscriptionHistory.create({
           id: record.id,
           organizationId: record.organizationId,
           endDate: data.endsAt ?? data.endedAt ?? new Date(),
