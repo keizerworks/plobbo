@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server";
+import type { MiddlewareConfig, NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
@@ -8,6 +8,6 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-export const config = {
-  matcher: "/api/:path*", // Apply middleware to all API routes
+export const config: MiddlewareConfig = {
+  matcher: ["/api/:path*"], // Apply middleware to all API routes
 };

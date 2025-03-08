@@ -455,15 +455,24 @@ importers:
 
   apps/www:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^4.0.0
+        version: 4.1.1(react-hook-form@7.54.2(react@19.0.0))
       '@plobbo/api':
         specifier: workspace:*
         version: link:../../packages/api
       '@plobbo/cache':
         specifier: workspace:*
         version: link:../../packages/cache
+      '@plobbo/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@plobbo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      framer-motion:
+        specifier: ^12.4.5
+        version: 12.4.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       lucide-react:
         specifier: 0.456.0
         version: 0.456.0(react@19.0.0)
@@ -485,6 +494,9 @@ importers:
       tailwindcss-animate:
         specifier: 'catalog:'
         version: 1.0.7(tailwindcss@3.4.17)
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3

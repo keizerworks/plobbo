@@ -43,6 +43,13 @@
       "when": 1740951238151,
       "tag": "0005_far_cargill",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741415268386,
+      "tag": "0006_rapid_jamie_braddock",
+      "breakpoints": true
     }
   ]
 }

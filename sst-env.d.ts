@@ -13,6 +13,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "IsWaitlistMode": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "PolarAPIToken": {
       "type": "sst.sst.Secret"
       "value": string

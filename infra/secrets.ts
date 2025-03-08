@@ -27,4 +27,6 @@ export const secrets = {
     "PolarWebhookSecret",
     process.env.POLAR_WEBHOOK_SECRET,
   ),
+
+  IsWaitlistMode: new sst.Secret("IsWaitlistMode"),
 };

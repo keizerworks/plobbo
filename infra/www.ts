@@ -39,6 +39,7 @@ export const www = new sst.aws.Nextjs("www", {
     secrets.PolarPremiumProductId,
     secrets.PolarAPIToken,
     secrets.PolarWebhookSecret,
+    secrets.IsWaitlistMode,
   ],
   server: { runtime: "nodejs22.x" },
   permissions: [

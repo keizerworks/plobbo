@@ -6,6 +6,7 @@ import { handle } from "hono/aws-lambda";
 
 import { sendMail } from "@plobbo/core/mailer/index";
 import { User } from "@plobbo/db/user/index";
+import { Waitlist } from "@plobbo/db/user/waitlist";
 
 import { subjects } from "./subjects";
 
@@ -21,17 +22,17 @@ const app = issuer({
     code: CodeProvider(
       CodeUI({
         sendCode: async ({ email }, code) => {
-          console.log(email, code);
+          if (!email) throw new Error("Email is required");
+
+          const waitlistRecord = await Waitlist.findOne({ email });
+          if (!waitlistRecord?.approved)
+            throw new Error("User not approved for access");
 
           try {
             await sendMail({
-              message: {
-                data: "Your login code is " + code,
-                type: "string",
-              },
+              message: { data: "Your login code is " + code, type: "string" },
               subject: "Confirm your email address",
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's there
-              to: { addr: email! },
+              to: { addr: email },
             });
           } catch (error) {
             console.error("Failed to send email:", error);
