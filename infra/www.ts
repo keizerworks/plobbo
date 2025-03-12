@@ -28,7 +28,7 @@ export const www = new sst.aws.Nextjs("www", {
       ? {
           name: domain,
           dns: sst.cloudflare.dns({ proxy: true }),
-          redirects: [altDomain],
+          redirects: [altDomain, "www." + altDomain],
         }
       : undefined,
   link: [
