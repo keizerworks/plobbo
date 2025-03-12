@@ -58,6 +58,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "migrator-pg": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "pg": {
       "database": string
       "host": string
