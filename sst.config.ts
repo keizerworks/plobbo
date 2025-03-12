@@ -23,6 +23,7 @@ export default $config({
     ]);
     (await import("./infra/migrator")).buildAndRunMigrator(vpc, postgres);
     await Promise.all([
+      import("./infra/scheduler"),
       import("./infra/www"),
       import("./infra/dash"),
       import("./infra/auth"),

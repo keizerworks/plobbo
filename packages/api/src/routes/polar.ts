@@ -1,3 +1,7 @@
+import {
+  CreateScheduleCommand,
+  SchedulerClient,
+} from "@aws-sdk/client-scheduler";
 import { zValidator } from "@hono/zod-validator";
 import { Webhooks } from "@polar-sh/hono";
 import { HTTPException } from "hono/http-exception";
@@ -14,6 +18,7 @@ import { polar } from "../lib/polar";
 import { enforeAuthMiddleware } from "../middleware/auth";
 import { enforeHasOrgMiddleware } from "../middleware/org-protected";
 
+const schedulerClient = new SchedulerClient({ region: "us-east-1" });
 const polarRouter = new Hono();
 
 polarRouter.get(
@@ -85,6 +90,21 @@ polarRouter.post(
     },
 
     async onSubscriptionCanceled({ data }) {
+      const command = new CreateScheduleCommand({
+        Name: `subscriptionScheduler-${data.id}`,
+        ScheduleExpression: `at(${data.endsAt?.toISOString()})`, // Format: "YYYY-MM-DDTHH:MM:SSZ"
+        FlexibleTimeWindow: { Mode: "OFF" },
+        Target: {
+          Arn: process.env.REVOKE_ACCESS_LAMBDA_ARN,
+          RoleArn: process.env.SCHEDULER_ARN,
+          Input: JSON.stringify({
+            action: "revokeAccess",
+            subscriptionId: data.id,
+          }),
+        },
+      });
+      await schedulerClient.send(command);
+
       await OrganizationSubscription.update({
         id: data.id,
         status: "CANCELED",

@@ -66,6 +66,10 @@ declare module "sst" {
       "type": "sst.aws.Postgres"
       "username": string
     }
+    "revokeSubscriptionFunction": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "valkey": {
       "host": string
       "password": string

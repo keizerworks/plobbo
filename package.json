@@ -17,6 +17,7 @@
     "@plobbo/tsconfig": "workspace:*"
   },
   "dependencies": {
+    "@pulumi/aws": "^6.71.0",
     "sst": "3.9.7"
   },
   "prettier": "@plobbo/prettier-config"

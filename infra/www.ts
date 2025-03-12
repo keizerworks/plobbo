@@ -2,6 +2,10 @@ import { auth } from "./auth";
 import { valkey } from "./cache";
 import { altDomain, domain } from "./dns";
 import { email } from "./email";
+import {
+  revokeSubscriptionFunction,
+  schedulerRoleEventBridge,
+} from "./scheduler";
 import { secrets } from "./secrets";
 import { bucket, NEXT_PUBLIC_S3_DOMAIN, postgres } from "./storage";
 import { vpc } from "./vpc";
@@ -12,6 +16,8 @@ export const www = new sst.aws.Nextjs("www", {
   environment: {
     NEXT_PUBLIC_S3_DOMAIN,
     AUTH_URL: $interpolate`${auth.url}`,
+    SCHEDULER_ARN: $interpolate`${schedulerRoleEventBridge.arn}`,
+    REVOKE_ACCESS_LAMBDA_ARN: $interpolate`${revokeSubscriptionFunction.arn}`,
     DASH_URL:
       $app.stage === "production"
         ? "https://dash.plobbo.com"
@@ -26,11 +32,13 @@ export const www = new sst.aws.Nextjs("www", {
         }
       : undefined,
   link: [
+    schedulerRoleEventBridge,
     bucket,
     postgres,
     email,
     valkey,
     auth,
+    revokeSubscriptionFunction,
     secrets.langdbProjectId,
     secrets.langdbApiKey,
     secrets.langdbOpenAIBaseUrl,
