@@ -1,13 +1,12 @@
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { z } from "zod";
 
 import type { BlogMetadata } from "@plobbo/db/blog/metadata";
-import { and, db, eq, sql } from "@plobbo/db";
+import type { Organization } from "@plobbo/db/organization/index";
+import { and, db, eq, or, sql } from "@plobbo/db";
 import { BlogMetadataTable, BlogTable } from "@plobbo/db/blog/blog.sql";
 import { Blog } from "@plobbo/db/blog/index";
-import { Organization } from "@plobbo/db/organization/index";
 import {
   OrganizationDomainTable,
   OrganizationTable,
@@ -15,8 +14,8 @@ import {
 import { EditorStatic } from "@plobbo/plate-ui/components/editor-static";
 import { components, createSlateEditor, plugins } from "@plobbo/plate-ui/index";
 
-// export const revalidate = 60;
-// export const dynamicParams = true;
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 // export async function generateStaticParams() {
 //   const blogs = await db
@@ -81,31 +80,8 @@ interface Props {
   params: Promise<{ "org-slug": string; "blog-slug": string }>;
 }
 
-export default async function Page(props: Props) {
-  const params = await props.params;
-  let orgSlug = params["org-slug"];
-  const blogSlug = params["blog-slug"];
-
-  if (
-    z
-      .string()
-      .url()
-      .safeParse("https://" + orgSlug).success
-  ) {
-    await db
-      .select(Organization.columns)
-      .from(OrganizationTable)
-      .innerJoin(
-        OrganizationDomainTable,
-        eq(OrganizationDomainTable.organizationId, OrganizationTable.id),
-      )
-      .where(eq(OrganizationDomainTable.domain, orgSlug))
-      .limit(1)
-      .then(([org]) => {
-        if (!org) notFound();
-        orgSlug = org.slug;
-      });
-  }
+export default async function Page({ params }: Props) {
+  const { "org-slug": orgSlug, "blog-slug": blogSlug } = await params;
 
   const [blog] = await unstable_cache(
     async () =>
@@ -113,43 +89,47 @@ export default async function Page(props: Props) {
         .select({
           ...Blog.columns,
           metadata: sql<BlogMetadata.Model>`(
-        SELECT to_json(obj)
-        FROM (
-          SELECT *
-          FROM ${BlogMetadataTable}
-          WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
-        ) AS obj
-      )`.as("metadata"),
+            SELECT to_json(obj)
+            FROM (
+              SELECT *
+              FROM ${BlogMetadataTable}
+              WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
+            ) AS obj
+          )`.as("metadata"),
           organization: sql<Organization.Model>`(
-        SELECT to_json(obj)
-        FROM (
-          SELECT *
-          FROM ${OrganizationTable}
-          WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
-        ) AS obj
-      )`.as("organization"),
+            SELECT to_json(obj)
+            FROM (
+              SELECT *
+              FROM ${OrganizationTable}
+              WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
+            ) AS obj
+          )`.as("organization"),
         })
         .from(BlogTable)
         .innerJoin(
-          BlogMetadataTable,
-          eq(BlogTable.id, BlogMetadataTable.blogId),
-        )
-        .innerJoin(
           OrganizationTable,
           eq(BlogTable.organizationId, OrganizationTable.id),
+        )
+        .innerJoin(
+          OrganizationDomainTable,
+          eq(OrganizationDomainTable.organizationId, OrganizationTable.id),
         )
         .limit(1)
         .where(
           and(
             eq(BlogTable.status, "PUBLISHED"),
             eq(BlogTable.slug, blogSlug),
-            eq(OrganizationTable.slug, orgSlug),
+            or(
+              eq(OrganizationTable.slug, orgSlug),
+              eq(OrganizationDomainTable.domain, orgSlug),
+            ),
           ),
         ),
     [blogSlug],
     { revalidate: 3600, tags: [blogSlug] },
   )();
 
+  console.log(blog);
   if (!blog?.publishedBody) {
     notFound();
   }
