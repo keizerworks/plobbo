@@ -1,4 +1,5 @@
 import { DATABASE_URL } from "./storage";
+import { www } from "./www";
 
 export function buildAndRunMigrator(vpc: sst.aws.Vpc, rds: sst.aws.Postgres) {
   // Invoke the migrator every deploy
@@ -15,7 +16,7 @@ export function buildAndRunMigrator(vpc: sst.aws.Vpc, rds: sst.aws.Postgres) {
         environment: { DATABASE_URL },
         runtime: "nodejs22.x",
       },
-      { dependsOn: [vpc, rds] },
+      { dependsOn: [vpc, rds, www] },
     );
 
     new aws.lambda.Invocation("MigratorInvocation", {
