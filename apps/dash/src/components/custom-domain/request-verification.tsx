@@ -10,7 +10,7 @@ import { requestDomainVerificationSchema as schema } from "@plobbo/validator/org
 
 import { requestDomainVerification } from "~/actions/organization/domain";
 import { getOrganizationsDomainQueryOption } from "~/actions/organization/domain/query-options";
-import { useActiveOrgStore } from "~/store/active-org";
+import { useActiveOrgIdStore } from "~/store/active-org";
 
 import { Button } from "../ui/button";
 import { Form, FormField } from "../ui/form";
@@ -20,7 +20,7 @@ import { useStepper } from "../ui/stepper";
 export default function RequestDomainVerification() {
   const { activeStep } = useStepper();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const activeOrgId = useActiveOrgStore.use.id()!;
+  const activeOrgId = useActiveOrgIdStore.use.id()!;
   const queryClient = useQueryClient();
   const { invalidate } = useRouter();
   const form = useForm<SchemaInterface>({ resolver: zodResolver(schema) });

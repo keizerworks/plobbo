@@ -19,21 +19,23 @@ export const BlogStatusEnum = pgEnum("blog_status", ["DRAFT", "PUBLISHED"]);
 
 export const BlogTable = pgTable("blog", {
   ...baseTable("blog"),
-  publishedDate: timestamp({
-    mode: "string",
-    withTimezone: true,
-  }),
-  organizationId: varchar({ length: 34 }).references(
-    () => OrganizationTable.id,
-  ),
+  organizationId: varchar({ length: 34 })
+    .references(() => OrganizationTable.id)
+    .notNull(),
   authorId: varchar({ length: 34 })
-    .notNull()
-    .references(() => OrganizationMemberTable.id),
+    .references(() => OrganizationMemberTable.id)
+    .notNull(),
   title: text().notNull(),
   slug: varchar({ length: 255 }).notNull(),
   image: varchar({ length: 255 }),
+
   body: json().array(),
   content: text().default(""),
+
+  publishedDate: timestamp({ withTimezone: true }),
+  publishedBody: json().array(),
+  publishedContent: text().default(""),
+
   tags: text().array().default([]),
   likes: integer().default(0),
   status: BlogStatusEnum().default("DRAFT"),

@@ -23,7 +23,7 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "~/components/ui/stepper";
-import { useActiveOrgStore } from "~/store/active-org";
+import { useActiveOrgIdStore } from "~/store/active-org";
 
 export const Route = createLazyFileRoute(
   "/_configure/configure/_settings/settings/custom-domain/",
@@ -50,7 +50,7 @@ const steps = [
 ] as const;
 
 function RouteComponent() {
-  const activeOrgId = useActiveOrgStore.use.id();
+  const activeOrgId = useActiveOrgIdStore.use.id();
 
   const { data } = useSuspenseQuery(
     getOrganizationsDomainQueryOption(activeOrgId ?? undefined),

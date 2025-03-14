@@ -4,9 +4,13 @@ import {
   eq,
   getTableColumns,
   getTableName,
+  sql,
 } from "drizzle-orm";
 
+import type { OrganizationSubscription } from "../subscription";
+
 import { db } from "../index";
+import { OrganizationSubscriptionTable } from "../subscription/subscription.sql";
 import { OrganizationMemberTable, OrganizationTable } from "./organization.sql";
 
 export namespace Organization {
@@ -19,6 +23,7 @@ export namespace Organization {
   }
 
   export const tableName = getTableName(OrganizationTable);
+  export const columns = getTableColumns(OrganizationTable);
 
   export async function create(values: CreateInput) {
     return (await db.insert(OrganizationTable).values(values).returning())[0];
@@ -53,8 +58,22 @@ export namespace Organization {
 
   export async function findAll(filters: Filters) {
     let query = db
-      .select({ ...getTableColumns(OrganizationTable) })
+      .select({
+        ...getTableColumns(OrganizationTable),
+        subscription: sql<OrganizationSubscription.Model>`(
+          SELECT to_json(obj)
+          FROM (
+            SELECT *
+            FROM ${OrganizationSubscriptionTable}
+            WHERE ${OrganizationSubscriptionTable.organizationId} = ${OrganizationTable.id}
+          ) AS obj
+        )`.as("member"),
+      })
       .from(OrganizationTable)
+      .innerJoin(
+        OrganizationSubscriptionTable,
+        eq(OrganizationSubscriptionTable.organizationId, OrganizationTable.id),
+      )
       .$dynamic();
 
     if (filters.userId) {

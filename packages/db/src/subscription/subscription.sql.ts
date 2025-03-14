@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  integer,
   pgEnum,
   pgTable,
   timestamp,
@@ -38,6 +39,7 @@ export const OrganizationSubscriptionTable = pgTable(
     currentPeriodStart: timestamp().notNull(),
     currentPeriodEnd: timestamp(),
     cancelAtPeriodEnd: boolean().default(false).notNull(),
+    amount: integer().default(0).notNull(),
     canceledAt: timestamp(),
     trialStart: timestamp(),
     trialEnd: timestamp(),

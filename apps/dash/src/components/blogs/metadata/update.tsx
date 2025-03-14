@@ -2,20 +2,30 @@ import type { Tag, TagInputProps } from "emblor";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLoaderData } from "@tanstack/react-router";
 import { TagInput } from "emblor";
 import { FileText } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ulid } from "ulid";
 
-import type {
-  CreateBlogMetadataInterface} from "@plobbo/validator/blog/metadata/create";
-import {
-  createBlogMetadataSchema,
-} from "@plobbo/validator/blog/metadata/create";
+import type { PutBlogMetadataInterface } from "@plobbo/validator/blog/metadata/put";
+import { putBlogMetadataSchema } from "@plobbo/validator/blog/metadata/put";
 
+import type { Blog } from "~/interface/blog";
+import { putBlogMetadata } from "~/actions/blog/metadata";
+import { getBlogMetadataQueryOptions } from "~/actions/blog/query-options";
+import { ImageUpload } from "~/components/image-upload";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { Form, FormField } from "~/components/ui/form";
+import {
+  BaseFormField,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import {
   Sheet,
@@ -28,37 +38,44 @@ import {
 } from "~/components/ui/sheet";
 import { Textarea } from "~/components/ui/textarea";
 
-const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
+export default function UpdateBlogMetadataForm() {
+  const blog: Blog | undefined = useLoaderData({ from: "/blogs/$blog-id" });
+
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
 
-  const form = useForm<CreateBlogMetadataInterface>({
-    resolver: zodResolver(createBlogMetadataSchema),
-    defaultValues: {
-      blogId,
-    },
+  const form = useForm<PutBlogMetadataInterface>({
+    resolver: zodResolver(putBlogMetadataSchema),
   });
 
-  const { data, isPending: loadingMetadata } = useQuery({
-    blogId: blogId,
-  });
+  const { data, isPending: loadingMetadata } = useQuery(
+    getBlogMetadataQueryOptions(blog && "id" in blog ? blog.id : ""),
+  );
 
   const { mutate, isPending } = useMutation({
-    onSuccess: (res) => {
+    mutationFn: putBlogMetadata,
+    onSuccess: () => {
       setOpen(false);
-      toast.success(res.message);
+      toast.success("Blog metadata updated successfully");
     },
     onError: ({ message }) => toast.error(message),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: PutBlogMetadataInterface) => {
     mutate(data);
   };
 
   useEffect(() => {
+    if (blog) {
+      form.setValue("blogId", blog.id);
+      form.setValue("title", blog.title);
+      form.setValue("slug", blog.slug);
+    }
+  }, [blog, form]);
+
+  useEffect(() => {
     if (data) {
-      form.setValue("title", data.title);
       form.setValue("description", data.description);
       form.setValue("ogTitle", data.ogTitle ?? undefined);
       form.setValue("ogDescription", data.ogDescription ?? undefined);
@@ -81,10 +98,11 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
       <SheetTrigger
         className={buttonVariants({
           variant: "outline",
+          size: "sm",
           className: "ml-auto",
         })}
       >
-        <FileText className="size-4" />
+        <FileText className="size-3.5" />
         Metadata
       </SheetTrigger>
 
@@ -102,6 +120,25 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex h-full flex-col gap-y-3 overflow-y-auto px-6 py-4 pb-20"
           >
+            <BaseFormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      edit
+                      aspectVideo
+                      defaultSrc={blog.image ?? ""}
+                      onChange={(file) => field.onChange(file)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="title"
@@ -109,6 +146,18 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
               render={({ field }) => (
                 <Input
                   placeholder="e.g., 10 Tips for Better Programming"
+                  {...field}
+                />
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="slug"
+              label="Slug"
+              render={({ field }) => (
+                <Input
+                  placeholder="10-tips-for-better-programming"
                   {...field}
                 />
               )}
@@ -189,6 +238,4 @@ const BlogMetadataForm = ({ blogId }: { blogId: string }) => {
       </SheetContent>
     </Sheet>
   );
-};
-
-export default BlogMetadataForm;
+}

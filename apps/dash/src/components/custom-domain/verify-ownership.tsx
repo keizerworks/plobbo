@@ -11,7 +11,7 @@ import { verifyDomain } from "~/actions/organization/domain";
 import { getOrganizationsDomainQueryOption } from "~/actions/organization/domain/query-options";
 import { getErrorMessage } from "~/lib/error";
 import { getRecordName } from "~/lib/utils";
-import { useActiveOrgStore } from "~/store/active-org";
+import { useActiveOrgIdStore } from "~/store/active-org";
 
 import { Button } from "../ui/button";
 import CopyToClipboard from "../ui/copy-to-clipboard";
@@ -30,7 +30,7 @@ export default function VerifyDomainOwnership(props: Props) {
   const queryClient = useQueryClient();
   const { step, value, data } = props;
   const { invalidate } = useRouter();
-  const activeOrgId = useActiveOrgStore.use.id()!;
+  const activeOrgId = useActiveOrgIdStore.use.id()!;
 
   const { mutate, isPending } = useMutation({
     mutationFn: verifyDomain,

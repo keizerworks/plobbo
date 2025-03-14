@@ -94,7 +94,7 @@ export const CreateBlog = () => {
       </CredenzaTrigger>
 
       <CredenzaContent className="px-0 sm:max-w-[425px]">
-        <CredenzaHeader className="max-mb:pb-4 gap-x-0 space-y-0 gap-y-1 px-4 text-left md:px-6">
+        <CredenzaHeader className="max-mb:pb-4 space-y-0 gap-x-0 gap-y-1 px-4 text-left md:px-6">
           <CredenzaTitle>New Blog</CredenzaTitle>
           <CredenzaDescription>
             Enter the details for your new blog. Click save when you&apos;re
@@ -110,7 +110,7 @@ export const CreateBlog = () => {
           >
             <BaseFormField
               control={form.control}
-              name="logo"
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>

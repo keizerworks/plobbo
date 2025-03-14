@@ -18,6 +18,7 @@
     "paths": {
       "~/*": ["../../apps/www/src/*"],
       "@plobbo/ui/*": ["../../packages/ui/src/*"],
+      "@plobbo/plate-ui/*": ["../../packages/plate-ui/src/*"],
       "@plobbo/api/*": ["../../packages/api/src/*"]
     }
   },

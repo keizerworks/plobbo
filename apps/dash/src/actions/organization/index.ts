@@ -1,8 +1,13 @@
-import type { Organization } from "~/types/organization";
+import type { Organization } from "~/interface/organization";
+import type { OrganizationSubscription } from "~/interface/subscription";
 import apiClient from "~/lib/axios";
 
 export const getOrganizations = async () =>
-  apiClient.get<Organization[]>("organizations").then((r) => r.data);
+  apiClient
+    .get<
+      (Organization & { subscription: OrganizationSubscription | null })[]
+    >("organizations")
+    .then((r) => r.data);
 
 export const getOrganization = async (id: string) =>
   apiClient

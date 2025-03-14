@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,7 +36,7 @@ import { emitter } from "~/events/emitter";
 import { setActiveOrgId } from "~/store/active-org";
 
 export const CreateOrganization = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -59,7 +59,7 @@ export const CreateOrganization = () => {
     onSuccess: async ({ id }) => {
       await queryClient.refetchQueries(organizationsQueryOption);
       setActiveOrgId(id);
-      await router.navigate({ to: "/", replace: true });
+      await navigate({ to: "/", replace: true });
     },
     onError: console.error,
   });

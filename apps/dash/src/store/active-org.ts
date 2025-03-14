@@ -3,11 +3,23 @@ import cookies from "js-cookie";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import type {
+  Organization,
+  OrganizationSubscription,
+} from "~/types/organization";
+
 import { createSelectors } from "./zustand";
 
-interface ActiveOrgInterface {
+interface ActiveOrgIdInterface {
   id: string | null;
   set: (v: string | null) => void;
+}
+
+interface ActiveOrgInterface {
+  data:
+    | (Organization & { subscription: OrganizationSubscription | null })
+    | null;
+  set: (data: ActiveOrgInterface["data"]) => void;
 }
 
 const storage: StateStorage = {
@@ -18,20 +30,23 @@ const storage: StateStorage = {
   removeItem: cookies.remove,
 };
 
-export const _useActiveOrgStore = create<ActiveOrgInterface>()(
-  persist(
-    (set) => ({
-      id: null,
-      set: (id) => set({ id }),
-    }),
-    {
-      name: "active-org-storage",
-      storage: createJSONStorage(() => storage),
-    },
-  ),
+export const _useActiveOrgIdStore = create<ActiveOrgIdInterface>()(
+  persist((set) => ({ id: null, set: (id) => set({ id }) }), {
+    name: "active-org-storage",
+    storage: createJSONStorage(() => storage),
+  }),
 );
 
-export const getActiveOrgId = () => _useActiveOrgStore.getState().id;
-export const setActiveOrgId = _useActiveOrgStore.getState().set;
+export const _useActiveOrgStore = create<ActiveOrgInterface>((set) => ({
+  data: null,
+  set: (data) => set({ data }),
+}));
 
+export const getActiveOrgId = () => _useActiveOrgIdStore.getState().id;
+export const setActiveOrgId = _useActiveOrgIdStore.getState().set;
+
+export const getActiveOrg = () => _useActiveOrgStore.getState().data;
+export const setActiveOrg = _useActiveOrgStore.getState().set;
+
+export const useActiveOrgIdStore = createSelectors(_useActiveOrgIdStore);
 export const useActiveOrgStore = createSelectors(_useActiveOrgStore);

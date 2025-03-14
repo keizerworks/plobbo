@@ -1,0 +1,33 @@
+{
+  "name": "@plobbo/plate-ui",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@plobbo/ui": "workspace:*",
+    "lowlight": "^3.3.0",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
+    "tailwind-merge": "catalog:",
+    "tailwindcss-animate": "catalog:"
+  },
+  "devDependencies": {
+    "@plobbo/eslint-config": "workspace:*",
+    "@plobbo/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "postcss": "catalog:",
+    "react": "catalog:react19",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  },
+  "exports": {
+    "./index": "./src/index.ts",
+    "./editor/*": "./src/editor/*.ts",
+    "./components/*": "./src/components/*.ts"
+  }
+}

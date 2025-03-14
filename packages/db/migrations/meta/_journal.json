@@ -50,6 +50,20 @@
       "when": 1741415268386,
       "tag": "0006_rapid_jamie_braddock",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1741791260789,
+      "tag": "0007_silent_dreadnoughts",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1741865449327,
+      "tag": "0008_flashy_the_hunter",
+      "breakpoints": true
     }
   ]
 }

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import type { UpdateOrganizationInterface } from "@plobbo/validator/organization/update";
 import { updateOrganizationSchema } from "@plobbo/validator/organization/update";
 
-import type { Organization } from "~/types/organization";
+import type { Organization } from "~/interface/organization";
 import { patchOrganization } from "~/actions/organization";
 import { organizationsQueryOption } from "~/actions/organization/query-options";
 import { ImageUpload } from "~/components/image-upload";
@@ -51,6 +51,8 @@ export const UpdateOrganizationForm = (data: Organization) => {
           if (values[key]) formData.set(key, values[key]);
         },
       );
+      if (values.logo instanceof File) formData.set("logo", values.logo);
+
       return patchOrganization(data.id, formData);
     },
     onSuccess: async () => {
@@ -61,6 +63,7 @@ export const UpdateOrganizationForm = (data: Organization) => {
   });
 
   function onSubmit(values: UpdateOrganizationInterface) {
+    console.log(values);
     mutate(values);
   }
 
@@ -91,9 +94,7 @@ export const UpdateOrganizationForm = (data: Organization) => {
                     <ImageUpload
                       edit
                       defaultSrc={data.logo}
-                      onChange={(file) => {
-                        field.onChange(file);
-                      }}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />

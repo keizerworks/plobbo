@@ -2,9 +2,7 @@ import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 
 import type { Subjects } from "@plobbo/auth/subjects";
-import type { Organization } from "@plobbo/db/organization/index";
-import type { OrganizationMember } from "@plobbo/db/organization/member";
-import { and, db, eq, getTableColumns, sql } from "@plobbo/db";
+import { and, db, eq } from "@plobbo/db";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import {
   OrganizationDomainTable,

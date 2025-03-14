@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
+import { useLoaderData } from "@tanstack/react-router";
 
-import type { ListBlogSortFilterInterface } from "@plobbo/validator/blog/list";
 import { BlogStatusEnum } from "@plobbo/validator/blog/list";
 
 import type { Blog } from "~/interface/blog";
@@ -11,15 +9,10 @@ import type {
   DataTableRowAction,
 } from "~/interface/data-table";
 import type { OrganizationMember } from "~/interface/organization";
-import {
-  getBlogsCountQueryOptions,
-  getBlogsQueryOption,
-} from "~/actions/blog/query-options";
 import { DataTable } from "~/components/data-table";
 import { DataTableToolbar } from "~/components/data-table/tool-bar";
 import { useDataTable } from "~/hooks/use-data-table";
 import { toSentenceCase } from "~/lib/utils";
-import { useActiveOrgStore } from "~/store/active-org";
 
 import { DeleteBlogsDialog } from "../delete-blogs-dialog";
 import { getColumns, getStatusIcon } from "./columns";
@@ -30,28 +23,7 @@ export interface BlogList extends Blog {
 }
 
 export const BlogsTable = () => {
-  const organizationId = useActiveOrgStore.use.id();
-  const search = useSearch({ from: "/blogs/" });
-
-  const sort = useMemo(() => {
-    const temp: ListBlogSortFilterInterface["sort"] = {};
-    for (const { id, desc } of search.sort) {
-      temp[id as keyof typeof temp] = desc ? "desc" : "asc";
-    }
-    return temp;
-  }, [search.sort]);
-
-  const filter = {
-    search: search.title,
-    status: search.status[0],
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    organizationId: organizationId!,
-  };
-
-  const { data: count } = useSuspenseQuery(getBlogsCountQueryOptions(filter));
-  const { data: blogs } = useSuspenseQuery(
-    getBlogsQueryOption({ filter, sort }),
-  );
+  const { blogs, count } = useLoaderData({ from: "/blogs/" });
 
   const [rowAction, setRowAction] =
     useState<DataTableRowAction<BlogList> | null>(null);

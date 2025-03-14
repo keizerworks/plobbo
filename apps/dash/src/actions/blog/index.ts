@@ -29,15 +29,12 @@ export const getBlogsCount = async (
 export const createBlog = async (props: FormData) =>
   apiClient.post<Blog>("blogs", props).then((r) => r.data);
 
-export const patchBlog = async (props: FormData) =>
-  apiClient.patch<Blog>("blogs", props).then((r) => r.data);
-
 export const deleteBlogs = async (ids: string[]) =>
   apiClient.post("blogs", { params: { ids } });
 
 export const patchBlogs = async (
   id: string,
-  values: Partial<Omit<Blog, "id">>,
+  values: Partial<Omit<Blog, "id" | "image"> & { image: File }>,
 ) => {
   const formData = new FormData();
 
@@ -64,3 +61,7 @@ export const patchBlogs = async (
 
   return apiClient.patch<Blog>("blogs/" + id, formData).then((r) => r.data);
 };
+
+export async function publishBlog(blogId: string) {
+  return apiClient.post("blogs/" + blogId + "/publish");
+}

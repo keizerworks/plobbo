@@ -37,7 +37,7 @@ function RouteComponent() {
   );
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-y-2 overflow-hidden p-4">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-y-2 p-4">
       <div
         className={cn(
           "flex items-center justify-start border-b whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",

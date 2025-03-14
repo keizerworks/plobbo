@@ -1,4 +1,3 @@
-import type { QueryClient } from "@tanstack/react-query";
 import type { inferParserType } from "nuqs";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import {
@@ -13,11 +12,8 @@ import type { ListBlogSortFilterInterface } from "@plobbo/validator/blog/list";
 import { BlogStatusEnum } from "@plobbo/validator/blog/list";
 
 import type { BlogList } from "~/components/blogs/list";
-import {
-  getBlogsCountQueryOptions,
-  getBlogsQueryOption,
-} from "~/actions/blog/query-options";
-import { getActiveOrg } from "~/actions/cookies/active-org";
+import { getBlogs, getBlogsCount } from "~/actions/blog";
+import { getActiveOrgIdFromCookie } from "~/actions/cookies/active-org";
 import { DataTableSkeleton } from "~/components/data-table/skeleton";
 import { Skeleton } from "~/components/ui/skeleton";
 import { getSortingStateParser } from "~/lib/data-table/parser";
@@ -39,12 +35,8 @@ const parser = {
 const loader = createLoader(parser);
 
 export const Route = createFileRoute("/blogs/")({
-  validateSearch: (s: Record<string, string>) => loader(s),
-  loader: async ({ location, context }) => {
-    console.log(location);
-    // @ts-expect-error -- idk4
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const queryClient: QueryClient = context.queryClient;
+  validateSearch: loader,
+  loader: async ({ location }) => {
     const search = location.search as unknown as inferParserType<
       typeof parser
     > & { organizationId: string };
@@ -56,7 +48,7 @@ export const Route = createFileRoute("/blogs/")({
         sort[id as keyof typeof sort] = desc ? "desc" : "asc";
       }
 
-    const activeOrg = getActiveOrg();
+    const activeOrg = getActiveOrgIdFromCookie();
     // eslint-disable-next-line @typescript-eslint/only-throw-error
     if (!activeOrg) throw redirect({ to: "/" });
 
@@ -74,8 +66,13 @@ export const Route = createFileRoute("/blogs/")({
     }
 
     const [count, blogs] = await Promise.all([
-      queryClient.ensureQueryData(getBlogsCountQueryOptions(filter)),
-      queryClient.ensureQueryData(getBlogsQueryOption({ filter, sort })),
+      getBlogsCount(filter),
+      getBlogs({
+        filter,
+        sort,
+        page: search.page,
+        perPage: search.perPage,
+      }),
     ]);
 
     return { blogs, count };

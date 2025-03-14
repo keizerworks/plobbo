@@ -30,6 +30,17 @@ polarRouter.get(
   zValidator("form", z.object({ organizationId: z.string() })),
 );
 
+polarRouter.get(
+  "/:id/:polarId",
+  enforeAuthMiddleware,
+  enforeHasOrgMiddleware("param"),
+  async (c) => {
+    const id = c.req.param("polarId");
+    const sub = await polar.subscriptions.get({ id });
+    return c.json(sub);
+  },
+);
+
 polarRouter.post(
   "/",
 

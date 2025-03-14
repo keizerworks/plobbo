@@ -31,5 +31,8 @@
     "aws-lambda": "^1.0.7",
     "wrangler": "^3.101.0"
   },
+  "peerDependencies": {
+    "next": "15.1.7"
+  },
   "prettier": "@plobbo/prettier-config"
 }

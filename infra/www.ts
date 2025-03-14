@@ -53,7 +53,11 @@ export const www = new sst.aws.Nextjs("www", {
   permissions: [
     {
       resources: ["*"],
-      actions: ["cloudfront:GetDistribution", "cloudfront:UpdateDistribution"],
+      actions: [
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetDistribution",
+        "cloudfront:UpdateDistribution",
+      ],
       effect: "allow",
     },
     {

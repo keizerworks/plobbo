@@ -22,6 +22,7 @@ import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
 import { Route as CheckoutStatusIndexImport } from './routes/checkout/status/index'
 import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
 import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
+import { Route as ConfigureConfigureSettingsSettingsSubscriptionIndexImport } from './routes/_configure/configure/_settings/settings/subscription/index'
 import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
 
 // Create Virtual Routes
@@ -133,6 +134,17 @@ const ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute =
   } as any).lazy(() =>
     import(
       './routes/_configure/configure/_settings/settings/appearance/index.lazy'
+    ).then((d) => d.Route),
+  )
+
+const ConfigureConfigureSettingsSettingsSubscriptionIndexRoute =
+  ConfigureConfigureSettingsSettingsSubscriptionIndexImport.update({
+    id: '/settings/subscription/',
+    path: '/settings/subscription/',
+    getParentRoute: () => ConfigureConfigureSettingsRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_configure/configure/_settings/settings/subscription/index.lazy'
     ).then((d) => d.Route),
   )
 
@@ -249,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexImport
       parentRoute: typeof ConfigureConfigureSettingsImport
     }
+    '/_configure/configure/_settings/settings/subscription/': {
+      id: '/_configure/configure/_settings/settings/subscription/'
+      path: '/settings/subscription'
+      fullPath: '/configure/settings/subscription'
+      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsSubscriptionIndexImport
+      parentRoute: typeof ConfigureConfigureSettingsImport
+    }
     '/_configure/configure/_settings/settings/appearance/': {
       id: '/_configure/configure/_settings/settings/appearance/'
       path: '/settings/appearance'
@@ -264,6 +283,7 @@ declare module '@tanstack/react-router' {
 interface ConfigureConfigureSettingsRouteChildren {
   ConfigureConfigureSettingsSettingsIndexRoute: typeof ConfigureConfigureSettingsSettingsIndexRoute
   ConfigureConfigureSettingsSettingsCustomDomainIndexRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  ConfigureConfigureSettingsSettingsSubscriptionIndexRoute: typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
   ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute: typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
@@ -273,6 +293,8 @@ const ConfigureConfigureSettingsRouteChildren: ConfigureConfigureSettingsRouteCh
       ConfigureConfigureSettingsSettingsIndexRoute,
     ConfigureConfigureSettingsSettingsCustomDomainIndexRoute:
       ConfigureConfigureSettingsSettingsCustomDomainIndexRoute,
+    ConfigureConfigureSettingsSettingsSubscriptionIndexRoute:
+      ConfigureConfigureSettingsSettingsSubscriptionIndexRoute,
     ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute:
       ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute,
   }
@@ -321,6 +343,7 @@ export interface FileRoutesByFullPath {
   '/configure/': typeof ConfigureConfigureIndexLazyRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
   '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
@@ -337,6 +360,7 @@ export interface FileRoutesByTo {
   '/subscribe/pro': typeof SubscribeProIndexRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
   '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
@@ -356,6 +380,7 @@ export interface FileRoutesById {
   '/_configure/configure/': typeof ConfigureConfigureIndexLazyRoute
   '/_configure/configure/_settings/settings/': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/_configure/configure/_settings/settings/custom-domain/': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/_configure/configure/_settings/settings/subscription/': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
   '/_configure/configure/_settings/settings/appearance/': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
@@ -375,6 +400,7 @@ export interface FileRouteTypes {
     | '/configure/'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
+    | '/configure/settings/subscription'
     | '/configure/settings/appearance'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -390,6 +416,7 @@ export interface FileRouteTypes {
     | '/subscribe/pro'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
+    | '/configure/settings/subscription'
     | '/configure/settings/appearance'
   id:
     | '__root__'
@@ -407,6 +434,7 @@ export interface FileRouteTypes {
     | '/_configure/configure/'
     | '/_configure/configure/_settings/settings/'
     | '/_configure/configure/_settings/settings/custom-domain/'
+    | '/_configure/configure/_settings/settings/subscription/'
     | '/_configure/configure/_settings/settings/appearance/'
   fileRoutesById: FileRoutesById
 }
@@ -494,6 +522,7 @@ export const routeTree = rootRoute
       "children": [
         "/_configure/configure/_settings/settings/",
         "/_configure/configure/_settings/settings/custom-domain/",
+        "/_configure/configure/_settings/settings/subscription/",
         "/_configure/configure/_settings/settings/appearance/"
       ]
     },
@@ -513,6 +542,10 @@ export const routeTree = rootRoute
     },
     "/_configure/configure/_settings/settings/custom-domain/": {
       "filePath": "_configure/configure/_settings/settings/custom-domain/index.tsx",
+      "parent": "/_configure/configure/_settings"
+    },
+    "/_configure/configure/_settings/settings/subscription/": {
+      "filePath": "_configure/configure/_settings/settings/subscription/index.tsx",
       "parent": "/_configure/configure/_settings"
     },
     "/_configure/configure/_settings/settings/appearance/": {

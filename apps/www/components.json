@@ -16,5 +16,12 @@
     "lib": "~/lib",
     "utils": "@plobbo/ui/lib/utils",
     "ui": "@plobbo/ui/components"
+  },
+  "registries": {
+    "plate": {
+      "style": "default",
+      "aliases": { "ui": "@plobbo/plate-ui/src/components" },
+      "url": "https://platejs.org/r"
+    }
   }
 }

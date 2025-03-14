@@ -13,44 +13,45 @@ import { Editor, EditorContainer } from "~/components/plate-ui/editor";
 import { useDebouncedCallback } from "~/hooks/use-debounced-callback";
 
 interface Props {
-    blog: Blog;
+  blog: Blog;
 }
 
 export function PlateEditor({ blog }: Props) {
-    const queryClient = useQueryClient();
-    const editor = useCreateEditor({
-        value: blog.body ?? undefined,
-    });
+  const queryClient = useQueryClient();
+  const editor = useCreateEditor({
+    value: blog.body ?? undefined,
+  });
 
-    const { mutate } = useMutation({
-        mutationFn: ({
-            id,
-            ...values
-        }: Partial<Omit<Blog, "id">> & { id: Blog["id"] }) =>
-            patchBlogs(id, values),
-        onSuccess: (blog) => {
-            queryClient.setQueryData(
-                getBlogQueryOption(blog.id).queryKey,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                (b) => ({ ...b, ...blog, metadata: b!.metadata }),
-            );
-        },
-    });
+  const { mutate } = useMutation({
+    mutationFn: ({
+      id,
+      image: _image,
+      ...values
+    }: Partial<Omit<Blog, "id">> & { id: Blog["id"] }) =>
+      patchBlogs(id, values),
+    onSuccess: (blog) => {
+      queryClient.setQueryData(
+        getBlogQueryOption(blog.id).queryKey,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        (b) => ({ ...b, ...blog, metadata: b!.metadata }),
+      );
+    },
+  });
 
-    const onUpdate: PlateProps["onChange"] = ({ value, editor }) => {
-        const md = serializeMd(editor);
-        mutate({ body: value, content: md, id: blog.id });
-    };
+  const onUpdate: PlateProps["onChange"] = ({ value, editor }) => {
+    const md = serializeMd(editor);
+    mutate({ body: value, content: md, id: blog.id });
+  };
 
-    const debouncedUpdate = useDebouncedCallback(onUpdate, 2000);
+  const debouncedUpdate = useDebouncedCallback(onUpdate, 2000);
 
-    return (
-        <DndProvider backend={HTML5Backend}>
-            <Plate onChange={debouncedUpdate} editor={editor}>
-                <EditorContainer>
-                    <Editor variant="fullWidth" />
-                </EditorContainer>
-            </Plate>
-        </DndProvider>
-    );
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <Plate onChange={debouncedUpdate} editor={editor}>
+        <EditorContainer>
+          <Editor variant="fullWidth" />
+        </EditorContainer>
+      </Plate>
+    </DndProvider>
+  );
 }

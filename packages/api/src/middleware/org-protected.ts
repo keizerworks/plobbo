@@ -49,13 +49,13 @@ export const enforeHasOrgMiddleware = (
           .select({
             ...getTableColumns(OrganizationTable),
             member: sql<OrganizationMember.Model>`(
-            SELECT to_json(obj)
-            FROM (
-              SELECT *
-              FROM ${OrganizationMemberTable}
-              WHERE ${OrganizationMemberTable.organizationId} = ${OrganizationTable.id}
-            ) AS obj
-          )`.as("member"),
+              SELECT to_json(obj)
+              FROM (
+                SELECT *
+                FROM ${OrganizationMemberTable}
+                WHERE ${OrganizationMemberTable.organizationId} = ${OrganizationTable.id}
+              ) AS obj
+            )`.as("member"),
           })
           .from(OrganizationTable)
           .innerJoin(

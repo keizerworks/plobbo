@@ -1,4 +1,4 @@
-import { useActiveOrgStore } from "~/store/active-org";
+import { useActiveOrgIdStore } from "~/store/active-org";
 
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
@@ -12,7 +12,7 @@ import {
 import { SidebarSubscribeForm } from "./subscribe";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const activeOrgId = useActiveOrgStore.use.id();
+  const activeOrgId = useActiveOrgIdStore.use.id();
 
   return (
     <Sidebar collapsible="icon" {...props}>

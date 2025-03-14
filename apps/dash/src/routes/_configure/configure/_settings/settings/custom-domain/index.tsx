@@ -2,14 +2,14 @@ import type { QueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Loader } from "lucide-react";
 
-import { getActiveOrg } from "~/actions/cookies/active-org";
+import { getActiveOrgIdFromCookie } from "~/actions/cookies/active-org";
 import { getOrganizationsDomainQueryOption } from "~/actions/organization/domain/query-options";
 
 export const Route = createFileRoute(
   "/_configure/configure/_settings/settings/custom-domain/",
 )({
   loader: async ({ context }) => {
-    const activeOrg = getActiveOrg();
+    const activeOrg = getActiveOrgIdFromCookie();
     // eslint-disable-next-line @typescript-eslint/only-throw-error
     if (!activeOrg) throw redirect({ to: "/" });
 

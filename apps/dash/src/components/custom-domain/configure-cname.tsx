@@ -8,7 +8,7 @@ import type { getDomainSettings } from "~/actions/organization/domain";
 import { verifyDomainCname } from "~/actions/organization/domain";
 import { getOrganizationsDomainQueryOption } from "~/actions/organization/domain/query-options";
 import { getErrorMessage } from "~/lib/error";
-import { useActiveOrgStore } from "~/store/active-org";
+import { useActiveOrgIdStore } from "~/store/active-org";
 
 import { Button } from "../ui/button";
 import CopyToClipboard from "../ui/copy-to-clipboard";
@@ -24,7 +24,7 @@ export default function ConfigureCnameRecord({ data }: Props) {
   const queryClient = useQueryClient();
   const { invalidate } = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const activeOrgId = useActiveOrgStore.use.id()!;
+  const activeOrgId = useActiveOrgIdStore.use.id()!;
 
   const { mutate, isPending } = useMutation({
     mutationFn: verifyDomainCname,

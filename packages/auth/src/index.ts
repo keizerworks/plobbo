@@ -6,7 +6,6 @@ import { handle } from "hono/aws-lambda";
 
 import { sendMail } from "@plobbo/core/mailer/index";
 import { User } from "@plobbo/db/user/index";
-import { Waitlist } from "@plobbo/db/user/waitlist";
 
 import { subjects } from "./subjects";
 
@@ -23,11 +22,6 @@ const app = issuer({
       CodeUI({
         sendCode: async ({ email }, code) => {
           if (!email) throw new Error("Email is required");
-
-          const waitlistRecord = await Waitlist.findOne({ email });
-          if (!waitlistRecord?.approved)
-            throw new Error("User not approved for access");
-
           try {
             await sendMail({
               message: { data: "Your login code is " + code, type: "string" },
@@ -47,7 +41,6 @@ const app = issuer({
     let user = await User.findByEmail(value.claims.email);
     if (!user) user = await User.create({ email: value.claims.email });
     if (!user) throw new Error("Failed to create user");
-
     return ctx.subject("user", user);
   },
 });

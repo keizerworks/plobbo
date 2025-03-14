@@ -1,9 +1,6 @@
 import { vpc } from "./vpc";
 
-export const bucket = new sst.aws.Bucket("bucket", {
-  access: "public",
-});
-
+export const bucket = new sst.aws.Bucket("bucket", { access: "public" });
 export const postgres = new sst.aws.Postgres("pg", {
   vpc,
   dev: {

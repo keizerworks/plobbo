@@ -1,0 +1,17 @@
+{
+  "extends": "@plobbo/tsconfig/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@plobbo/plate-ui/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "tailwind.config.ts",
+    "postcss.config.mjs",
+    "eslint.config.js",
+    "src/**/*"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

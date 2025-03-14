@@ -5,18 +5,10 @@ import { cn } from "@plobbo/ui/lib/utils";
 import { buttonVariants } from "../ui/button";
 
 const items = [
-  {
-    title: "Organization",
-    href: "/configure/settings",
-  },
-  {
-    title: "Domain",
-    href: "/configure/settings/custom-domain",
-  },
-  {
-    title: "Appearance",
-    href: "/configure/settings/appearance",
-  },
+  { title: "Organization", href: "/configure/settings" },
+  { title: "Domain", href: "/configure/settings/custom-domain" },
+  { title: "Appearance", href: "/configure/settings/appearance" },
+  { title: "Subscription", href: "/configure/settings/subscription" },
 ];
 
 export function ConfigureSidebarNav() {

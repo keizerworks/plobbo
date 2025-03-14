@@ -8,12 +8,12 @@ export const Route = createFileRoute("/_configure/configure/_settings")({
 
 function RouteComponent() {
   return (
-    <div className="flex flex-col space-y-8 overflow-hidden lg:grid lg:grid-cols-5 lg:space-y-0 lg:gap-x-6">
+    <div className="flex flex-1 flex-col space-y-8 overflow-hidden lg:grid lg:grid-cols-5 lg:space-y-0 lg:gap-x-6">
       <aside className="pt-4 lg:mb-auto">
         <ConfigureSidebarNav />
       </aside>
 
-      <div className="overflow-y-scroll lg:col-span-4">
+      <div className="h-full lg:col-span-4">
         <Outlet />
       </div>
     </div>

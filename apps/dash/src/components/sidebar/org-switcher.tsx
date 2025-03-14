@@ -5,7 +5,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import find from "lodash.find";
 import { ChevronsUpDown, Plus } from "lucide-react";
 
-import type { Organization } from "~/types/organization";
 import { organizationsQueryOption } from "~/actions/organization/query-options";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
@@ -17,7 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { emitter } from "~/events/emitter";
-import { setActiveOrgId, useActiveOrgStore } from "~/store/active-org";
+import {
+  setActiveOrg,
+  setActiveOrgId,
+  useActiveOrgIdStore,
+  useActiveOrgStore,
+} from "~/store/active-org";
 
 import {
   SidebarMenu,
@@ -30,10 +34,10 @@ export function OrgSwitcher() {
   const { data: orgs } = useSuspenseQuery(organizationsQueryOption);
 
   const { isMobile } = useSidebar();
-  const id = useActiveOrgStore.use.id();
+  const id = useActiveOrgIdStore.use.id();
+  const activeOrg = useActiveOrgStore.use.data();
 
   const [open, setOpen] = useState(false);
-  const [activeOrg, setActiveOrg] = useState<Organization | null>(null);
 
   useEffect(() => {
     if (id === null && orgs[0]) {

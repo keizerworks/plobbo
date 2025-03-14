@@ -26,11 +26,14 @@ export const patchOrganizationHandler = factory.createHandlers(
 
     try {
       if (logo && logo.size > 0) {
-        const filename = `organization/${ulid()}-${organization.slug}`;
+        const filename =
+          "organizations/" + encodeURI(ulid() + "-" + organization.slug);
+
         if (organization.logo) {
           const logoPath = organization.logo.split(".com/").pop();
           if (logoPath) await deleteFile(logoPath);
         }
+
         input.logo = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
         await uploadFile(filename, logo);
       }

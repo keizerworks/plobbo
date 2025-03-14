@@ -1,5 +1,6 @@
 import {
   CloudFrontClient,
+  CreateInvalidationCommand,
   GetDistributionCommand,
   UpdateDistributionCommand,
 } from "@aws-sdk/client-cloudfront";
@@ -73,4 +74,16 @@ export async function removeDistributionWithACMCert(customDomain: string) {
 
   const updateResponse = await cfClient.send(updateCommand);
   console.log("CloudFront distribution updated:", updateResponse);
+}
+
+export async function invalidateCloudFrontPaths(paths: string[]) {
+  await cfClient.send(
+    new CreateInvalidationCommand({
+      DistributionId: Id,
+      InvalidationBatch: {
+        CallerReference: `${Date.now()}`,
+        Paths: { Quantity: paths.length, Items: paths },
+      },
+    }),
+  );
 }

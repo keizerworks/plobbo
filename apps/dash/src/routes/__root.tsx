@@ -52,7 +52,7 @@ function RootComponent() {
     <>
       <SidebarProvider>
         <AppSidebar variant="inset" />
-        <SidebarInset className="m-2 h-[calc(100svh_-_1rem)] min-h-[calc(100svh_-_1rem)] overflow-hidden rounded-lg border shadow-lg">
+        <SidebarInset className="m-2 flex-1 overflow-hidden rounded-lg border shadow-lg">
           <DashboardHeader />
           <Separator className="mx-auto w-[calc(100%_-_2rem)]" />
           <Outlet />

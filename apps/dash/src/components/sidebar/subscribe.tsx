@@ -8,10 +8,17 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
+import { useActiveOrgStore } from "~/store/active-org";
 
 import { buttonVariants } from "../plate-ui/button";
 
 export function SidebarSubscribeForm() {
+  const activeOrg = useActiveOrgStore.use.data();
+
+  if (activeOrg && activeOrg.subscription?.status === "ACTIVE") {
+    return null;
+  }
+
   return (
     <Card className="shadow-none">
       <CardHeader className="p-3 pb-0">

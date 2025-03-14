@@ -1,13 +1,13 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 
-import { getActiveOrg } from "~/actions/cookies/active-org";
+import { getActiveOrgIdFromCookie } from "~/actions/cookies/active-org";
 import apiClient from "~/lib/axios";
 
 export const Route = createFileRoute("/subscribe/pro/")({
   loader: async () => {
     try {
-      const activeOrg = getActiveOrg();
+      const activeOrg = getActiveOrgIdFromCookie();
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!activeOrg) throw redirect({ to: "/" });
 
