@@ -15,8 +15,8 @@ import {
 import { EditorStatic } from "@plobbo/plate-ui/components/editor-static";
 import { components, createSlateEditor, plugins } from "@plobbo/plate-ui/index";
 
-export const revalidate = 60;
-export const dynamicParams = true;
+// export const revalidate = 60;
+// export const dynamicParams = true;
 
 // export async function generateStaticParams() {
 //   const blogs = await db
@@ -147,7 +147,7 @@ export default async function Page(props: Props) {
           ),
         ),
     [blogSlug],
-    { tags: [blogSlug] },
+    { revalidate: 3600, tags: [blogSlug] },
   )();
 
   if (!blog?.publishedBody) {
