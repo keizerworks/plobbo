@@ -33,14 +33,17 @@ export const publishBlogHandler = factory.createHandlers(
       blog.organizationId,
     );
 
-    revalidateTag(blog.slug);
-    await invalidateCloudFrontPaths(
-      [
-        "/blog/" + blog.slug,
-        customDomain ? `/${customDomain.domain}/${blog.slug}` : null,
-      ].filter((path) => typeof path === "string"),
-    );
-
+    try {
+      revalidateTag(blog.slug);
+      await invalidateCloudFrontPaths(
+        [
+          "/blog/" + blog.slug,
+          customDomain ? `/${customDomain.domain}/${blog.slug}` : null,
+        ].filter((path) => typeof path === "string"),
+      );
+    } catch (e) {
+      console.error(e);
+    }
     return c.json(blog);
   },
 );
