@@ -70,10 +70,6 @@ export namespace Organization {
         )`.as("member"),
       })
       .from(OrganizationTable)
-      .innerJoin(
-        OrganizationSubscriptionTable,
-        eq(OrganizationSubscriptionTable.organizationId, OrganizationTable.id),
-      )
       .$dynamic();
 
     if (filters.userId) {
