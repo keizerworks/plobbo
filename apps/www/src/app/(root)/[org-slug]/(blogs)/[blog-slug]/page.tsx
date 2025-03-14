@@ -17,65 +17,6 @@ import { components, createSlateEditor, plugins } from "@plobbo/plate-ui/index";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
-// export async function generateStaticParams() {
-//   const blogs = await db
-//     .select({
-//       ...Blog.columns,
-//       metadata: sql<BlogMetadata.Model>`(
-//         SELECT to_json(obj)
-//         FROM (
-//           SELECT *
-//           FROM ${BlogMetadataTable}
-//           WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
-//         ) AS obj
-//       )`.as("metadata"),
-//       organization: sql<Organization.Model>`(
-//         SELECT to_json(obj)
-//         FROM (
-//           SELECT *
-//           FROM ${OrganizationTable}
-//           WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
-//         ) AS obj
-//       )`.as("organization"),
-//       domain: sql<OrganizationDomain.Model>`(
-//         SELECT to_json(obj)
-//         FROM (
-//           SELECT *
-//           FROM ${OrganizationDomainTable}
-//           WHERE ${OrganizationDomainTable.organizationId} = ${BlogTable.organizationId}
-//         ) AS obj
-//       )`.as("domain"),
-//     })
-//     .from(BlogTable)
-//     .innerJoin(BlogMetadataTable, eq(BlogTable.id, BlogMetadataTable.blogId))
-//     .innerJoin(
-//       OrganizationDomainTable,
-//       eq(BlogTable.organizationId, OrganizationDomainTable.organizationId),
-//     )
-//     .innerJoin(
-//       OrganizationTable,
-//       eq(BlogTable.organizationId, OrganizationTable.id),
-//     )
-//     .where(eq(BlogTable.status, "PUBLISHED"));
-//
-//   return [
-//     ...blogs.map((blog) => ({
-//       "blog-slug": blog.slug,
-//       "org-slug": blog.organization.slug,
-//     })),
-//     ...blogs
-//       .map((blog) =>
-//         blog.domain
-//           ? {
-//               "blog-slug": blog.domain.domain,
-//               "org-slug": blog.organization.slug,
-//             }
-//           : null,
-//       )
-//       .filter((b) => b !== null),
-//   ];
-// }
-
 interface Props {
   params: Promise<{ "org-slug": string; "blog-slug": string }>;
 }
