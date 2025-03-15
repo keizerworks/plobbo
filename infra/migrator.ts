@@ -19,9 +19,13 @@ export function buildAndRunMigrator(vpc: sst.aws.Vpc, rds: sst.aws.Postgres) {
       { dependsOn: [vpc, rds, www] },
     );
 
-    new aws.lambda.Invocation("MigratorInvocation", {
-      functionName: migrator.name,
-      input: JSON.stringify({ now: new Date().toISOString() }),
-    });
+    new aws.lambda.Invocation(
+      "MigratorInvocation",
+      {
+        functionName: migrator.name,
+        input: JSON.stringify({ now: new Date().toISOString() }),
+      },
+      { dependsOn: [vpc, rds, www, migrator] },
+    );
   }
 }

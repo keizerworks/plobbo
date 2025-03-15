@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
@@ -7,6 +7,7 @@ import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { Blog } from "@plobbo/db/blog/index";
+import { OrganizationDomain } from "@plobbo/db/organization/domain";
 
 export const publishBlogHandler = factory.createHandlers(
   enforeAuthMiddleware,
@@ -23,9 +24,25 @@ export const publishBlogHandler = factory.createHandlers(
       publishedDate: new Date(),
     });
 
+    const customDomainRecord = await OrganizationDomain.findUnique(
+      blog.organizationId,
+    );
+
     try {
-      revalidateTag(blog.slug);
-      await invalidateCloudFrontPaths([`/${organization.slug}/${blog.slug}`]);
+      revalidatePath(`/${organization.slug}/${blog.slug}/page`, "page");
+
+      if (customDomainRecord)
+        revalidatePath(
+          `/${customDomainRecord.domain}/${blog.slug}/page`,
+          "page",
+        );
+
+      await invalidateCloudFrontPaths(
+        [
+          `/${organization.slug}/${blog.slug}`,
+          customDomainRecord?.domain ?? null,
+        ].filter((r) => r !== null),
+      );
     } catch (e) {
       console.error(e);
     }

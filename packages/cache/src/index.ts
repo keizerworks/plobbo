@@ -1,13 +1,15 @@
-import Redis from "ioredis";
+import { Cluster } from "ioredis";
 import { Resource } from "sst/resource";
 
 const { host, port, username, password } = Resource.valkey;
 
-const cache = new Redis(port, host, {
-  showFriendlyErrorStack: true,
-  reconnectOnError: () => false,
-  username,
-  password,
+const cache = new Cluster([{ host, port }], {
+  redisOptions: {
+    enableAutoPipelining: true,
+    tls: { checkServerIdentity: () => undefined },
+    username,
+    password,
+  },
 });
 
 export default cache;

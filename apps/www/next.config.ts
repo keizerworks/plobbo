@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     "@plobbo/ui",
     "@plobbo/db",
     "@plobbo/plate-ui",
+    "@plobbo/cache",
   ],
   images: { remotePatterns: [{ hostname: "**" }] },
 };

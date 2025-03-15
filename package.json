@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@pulumi/aws": "^6.71.0",
-    "sst": "3.9.7"
+    "sst": "3.9.37"
   },
   "prettier": "@plobbo/prettier-config"
 }

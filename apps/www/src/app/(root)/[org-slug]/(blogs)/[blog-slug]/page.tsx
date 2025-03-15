@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -24,53 +23,47 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { "org-slug": orgSlug, "blog-slug": blogSlug } = await params;
 
-  const [blog] = await unstable_cache(
-    async () =>
-      await db
-        .select({
-          ...Blog.columns,
-          metadata: sql<BlogMetadata.Model>`(
-            SELECT to_json(obj)
-            FROM (
-              SELECT *
-              FROM ${BlogMetadataTable}
-              WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
-            ) AS obj
-          )`.as("metadata"),
-          organization: sql<Organization.Model>`(
-            SELECT to_json(obj)
-            FROM (
-              SELECT *
-              FROM ${OrganizationTable}
-              WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
-            ) AS obj
-          )`.as("organization"),
-        })
-        .from(BlogTable)
-        .innerJoin(
-          OrganizationTable,
-          eq(BlogTable.organizationId, OrganizationTable.id),
-        )
-        .innerJoin(
-          OrganizationDomainTable,
-          eq(OrganizationDomainTable.organizationId, OrganizationTable.id),
-        )
-        .limit(1)
-        .where(
-          and(
-            eq(BlogTable.status, "PUBLISHED"),
-            eq(BlogTable.slug, blogSlug),
-            or(
-              eq(OrganizationTable.slug, orgSlug),
-              eq(OrganizationDomainTable.domain, orgSlug),
-            ),
-          ),
+  const [blog] = await db
+    .select({
+      ...Blog.columns,
+      metadata: sql<BlogMetadata.Model>`(
+        SELECT to_json(obj)
+        FROM (
+          SELECT *
+          FROM ${BlogMetadataTable}
+          WHERE ${BlogMetadataTable.blogId} = ${BlogTable.id}
+        ) AS obj
+      )`.as("metadata"),
+      organization: sql<Organization.Model>`(
+        SELECT to_json(obj)
+        FROM (
+          SELECT *
+          FROM ${OrganizationTable}
+          WHERE ${OrganizationTable.id} = ${BlogTable.organizationId}
+        ) AS obj
+      )`.as("organization"),
+    })
+    .from(BlogTable)
+    .innerJoin(
+      OrganizationTable,
+      eq(BlogTable.organizationId, OrganizationTable.id),
+    )
+    .leftJoin(
+      OrganizationDomainTable,
+      eq(OrganizationDomainTable.organizationId, OrganizationTable.id),
+    )
+    .limit(1)
+    .where(
+      and(
+        eq(BlogTable.status, "PUBLISHED"),
+        eq(BlogTable.slug, blogSlug),
+        or(
+          eq(OrganizationTable.slug, orgSlug),
+          eq(OrganizationDomainTable.domain, orgSlug),
         ),
-    [blogSlug],
-    { revalidate: 3600, tags: [blogSlug] },
-  )();
+      ),
+    );
 
-  console.log(blog);
   if (!blog?.publishedBody) {
     notFound();
   }

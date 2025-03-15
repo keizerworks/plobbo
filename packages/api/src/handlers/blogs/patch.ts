@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { zValidator } from "@hono/zod-validator";
 import { HTTPException } from "hono/http-exception";
 import { validator } from "hono/validator";
@@ -11,6 +11,7 @@ import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { Blog } from "@plobbo/db/blog/index";
+import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { patchBlogSchema } from "@plobbo/validator/blog/patch";
 
 export const patchBlogHanlder = factory.createHandlers(
@@ -53,12 +54,26 @@ export const patchBlogHanlder = factory.createHandlers(
     if (!blog)
       throw new HTTPException(400, { message: "Failed to create blog" });
 
+    const customDomainRecord = await OrganizationDomain.findUnique(
+      blog.organizationId,
+    );
+
     if (c.var.blog.slug !== blog.slug) {
       try {
-        revalidateTag(blog.slug);
-        await invalidateCloudFrontPaths([
-          `/${c.var.organization.slug}/${blog.slug}`,
-        ]);
+        revalidatePath(`/${c.var.organization.slug}/${blog.slug}/page`, "page");
+
+        if (customDomainRecord)
+          revalidatePath(
+            `/${customDomainRecord.domain}/${blog.slug}/page`,
+            "page",
+          );
+
+        await invalidateCloudFrontPaths(
+          [
+            `/${c.var.organization.slug}/${blog.slug}`,
+            customDomainRecord?.domain ?? null,
+          ].filter((r) => r !== null),
+        );
       } catch (e) {
         console.error(e);
       }

@@ -23,6 +23,7 @@ export const www = new sst.aws.Nextjs("www", {
         ? "https://dash.plobbo.com"
         : "http://localhost:3001",
   },
+  warm: 2,
   domain:
     $app.stage === "production"
       ? {
