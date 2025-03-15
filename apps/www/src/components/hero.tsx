@@ -9,7 +9,7 @@ export default function Hero() {
     <main className="mx-auto grid w-full max-w-[1120px] grid-cols-2 items-center gap-y-4 px-6 py-28 lg:min-h-dvh lg:py-36">
       <div className="space-y-4 max-lg:col-span-2">
         <h1>
-          Effortless Blogging,
+          Effortless ,
           <br />
           Powered by AI.
         </h1>
