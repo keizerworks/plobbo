@@ -180,16 +180,6 @@ export default function Page() {
         <JoinWaitlistForm />
       </motion.div>
 
-      <motion.p
-        initial="hidden"
-        animate="visible"
-        variants={statsVariants}
-        className="mt-4 text-sm sm:text-base"
-      >
-        <span className="font-bold">5,590</span> people have already joined the
-        waitlist
-      </motion.p>
-
       <motion.div
         className="group relative isolate mx-auto my-8 w-full max-w-5xl lg:my-16"
         initial="hidden"
