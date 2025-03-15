@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { zValidator } from "@hono/zod-validator";
 import { HTTPException } from "hono/http-exception";
 import { validator } from "hono/validator";
@@ -6,6 +7,7 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { uploadFile } from "@plobbo/api/lib/bucket";
+import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { Blog } from "@plobbo/db/blog/index";
@@ -50,6 +52,17 @@ export const patchBlogHanlder = factory.createHandlers(
     const blog = await Blog.update(input);
     if (!blog)
       throw new HTTPException(400, { message: "Failed to create blog" });
+
+    if (c.var.blog.slug !== blog.slug) {
+      try {
+        revalidateTag(blog.slug);
+        await invalidateCloudFrontPaths([
+          `/${c.var.organization.slug}/${blog.slug}`,
+        ]);
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
     return c.json(blog);
   },

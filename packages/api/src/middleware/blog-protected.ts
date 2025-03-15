@@ -6,6 +6,7 @@ import type { Subjects } from "@plobbo/auth/subjects";
 import { and, db, eq } from "@plobbo/db";
 import { BlogTable } from "@plobbo/db/blog/blog.sql";
 import { Blog } from "@plobbo/db/blog/index";
+import { Organization } from "@plobbo/db/organization/index";
 import {
   OrganizationMemberTable,
   OrganizationTable,
@@ -15,6 +16,7 @@ interface Env {
   Variables: {
     user: Subjects;
     blog: Blog.Model;
+    organization: Organization.Model;
   };
 }
 
@@ -23,11 +25,11 @@ export const enforeHasBlogMiddleware = createMiddleware<Env>(
     const user = c.var.user;
     const blogId = c.req.param("id")!;
 
-    let blog;
+    let record;
     try {
-      blog = (
+      record = (
         await db
-          .select(Blog.columns)
+          .select({ blog: Blog.columns, organization: Organization.columns })
           .from(BlogTable)
           .innerJoin(
             OrganizationTable,
@@ -51,13 +53,14 @@ export const enforeHasBlogMiddleware = createMiddleware<Env>(
       });
     }
 
-    if (!blog) {
+    if (!record) {
       throw new HTTPException(403, {
         message: "You are not a member of this organization",
       });
     }
 
-    c.set("blog", blog);
+    c.set("blog", record.blog);
+    c.set("organization", record.organization);
     await next();
   },
 );

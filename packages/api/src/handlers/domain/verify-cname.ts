@@ -43,7 +43,7 @@ export const verifyCnameOrgDomainHandler = factory.createHandlers(
 
     await Promise.all([
       OrganizationDomain.update(record),
-      cache.set(`domain:${record.domain}`, JSON.stringify(record)),
+      cache.set(`domain:${record.domain}`, c.var.organization.slug),
     ]);
 
     return c.json({

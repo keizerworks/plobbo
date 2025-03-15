@@ -40,6 +40,20 @@ export namespace OrganizationDomain {
     )[0];
   }
 
+  export async function findOne(filters: { domain?: string }) {
+    let query = db
+      .select(columns)
+      .from(OrganizationDomainTable)
+      .limit(1)
+      .$dynamic();
+
+    if (filters.domain) {
+      query = query.where(eq(OrganizationDomainTable.domain, filters.domain));
+    }
+
+    return (await query)[0];
+  }
+
   export async function remove(id: string) {
     await db
       .delete(OrganizationDomainTable)

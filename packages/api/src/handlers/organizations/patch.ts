@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { zValidator } from "@hono/zod-validator";
 import { HTTPException } from "hono/http-exception";
 import { ulid } from "ulid";
@@ -5,8 +6,11 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { deleteFile, uploadFile } from "@plobbo/api/lib/bucket";
+import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import cache from "@plobbo/cache";
+import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { Organization } from "@plobbo/db/organization/index";
 import { updateOrganizationSchema } from "@plobbo/validator/organization/update";
 
@@ -43,6 +47,23 @@ export const patchOrganizationHandler = factory.createHandlers(
         throw new HTTPException(500, {
           message: "Failed to update organization",
         });
+      }
+
+      if (updatedOrganization.slug !== organization.slug) {
+        try {
+          revalidatePath(`/${organization.slug}/[blog-slug]/page`, "page");
+          await invalidateCloudFrontPaths([`/${organization.slug}/*`]);
+
+          const customDomainRecord = await OrganizationDomain.findUnique(id);
+          if (customDomainRecord) {
+            await cache.set(
+              `domain:${customDomainRecord.domain}`,
+              c.var.organization.slug,
+            );
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
 
       return c.json(updatedOrganization);
