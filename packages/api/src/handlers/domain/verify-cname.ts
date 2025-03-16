@@ -5,6 +5,7 @@ import { z } from "zod";
 import { factory } from "@plobbo/api/factory";
 import { updateDistributionWithACMCert } from "@plobbo/api/lib/cloudfront";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
 import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import cache from "@plobbo/cache";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
@@ -12,6 +13,7 @@ import { OrganizationDomain } from "@plobbo/db/organization/domain";
 export const verifyCnameOrgDomainHandler = factory.createHandlers(
   enforeAuthMiddleware,
   enforeHasOrgMiddleware("param"),
+  enforePremiumMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
 

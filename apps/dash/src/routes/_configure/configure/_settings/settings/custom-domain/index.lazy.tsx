@@ -23,7 +23,7 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "~/components/ui/stepper";
-import { useActiveOrgIdStore } from "~/store/active-org";
+import { useActiveOrgIdStore, useActiveOrgStore } from "~/store/active-org";
 
 export const Route = createLazyFileRoute(
   "/_configure/configure/_settings/settings/custom-domain/",
@@ -51,6 +51,7 @@ const steps = [
 
 function RouteComponent() {
   const activeOrgId = useActiveOrgIdStore.use.id();
+  const activeOrg = useActiveOrgStore.use.data();
 
   const { data } = useSuspenseQuery(
     getOrganizationsDomainQueryOption(activeOrgId ?? undefined),
@@ -60,6 +61,19 @@ function RouteComponent() {
     () => (!data || data.domain.length === 0 ? 1 : data.verified ? 3 : 2),
     [data],
   );
+
+  if (activeOrg && activeOrg.subscription?.status !== "ACTIVE") {
+    return (
+      <div className="flex-1 p-4">
+        <div className="flex items-center gap-x-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <p>
+            Custom domain is a premium feature. Please upgrade your subscription
+            to access this feature.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Card className="border-0 shadow-none">
