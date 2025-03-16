@@ -3,10 +3,8 @@ import cookies from "js-cookie";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import type {
-  Organization,
-  OrganizationSubscription,
-} from "~/types/organization";
+import type { Organization } from "~/interface/organization";
+import type { OrganizationSubscription } from "~/interface/subscription";
 
 import { createSelectors } from "./zustand";
 

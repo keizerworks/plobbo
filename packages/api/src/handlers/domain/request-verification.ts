@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
 import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { requestDomainVerificationSchema } from "@plobbo/validator/organization/domain";
@@ -16,6 +17,7 @@ import { requestDomainVerificationSchema } from "@plobbo/validator/organization/
 export const requestVerificationOrgDomainHandler = factory.createHandlers(
   enforeAuthMiddleware,
   enforeHasOrgMiddleware("param"),
+  enforePremiumMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
   zValidator("form", requestDomainVerificationSchema),
