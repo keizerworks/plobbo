@@ -48,7 +48,7 @@ export default function Hero() {
 
       <div className="relative z-20 -ml-8 aspect-square w-[120%] max-lg:col-span-2 lg:absolute lg:bottom-[5%] lg:right-0 lg:top-[15%] lg:w-[100%] lg:max-w-[50%]">
         <Image
-          src="/assets/hero.png"
+          src="/assets/wishlist.png"
           alt="hero"
           className="object-contain object-right-top"
           fill
