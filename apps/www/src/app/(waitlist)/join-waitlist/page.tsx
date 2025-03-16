@@ -110,7 +110,7 @@ export default function Page() {
   };
 
   return (
-    <main className="lg:pt-34 mx-auto flex w-full max-w-7xl flex-col items-center justify-start px-4 pb-8 pt-16 text-center transition-all sm:px-6 sm:pt-24 md:pt-32">
+    <main className="mx-auto flex w-full max-w-7xl flex-col items-center justify-start px-4 pb-8 pt-6 text-center transition-all sm:px-6 sm:pt-24 md:pt-32 lg:pt-16">
       <motion.h1
         className="hont-bold mt-4 flex flex-col gap-1 text-3xl capitalize leading-tight tracking-tighter sm:mt-6 sm:text-5xl sm:leading-[1.1] md:text-6xl md:leading-[1]"
         initial="hidden"
@@ -186,7 +186,7 @@ export default function Page() {
         animate="visible"
         variants={imageVariants}
       >
-        <div className="aspect-video h-auto min-h-[150px] w-full sm:min-h-[200px] md:min-h-[300px] lg:min-h-[500px]">
+        <div className="aspect-video min-h-[100px] w-full sm:h-auto sm:min-h-[200px] md:min-h-[300px] lg:min-h-[500px]">
           <Image
             src="/assets/wishlist.png"
             alt="Plobbo Platform Preview"
@@ -200,7 +200,7 @@ export default function Page() {
             alt="Plobbo Platform Preview"
             fill
             sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, (max-width: 1200px) 80vw, 1200px"
-            className="z-0 scale-[1.05] rounded-md object-cover opacity-0 shadow-md transition-all duration-300 group-hover:opacity-20 group-hover:blur-sm sm:rounded-lg sm:shadow-xl sm:group-hover:blur-md md:rounded-2xl md:group-hover:blur-xl"
+            className="z-0 scale-[1.05] rounded-md object-cover opacity-20 shadow-md blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-xl md:rounded-2xl"
           />
         </div>
       </motion.div>

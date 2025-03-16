@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.0.0",
+    "@phosphor-icons/react": "^2.1.7",
     "@plobbo/api": "workspace:*",
     "@plobbo/cache": "workspace:*",
     "@plobbo/db": "workspace:*",
