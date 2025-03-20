@@ -1,15 +1,10 @@
 export const secrets = {
-  langdbOpenAIBaseUrl: new sst.Secret(
-    "langdbOpenaiBaseUrl",
+  LangdbOpenAIBaseUrl: new sst.Secret(
+    "LangdbOpenaiBaseUrl",
     process.env.LANGDB_OPENAI_BASE_URL,
   ),
 
-  langdbProjectId: new sst.Secret(
-    "langdbProjectId",
-    process.env.LANGDB_PROJECT_ID,
-  ),
-
-  langdbApiKey: new sst.Secret("langdbApiKey", process.env.LANGDB_API_KEY),
+  LangdbApiKey: new sst.Secret("LangdbApiKey", process.env.LANGDB_API_KEY),
 
   CloudfrontWWWUrl: new sst.Secret(
     "CloudfrontWWWUrl",

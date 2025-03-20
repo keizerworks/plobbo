@@ -17,6 +17,18 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "LangdbApiKey": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "LangdbOpenaiBaseUrl": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "LangdbProjectId": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "PolarAPIToken": {
       "type": "sst.sst.Secret"
       "value": string
