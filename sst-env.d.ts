@@ -5,42 +5,6 @@
 
 declare module "sst" {
   export interface Resource {
-    "CloudfrontDistributionID": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "CloudfrontWWWUrl": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "IsWaitlistMode": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "LangdbApiKey": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "LangdbOpenaiBaseUrl": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "LangdbProjectId": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "PolarAPIToken": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "PolarPremiumProductId": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "PolarWebhookSecret": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
     "auth": {
       "type": "sst.aws.Auth"
       "url": string
@@ -57,18 +21,6 @@ declare module "sst" {
       "configSet": string
       "sender": string
       "type": "sst.aws.Email"
-    }
-    "langdbApiKey": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "langdbOpenaiBaseUrl": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "langdbProjectId": {
-      "type": "sst.sst.Secret"
-      "value": string
     }
     "pg": {
       "database": string

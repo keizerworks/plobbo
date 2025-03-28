@@ -33,7 +33,10 @@ export const getOrgDomainHandler = factory.createHandlers(
             ...record,
             recordName: `_plobbo.verify.${record.domain}`,
             cloudfrontTarget: record.verified
-              ? Resource.CloudfrontWWWUrl.value.replace(/^https?:\/\//, "")
+              ? (process.env.CLOUDFRONT_WWL_URL ?? "").replace(
+                  /^https?:\/\//,
+                  "",
+                )
               : "",
             resourceRecord,
           }

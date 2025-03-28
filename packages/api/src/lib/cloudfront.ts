@@ -4,11 +4,10 @@ import {
   GetDistributionCommand,
   UpdateDistributionCommand,
 } from "@aws-sdk/client-cloudfront";
-import { Resource } from "sst/resource";
 
 const cfClient = new CloudFrontClient({ region: "us-east-1" });
 
-const Id = Resource.CloudfrontDistributionID.value;
+const Id = process.env.CLOUDFRONT_DISTRIBUTIONID as unknown as string;
 
 export async function updateDistributionWithACMCert(
   customDomain: string,

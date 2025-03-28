@@ -19,7 +19,6 @@ export default $config({
       import("./infra/storage"),
       import("./infra/cache"),
       import("./infra/email"),
-      await import("./infra/secrets"),
     ]);
     (await import("./infra/migrator")).buildAndRunMigrator(vpc, postgres);
     await Promise.all([

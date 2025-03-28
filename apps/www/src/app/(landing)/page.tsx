@@ -7,7 +7,7 @@ import Pricing from "~/components/pricing";
 import Why from "~/components/why";
 
 export default function Home() {
-  if (Resource.IsWaitlistMode.value === "true") {
+  if (process.env.IS_WAITLIST_MODE === "true") {
     redirect("/join-waitlist");
   }
 

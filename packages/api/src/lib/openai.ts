@@ -1,6 +1,4 @@
-import { Resource } from "sst/resource";
-
 export const openAiOptions = {
-  apiKey: Resource.LangdbApiKey.value,
-  baseURL: Resource.LangdbOpenaiBaseUrl.value,
+  apiKey: process.env.LANGDB_API_KEY,
+  baseURL: process.env.LANGDB_OPENAI_BASE_URL,
 };

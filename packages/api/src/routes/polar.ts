@@ -72,7 +72,7 @@ polarRouter.post(
     }
 
     const checkout = await polar.checkouts.create({
-      productId: Resource.PolarPremiumProductId.value,
+      productId: process.env.POLAR_PREMIUM_PRODUCT_ID as string,
       customerId: customer.id,
       successUrl: process.env.DASH_URL + "/checkout/status",
       metadata: { organizationId: organization.id },
@@ -86,7 +86,7 @@ polarRouter.post(
 polarRouter.post(
   "/webhook",
   Webhooks({
-    webhookSecret: Resource.PolarWebhookSecret.value,
+    webhookSecret: process.env.POLAR_WEBHOOK_SECRET as unknown as string,
 
     async onSubscriptionCreated({ data }) {
       await OrganizationSubscription.create({
