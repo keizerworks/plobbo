@@ -1,5 +1,4 @@
 import { zValidator } from "@hono/zod-validator";
-import { Resource } from "sst/resource";
 import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";

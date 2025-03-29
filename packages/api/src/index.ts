@@ -11,6 +11,7 @@ import { patchBlogHanlder } from "./handlers/blogs/patch";
 import { putBlogPlaceholderImages } from "./handlers/blogs/placeholder-images/put";
 import { postBlogHandler } from "./handlers/blogs/post";
 import { publishBlogHandler } from "./handlers/blogs/publish";
+import { deleteOrgDomainHandler } from "./handlers/domain/delete";
 import { getOrgDomainHandler } from "./handlers/domain/get";
 import { requestVerificationOrgDomainHandler } from "./handlers/domain/request-verification";
 import { verifyOrgDomainHandler } from "./handlers/domain/verify";
@@ -57,6 +58,7 @@ const app = new Hono()
   .patch("/organizations/:id", ...patchOrganizationHandler)
 
   .get("/organizations/:id/domain", ...getOrgDomainHandler)
+  .delete("/organizations/:id/domain", ...deleteOrgDomainHandler)
   .post("/organizations/:id/domain/verify", ...verifyOrgDomainHandler)
   .post(
     "/organizations/:id/domain/verify-cname",
