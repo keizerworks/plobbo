@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute } from "@tanstack/react-router";
-import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -16,11 +15,10 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { initializeAuth, requestOtp, verifyOtp } from "~/store/auth";
+import { initializeAuth, requestOtp } from "~/store/auth";
 
 const formSchema = z.object({
   email: z.string().email(),
-  otp: z.string().length(6).optional(),
 });
 
 export const Route = createFileRoute("/_public/auth")({
@@ -38,29 +36,22 @@ function AuthComponent() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      otp: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      if (!isOtpSent) {
-        await requestOtp(values.email);
-        setIsOtpSent(true);
-        toast.success("OTP sent to your email");
-      } else {
-        if (!values.otp) {
-          toast.error("Please enter the OTP");
-          return;
-        }
-
-        await verifyOtp(values.email, values.otp);
-        toast.success("Logged in successfully");
-      }
+      await requestOtp(values.email);
+      setIsOtpSent(true);
+      toast.success("OTP sent to your email");
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
+      console.error("Error in onSubmit:", error);
+      if (error instanceof Error) {
+        toast.error(error.message || "Something went wrong");
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -100,27 +91,8 @@ function AuthComponent() {
             )}
           />
 
-          {isOtpSent && (
-            <FormField
-              control={form.control}
-              name="otp"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>OTP</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter 6-digit OTP" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
-            ) : null}
-            {isOtpSent ? "Verify OTP" : "Send OTP"}
+          <Button type="submit" className="w-full" loading={isLoading}>
+            {"Send OTP"}
           </Button>
         </form>
       </Form>

@@ -48,7 +48,14 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   requestOtp: async (email: string) => {
-    await apiClient.post("/auth/request-otp", { email });
+    try {
+      const formData = new FormData();
+      formData.set("email", email);
+      await apiClient.post("/auth/request-otp", formData);
+    } catch (error) {
+      console.error("Error requesting OTP:", error);
+      throw error;
+    }
   },
 
   verifyOtp: async (email: string, otp: string) => {

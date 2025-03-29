@@ -1,4 +1,3 @@
-import { auth } from "./auth";
 import { valkey } from "./cache";
 import { altDomain, domain } from "./dns";
 import { email } from "./email";
@@ -14,7 +13,6 @@ export const www = new sst.aws.Nextjs("www", {
   vpc: $app.stage === "production" ? vpc : undefined,
   environment: {
     NEXT_PUBLIC_S3_DOMAIN,
-    AUTH_URL: $interpolate`${auth.url}`,
     SCHEDULER_ARN: $interpolate`${schedulerRoleEventBridge.arn}`,
     REVOKE_ACCESS_LAMBDA_ARN: $interpolate`${revokeSubscriptionFunction.arn}`,
     DASH_URL:
@@ -53,7 +51,6 @@ export const www = new sst.aws.Nextjs("www", {
     postgres,
     email,
     valkey,
-    auth,
     revokeSubscriptionFunction,
   ],
   server: { runtime: "nodejs22.x" },
