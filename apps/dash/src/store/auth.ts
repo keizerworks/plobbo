@@ -20,12 +20,10 @@ interface AuthState {
   loaded: boolean;
   loggedIn: boolean;
   token?: string;
-  logout: () => Promise<void>;
-  requestOtp: (email: string) => Promise<void>;
-  verifyOtp: (email: string, otp: string) => Promise<void>;
   getToken: () => string | undefined;
   initialize: () => Promise<void>;
   fetchUser: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const _useAuthStore = create<AuthState>()((set, get) => ({
@@ -47,28 +45,6 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
     return token;
   },
 
-  requestOtp: async (email: string) => {
-    try {
-      const formData = new FormData();
-      formData.set("email", email);
-      await apiClient.post("/auth/request-otp", formData);
-    } catch (error) {
-      console.error("Error requesting OTP:", error);
-      throw error;
-    }
-  },
-
-  verifyOtp: async (email: string, otp: string) => {
-    const response = await apiClient.post<VerifyOtpResponse>(
-      "/auth/verify-otp",
-      { email, otp },
-    );
-    const { token } = response.data;
-    cookies.set("token", token);
-    set({ token, loggedIn: true });
-    await get().fetchUser();
-  },
-
   fetchUser: async () => {
     try {
       const profile = await getProfile();
@@ -80,13 +56,11 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
 
   logout: async () => {
     try {
-      await apiClient.post("/auth/logout");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      cookies.set("token", "", { expires: new Date() });
+      await logoutApi();
       set({ profile: undefined, loggedIn: false, token: undefined });
-      window.location.replace("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      throw error;
     }
   },
 }));
@@ -94,8 +68,32 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
 export const initializeAuth = _useAuthStore.getState().initialize;
 export const getIsLoggedIn = () => _useAuthStore.getState().loggedIn;
 export const getToken = () => _useAuthStore.getState().token;
-export const requestOtp = _useAuthStore.getState().requestOtp;
-export const verifyOtp = _useAuthStore.getState().verifyOtp;
 export const logout = _useAuthStore.getState().logout;
 
 export const useAuthStore = createSelectors(_useAuthStore);
+
+// API functions
+export async function requestOtpApi(email: string) {
+  const formData = new FormData();
+  formData.set("email", email);
+  await apiClient.post("/auth/request-otp", formData);
+}
+
+export async function verifyOtpApi(email: string, otp: string) {
+  const formData = new FormData();
+  formData.set("email", email);
+  formData.set("otp", otp);
+  const response = await apiClient.post<VerifyOtpResponse>(
+    "/auth/verify-otp",
+    formData,
+  );
+  const { token } = response.data;
+  cookies.set("token", token);
+  return response.data;
+}
+
+export async function logoutApi() {
+  await apiClient.post("/auth/logout");
+  cookies.set("token", "", { expires: new Date() });
+  window.location.replace("/");
+}
