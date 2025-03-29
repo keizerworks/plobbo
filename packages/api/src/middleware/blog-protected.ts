@@ -2,7 +2,7 @@
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 
-import type { Subjects } from "@plobbo/auth/subjects";
+import type { User } from "@plobbo/db/user/index";
 import { and, db, eq } from "@plobbo/db";
 import { BlogTable } from "@plobbo/db/blog/blog.sql";
 import { Blog } from "@plobbo/db/blog/index";
@@ -14,7 +14,7 @@ import {
 
 interface Env {
   Variables: {
-    user: Subjects;
+    user: User.Model;
     blog: Blog.Model;
     organization: Organization.Model;
   };

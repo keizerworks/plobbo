@@ -12,7 +12,9 @@
     "jsxImportSource": "hono/jsx",
     "baseUrl": ".",
     "paths": {
-      "@plobbo/api/*": ["./src/*"]
+      "@plobbo/api/*": ["./src/*"],
+      "@plobbo/auth": ["../../packages/auth/src/index.ts"],
+      "@plobbo/cache/*": ["../../packages/cache/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "eslint.config.js", "sst-env.d.ts"]

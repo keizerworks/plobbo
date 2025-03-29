@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./*": "./src/*"
   },
   "scripts": {},
   "devDependencies": {
