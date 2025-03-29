@@ -4,10 +4,132 @@ import {
   encodeHexLowerCase,
 } from "@oslojs/encoding";
 import { eq } from "drizzle-orm/sql";
+import { z } from "zod";
 
 import { db } from "@plobbo/db/index";
 import { Session } from "@plobbo/db/user/session";
 import { SessionTable, UserTable } from "@plobbo/db/user/user.sql";
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+const signupSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  name: z.string().optional(),
+});
+
+export async function handler(event: any) {
+  const { path, method, body } = event;
+
+  try {
+    if (path === "/auth/login" && method === "POST") {
+      const { email, password } = loginSchema.parse(JSON.parse(body));
+
+      // TODO: Implement password verification
+      const user = await db
+        .select()
+        .from(UserTable)
+        .where(eq(UserTable.email, email))
+        .limit(1);
+
+      if (!user[0]) {
+        return {
+          statusCode: 401,
+          body: JSON.stringify({ error: "Invalid credentials" }),
+        };
+      }
+
+      const token = Auth.generateSessionToken();
+      await Auth.createSession(token, user[0].id);
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ token }),
+      };
+    }
+
+    if (path === "/auth/signup" && method === "POST") {
+      const { email, password, name } = signupSchema.parse(JSON.parse(body));
+
+      // TODO: Implement password hashing
+      const [user] = await db
+        .insert(UserTable)
+        .values({
+          email,
+          name,
+          verified: false,
+        })
+        .returning();
+
+      if (!user) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "Failed to create user" }),
+        };
+      }
+
+      const token = Auth.generateSessionToken();
+      await Auth.createSession(token, user.id);
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ token }),
+      };
+    }
+
+    if (path === "/auth/me" && method === "GET") {
+      const token = event.headers.Authorization?.split(" ")[1];
+      if (!token) {
+        return {
+          statusCode: 401,
+          body: JSON.stringify({ error: "Unauthorized" }),
+        };
+      }
+
+      const { user } = await Auth.validateSessionToken(token);
+      if (!user) {
+        return {
+          statusCode: 401,
+          body: JSON.stringify({ error: "Invalid session" }),
+        };
+      }
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify(user),
+      };
+    }
+
+    if (path === "/auth/logout" && method === "POST") {
+      const token = event.headers.Authorization?.split(" ")[1];
+      if (token) {
+        const sessionId = encodeHexLowerCase(
+          sha256(new TextEncoder().encode(token)),
+        );
+        await Auth.invalidateSession(sessionId);
+      }
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: "Logged out successfully" }),
+      };
+    }
+
+    return {
+      statusCode: 404,
+      body: JSON.stringify({ error: "Not found" }),
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Bad request" }),
+    };
+  }
+}
 
 export namespace Auth {
   export function generateSessionToken(): string {

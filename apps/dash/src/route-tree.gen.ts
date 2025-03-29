@@ -13,39 +13,46 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as NoOrganizationImport } from './routes/no-organization'
-import { Route as ConfigureImport } from './routes/_configure'
-import { Route as BlogsIndexImport } from './routes/blogs/index'
-import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
-import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
-import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
-import { Route as CheckoutStatusIndexImport } from './routes/checkout/status/index'
-import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
-import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
-import { Route as ConfigureConfigureSettingsSettingsSubscriptionIndexImport } from './routes/_configure/configure/_settings/settings/subscription/index'
-import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
+import { Route as PublicImport } from './routes/_public'
+import { Route as PrivateImport } from './routes/_private'
+import { Route as PublicAuthImport } from './routes/_public/auth'
+import { Route as PrivateNoOrganizationImport } from './routes/_private/no-organization'
+import { Route as PrivateConfigureImport } from './routes/_private/_configure'
+import { Route as PrivateBlogsIndexImport } from './routes/_private/blogs/index'
+import { Route as PrivateUsersUserIdRouteImport } from './routes/_private/users/$user-id/route'
+import { Route as PrivateBlogsBlogIdRouteImport } from './routes/_private/blogs/$blog-id/route'
+import { Route as PrivateSubscribeProIndexImport } from './routes/_private/subscribe/pro/index'
+import { Route as PrivateCheckoutStatusIndexImport } from './routes/_private/checkout/status/index'
+import { Route as PrivateConfigureConfigureSettingsImport } from './routes/_private/_configure/configure/_settings'
+import { Route as PrivateConfigureConfigureSettingsSettingsIndexImport } from './routes/_private/_configure/configure/_settings/settings/index'
+import { Route as PrivateConfigureConfigureSettingsSettingsSubscriptionIndexImport } from './routes/_private/_configure/configure/_settings/settings/subscription/index'
+import { Route as PrivateConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_private/_configure/configure/_settings/settings/custom-domain/index'
 
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
-const ConfigureConfigureImport = createFileRoute('/_configure/configure')()
-const UsersIndexLazyImport = createFileRoute('/users/')()
-const ConfigureConfigureIndexLazyImport = createFileRoute(
-  '/_configure/configure/',
+const PrivateIndexLazyImport = createFileRoute('/_private/')()
+const PrivateConfigureConfigureImport = createFileRoute(
+  '/_private/_configure/configure',
 )()
-const ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport =
-  createFileRoute('/_configure/configure/_settings/settings/appearance/')()
+const PrivateUsersIndexLazyImport = createFileRoute('/_private/users/')()
+const PrivateConfigureConfigureIndexLazyImport = createFileRoute(
+  '/_private/_configure/configure/',
+)()
+const PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyImport =
+  createFileRoute(
+    '/_private/_configure/configure/_settings/settings/appearance/',
+  )()
 
 // Create/Update Routes
 
-const NoOrganizationRoute = NoOrganizationImport.update({
-  id: '/no-organization',
-  path: '/no-organization',
+const PublicRoute = PublicImport.update({
+  id: '/_public',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ConfigureRoute = ConfigureImport.update({
-  id: '/_configure',
+const PrivateRoute = PrivateImport.update({
+  id: '/_private',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -55,107 +62,139 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ConfigureConfigureRoute = ConfigureConfigureImport.update({
+const PrivateIndexLazyRoute = PrivateIndexLazyImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PrivateRoute,
+} as any).lazy(() =>
+  import('./routes/_private/index.lazy').then((d) => d.Route),
+)
+
+const PublicAuthRoute = PublicAuthImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => PublicRoute,
+} as any)
+
+const PrivateNoOrganizationRoute = PrivateNoOrganizationImport.update({
+  id: '/no-organization',
+  path: '/no-organization',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateConfigureRoute = PrivateConfigureImport.update({
+  id: '/_configure',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateConfigureConfigureRoute = PrivateConfigureConfigureImport.update({
   id: '/configure',
   path: '/configure',
-  getParentRoute: () => ConfigureRoute,
+  getParentRoute: () => PrivateConfigureRoute,
 } as any)
 
-const UsersIndexLazyRoute = UsersIndexLazyImport.update({
+const PrivateUsersIndexLazyRoute = PrivateUsersIndexLazyImport.update({
   id: '/users/',
   path: '/users/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
+  getParentRoute: () => PrivateRoute,
+} as any).lazy(() =>
+  import('./routes/_private/users/index.lazy').then((d) => d.Route),
+)
 
-const BlogsIndexRoute = BlogsIndexImport.update({
+const PrivateBlogsIndexRoute = PrivateBlogsIndexImport.update({
   id: '/blogs/',
   path: '/blogs/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/blogs/index.lazy').then((d) => d.Route))
+  getParentRoute: () => PrivateRoute,
+} as any).lazy(() =>
+  import('./routes/_private/blogs/index.lazy').then((d) => d.Route),
+)
 
-const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
+const PrivateUsersUserIdRouteRoute = PrivateUsersUserIdRouteImport.update({
   id: '/users/$user-id',
   path: '/users/$user-id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => PrivateRoute,
 } as any)
 
-const BlogsBlogIdRouteRoute = BlogsBlogIdRouteImport.update({
+const PrivateBlogsBlogIdRouteRoute = PrivateBlogsBlogIdRouteImport.update({
   id: '/blogs/$blog-id',
   path: '/blogs/$blog-id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => PrivateRoute,
 } as any).lazy(() =>
-  import('./routes/blogs/$blog-id/route.lazy').then((d) => d.Route),
+  import('./routes/_private/blogs/$blog-id/route.lazy').then((d) => d.Route),
 )
 
-const ConfigureConfigureIndexLazyRoute =
-  ConfigureConfigureIndexLazyImport.update({
+const PrivateConfigureConfigureIndexLazyRoute =
+  PrivateConfigureConfigureIndexLazyImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ConfigureConfigureRoute,
+    getParentRoute: () => PrivateConfigureConfigureRoute,
   } as any).lazy(() =>
-    import('./routes/_configure/configure/index.lazy').then((d) => d.Route),
-  )
-
-const SubscribeProIndexRoute = SubscribeProIndexImport.update({
-  id: '/subscribe/pro/',
-  path: '/subscribe/pro/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CheckoutStatusIndexRoute = CheckoutStatusIndexImport.update({
-  id: '/checkout/status/',
-  path: '/checkout/status/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ConfigureConfigureSettingsRoute = ConfigureConfigureSettingsImport.update(
-  {
-    id: '/_settings',
-    getParentRoute: () => ConfigureConfigureRoute,
-  } as any,
-)
-
-const ConfigureConfigureSettingsSettingsIndexRoute =
-  ConfigureConfigureSettingsSettingsIndexImport.update({
-    id: '/settings/',
-    path: '/settings/',
-    getParentRoute: () => ConfigureConfigureSettingsRoute,
-  } as any).lazy(() =>
-    import('./routes/_configure/configure/_settings/settings/index.lazy').then(
+    import('./routes/_private/_configure/configure/index.lazy').then(
       (d) => d.Route,
     ),
   )
 
-const ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute =
-  ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport.update({
+const PrivateSubscribeProIndexRoute = PrivateSubscribeProIndexImport.update({
+  id: '/subscribe/pro/',
+  path: '/subscribe/pro/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateCheckoutStatusIndexRoute = PrivateCheckoutStatusIndexImport.update(
+  {
+    id: '/checkout/status/',
+    path: '/checkout/status/',
+    getParentRoute: () => PrivateRoute,
+  } as any,
+)
+
+const PrivateConfigureConfigureSettingsRoute =
+  PrivateConfigureConfigureSettingsImport.update({
+    id: '/_settings',
+    getParentRoute: () => PrivateConfigureConfigureRoute,
+  } as any)
+
+const PrivateConfigureConfigureSettingsSettingsIndexRoute =
+  PrivateConfigureConfigureSettingsSettingsIndexImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => PrivateConfigureConfigureSettingsRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_private/_configure/configure/_settings/settings/index.lazy'
+    ).then((d) => d.Route),
+  )
+
+const PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute =
+  PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyImport.update({
     id: '/settings/appearance/',
     path: '/settings/appearance/',
-    getParentRoute: () => ConfigureConfigureSettingsRoute,
+    getParentRoute: () => PrivateConfigureConfigureSettingsRoute,
   } as any).lazy(() =>
     import(
-      './routes/_configure/configure/_settings/settings/appearance/index.lazy'
+      './routes/_private/_configure/configure/_settings/settings/appearance/index.lazy'
     ).then((d) => d.Route),
   )
 
-const ConfigureConfigureSettingsSettingsSubscriptionIndexRoute =
-  ConfigureConfigureSettingsSettingsSubscriptionIndexImport.update({
+const PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute =
+  PrivateConfigureConfigureSettingsSettingsSubscriptionIndexImport.update({
     id: '/settings/subscription/',
     path: '/settings/subscription/',
-    getParentRoute: () => ConfigureConfigureSettingsRoute,
+    getParentRoute: () => PrivateConfigureConfigureSettingsRoute,
   } as any).lazy(() =>
     import(
-      './routes/_configure/configure/_settings/settings/subscription/index.lazy'
+      './routes/_private/_configure/configure/_settings/settings/subscription/index.lazy'
     ).then((d) => d.Route),
   )
 
-const ConfigureConfigureSettingsSettingsCustomDomainIndexRoute =
-  ConfigureConfigureSettingsSettingsCustomDomainIndexImport.update({
+const PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute =
+  PrivateConfigureConfigureSettingsSettingsCustomDomainIndexImport.update({
     id: '/settings/custom-domain/',
     path: '/settings/custom-domain/',
-    getParentRoute: () => ConfigureConfigureSettingsRoute,
+    getParentRoute: () => PrivateConfigureConfigureSettingsRoute,
   } as any).lazy(() =>
     import(
-      './routes/_configure/configure/_settings/settings/custom-domain/index.lazy'
+      './routes/_private/_configure/configure/_settings/settings/custom-domain/index.lazy'
     ).then((d) => d.Route),
   )
 
@@ -170,218 +209,294 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_configure': {
-      id: '/_configure'
+    '/_private': {
+      id: '/_private'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof ConfigureImport
+      preLoaderRoute: typeof PrivateImport
       parentRoute: typeof rootRoute
     }
-    '/no-organization': {
-      id: '/no-organization'
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PublicImport
+      parentRoute: typeof rootRoute
+    }
+    '/_private/_configure': {
+      id: '/_private/_configure'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PrivateConfigureImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/no-organization': {
+      id: '/_private/no-organization'
       path: '/no-organization'
       fullPath: '/no-organization'
-      preLoaderRoute: typeof NoOrganizationImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateNoOrganizationImport
+      parentRoute: typeof PrivateImport
     }
-    '/blogs/$blog-id': {
-      id: '/blogs/$blog-id'
+    '/_public/auth': {
+      id: '/_public/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof PublicAuthImport
+      parentRoute: typeof PublicImport
+    }
+    '/_private/': {
+      id: '/_private/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PrivateIndexLazyImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/blogs/$blog-id': {
+      id: '/_private/blogs/$blog-id'
       path: '/blogs/$blog-id'
       fullPath: '/blogs/$blog-id'
-      preLoaderRoute: typeof BlogsBlogIdRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateBlogsBlogIdRouteImport
+      parentRoute: typeof PrivateImport
     }
-    '/users/$user-id': {
-      id: '/users/$user-id'
+    '/_private/users/$user-id': {
+      id: '/_private/users/$user-id'
       path: '/users/$user-id'
       fullPath: '/users/$user-id'
-      preLoaderRoute: typeof UsersUserIdRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateUsersUserIdRouteImport
+      parentRoute: typeof PrivateImport
     }
-    '/blogs/': {
-      id: '/blogs/'
+    '/_private/blogs/': {
+      id: '/_private/blogs/'
       path: '/blogs'
       fullPath: '/blogs'
-      preLoaderRoute: typeof BlogsIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateBlogsIndexImport
+      parentRoute: typeof PrivateImport
     }
-    '/users/': {
-      id: '/users/'
+    '/_private/users/': {
+      id: '/_private/users/'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof UsersIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateUsersIndexLazyImport
+      parentRoute: typeof PrivateImport
     }
-    '/_configure/configure': {
-      id: '/_configure/configure'
+    '/_private/_configure/configure': {
+      id: '/_private/_configure/configure'
       path: '/configure'
       fullPath: '/configure'
-      preLoaderRoute: typeof ConfigureConfigureImport
-      parentRoute: typeof ConfigureImport
+      preLoaderRoute: typeof PrivateConfigureConfigureImport
+      parentRoute: typeof PrivateConfigureImport
     }
-    '/_configure/configure/_settings': {
-      id: '/_configure/configure/_settings'
+    '/_private/_configure/configure/_settings': {
+      id: '/_private/_configure/configure/_settings'
       path: '/configure'
       fullPath: '/configure'
-      preLoaderRoute: typeof ConfigureConfigureSettingsImport
-      parentRoute: typeof ConfigureConfigureRoute
+      preLoaderRoute: typeof PrivateConfigureConfigureSettingsImport
+      parentRoute: typeof PrivateConfigureConfigureRoute
     }
-    '/checkout/status/': {
-      id: '/checkout/status/'
+    '/_private/checkout/status/': {
+      id: '/_private/checkout/status/'
       path: '/checkout/status'
       fullPath: '/checkout/status'
-      preLoaderRoute: typeof CheckoutStatusIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateCheckoutStatusIndexImport
+      parentRoute: typeof PrivateImport
     }
-    '/subscribe/pro/': {
-      id: '/subscribe/pro/'
+    '/_private/subscribe/pro/': {
+      id: '/_private/subscribe/pro/'
       path: '/subscribe/pro'
       fullPath: '/subscribe/pro'
-      preLoaderRoute: typeof SubscribeProIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivateSubscribeProIndexImport
+      parentRoute: typeof PrivateImport
     }
-    '/_configure/configure/': {
-      id: '/_configure/configure/'
+    '/_private/_configure/configure/': {
+      id: '/_private/_configure/configure/'
       path: '/'
       fullPath: '/configure/'
-      preLoaderRoute: typeof ConfigureConfigureIndexLazyImport
-      parentRoute: typeof ConfigureConfigureImport
+      preLoaderRoute: typeof PrivateConfigureConfigureIndexLazyImport
+      parentRoute: typeof PrivateConfigureConfigureImport
     }
-    '/_configure/configure/_settings/settings/': {
-      id: '/_configure/configure/_settings/settings/'
+    '/_private/_configure/configure/_settings/settings/': {
+      id: '/_private/_configure/configure/_settings/settings/'
       path: '/settings'
       fullPath: '/configure/settings'
-      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsIndexImport
-      parentRoute: typeof ConfigureConfigureSettingsImport
+      preLoaderRoute: typeof PrivateConfigureConfigureSettingsSettingsIndexImport
+      parentRoute: typeof PrivateConfigureConfigureSettingsImport
     }
-    '/_configure/configure/_settings/settings/custom-domain/': {
-      id: '/_configure/configure/_settings/settings/custom-domain/'
+    '/_private/_configure/configure/_settings/settings/custom-domain/': {
+      id: '/_private/_configure/configure/_settings/settings/custom-domain/'
       path: '/settings/custom-domain'
       fullPath: '/configure/settings/custom-domain'
-      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexImport
-      parentRoute: typeof ConfigureConfigureSettingsImport
+      preLoaderRoute: typeof PrivateConfigureConfigureSettingsSettingsCustomDomainIndexImport
+      parentRoute: typeof PrivateConfigureConfigureSettingsImport
     }
-    '/_configure/configure/_settings/settings/subscription/': {
-      id: '/_configure/configure/_settings/settings/subscription/'
+    '/_private/_configure/configure/_settings/settings/subscription/': {
+      id: '/_private/_configure/configure/_settings/settings/subscription/'
       path: '/settings/subscription'
       fullPath: '/configure/settings/subscription'
-      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsSubscriptionIndexImport
-      parentRoute: typeof ConfigureConfigureSettingsImport
+      preLoaderRoute: typeof PrivateConfigureConfigureSettingsSettingsSubscriptionIndexImport
+      parentRoute: typeof PrivateConfigureConfigureSettingsImport
     }
-    '/_configure/configure/_settings/settings/appearance/': {
-      id: '/_configure/configure/_settings/settings/appearance/'
+    '/_private/_configure/configure/_settings/settings/appearance/': {
+      id: '/_private/_configure/configure/_settings/settings/appearance/'
       path: '/settings/appearance'
       fullPath: '/configure/settings/appearance'
-      preLoaderRoute: typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyImport
-      parentRoute: typeof ConfigureConfigureSettingsImport
+      preLoaderRoute: typeof PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyImport
+      parentRoute: typeof PrivateConfigureConfigureSettingsImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface ConfigureConfigureSettingsRouteChildren {
-  ConfigureConfigureSettingsSettingsIndexRoute: typeof ConfigureConfigureSettingsSettingsIndexRoute
-  ConfigureConfigureSettingsSettingsCustomDomainIndexRoute: typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
-  ConfigureConfigureSettingsSettingsSubscriptionIndexRoute: typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
-  ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute: typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
+interface PrivateConfigureConfigureSettingsRouteChildren {
+  PrivateConfigureConfigureSettingsSettingsIndexRoute: typeof PrivateConfigureConfigureSettingsSettingsIndexRoute
+  PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute: typeof PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute: typeof PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute
+  PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute: typeof PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
-const ConfigureConfigureSettingsRouteChildren: ConfigureConfigureSettingsRouteChildren =
+const PrivateConfigureConfigureSettingsRouteChildren: PrivateConfigureConfigureSettingsRouteChildren =
   {
-    ConfigureConfigureSettingsSettingsIndexRoute:
-      ConfigureConfigureSettingsSettingsIndexRoute,
-    ConfigureConfigureSettingsSettingsCustomDomainIndexRoute:
-      ConfigureConfigureSettingsSettingsCustomDomainIndexRoute,
-    ConfigureConfigureSettingsSettingsSubscriptionIndexRoute:
-      ConfigureConfigureSettingsSettingsSubscriptionIndexRoute,
-    ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute:
-      ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute,
+    PrivateConfigureConfigureSettingsSettingsIndexRoute:
+      PrivateConfigureConfigureSettingsSettingsIndexRoute,
+    PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute:
+      PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute,
+    PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute:
+      PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute,
+    PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute:
+      PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute,
   }
 
-const ConfigureConfigureSettingsRouteWithChildren =
-  ConfigureConfigureSettingsRoute._addFileChildren(
-    ConfigureConfigureSettingsRouteChildren,
+const PrivateConfigureConfigureSettingsRouteWithChildren =
+  PrivateConfigureConfigureSettingsRoute._addFileChildren(
+    PrivateConfigureConfigureSettingsRouteChildren,
   )
 
-interface ConfigureConfigureRouteChildren {
-  ConfigureConfigureSettingsRoute: typeof ConfigureConfigureSettingsRouteWithChildren
-  ConfigureConfigureIndexLazyRoute: typeof ConfigureConfigureIndexLazyRoute
+interface PrivateConfigureConfigureRouteChildren {
+  PrivateConfigureConfigureSettingsRoute: typeof PrivateConfigureConfigureSettingsRouteWithChildren
+  PrivateConfigureConfigureIndexLazyRoute: typeof PrivateConfigureConfigureIndexLazyRoute
 }
 
-const ConfigureConfigureRouteChildren: ConfigureConfigureRouteChildren = {
-  ConfigureConfigureSettingsRoute: ConfigureConfigureSettingsRouteWithChildren,
-  ConfigureConfigureIndexLazyRoute: ConfigureConfigureIndexLazyRoute,
+const PrivateConfigureConfigureRouteChildren: PrivateConfigureConfigureRouteChildren =
+  {
+    PrivateConfigureConfigureSettingsRoute:
+      PrivateConfigureConfigureSettingsRouteWithChildren,
+    PrivateConfigureConfigureIndexLazyRoute:
+      PrivateConfigureConfigureIndexLazyRoute,
+  }
+
+const PrivateConfigureConfigureRouteWithChildren =
+  PrivateConfigureConfigureRoute._addFileChildren(
+    PrivateConfigureConfigureRouteChildren,
+  )
+
+interface PrivateConfigureRouteChildren {
+  PrivateConfigureConfigureRoute: typeof PrivateConfigureConfigureRouteWithChildren
 }
 
-const ConfigureConfigureRouteWithChildren =
-  ConfigureConfigureRoute._addFileChildren(ConfigureConfigureRouteChildren)
-
-interface ConfigureRouteChildren {
-  ConfigureConfigureRoute: typeof ConfigureConfigureRouteWithChildren
+const PrivateConfigureRouteChildren: PrivateConfigureRouteChildren = {
+  PrivateConfigureConfigureRoute: PrivateConfigureConfigureRouteWithChildren,
 }
 
-const ConfigureRouteChildren: ConfigureRouteChildren = {
-  ConfigureConfigureRoute: ConfigureConfigureRouteWithChildren,
+const PrivateConfigureRouteWithChildren =
+  PrivateConfigureRoute._addFileChildren(PrivateConfigureRouteChildren)
+
+interface PrivateRouteChildren {
+  PrivateConfigureRoute: typeof PrivateConfigureRouteWithChildren
+  PrivateNoOrganizationRoute: typeof PrivateNoOrganizationRoute
+  PrivateIndexLazyRoute: typeof PrivateIndexLazyRoute
+  PrivateBlogsBlogIdRouteRoute: typeof PrivateBlogsBlogIdRouteRoute
+  PrivateUsersUserIdRouteRoute: typeof PrivateUsersUserIdRouteRoute
+  PrivateBlogsIndexRoute: typeof PrivateBlogsIndexRoute
+  PrivateUsersIndexLazyRoute: typeof PrivateUsersIndexLazyRoute
+  PrivateCheckoutStatusIndexRoute: typeof PrivateCheckoutStatusIndexRoute
+  PrivateSubscribeProIndexRoute: typeof PrivateSubscribeProIndexRoute
 }
 
-const ConfigureRouteWithChildren = ConfigureRoute._addFileChildren(
-  ConfigureRouteChildren,
-)
+const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateConfigureRoute: PrivateConfigureRouteWithChildren,
+  PrivateNoOrganizationRoute: PrivateNoOrganizationRoute,
+  PrivateIndexLazyRoute: PrivateIndexLazyRoute,
+  PrivateBlogsBlogIdRouteRoute: PrivateBlogsBlogIdRouteRoute,
+  PrivateUsersUserIdRouteRoute: PrivateUsersUserIdRouteRoute,
+  PrivateBlogsIndexRoute: PrivateBlogsIndexRoute,
+  PrivateUsersIndexLazyRoute: PrivateUsersIndexLazyRoute,
+  PrivateCheckoutStatusIndexRoute: PrivateCheckoutStatusIndexRoute,
+  PrivateSubscribeProIndexRoute: PrivateSubscribeProIndexRoute,
+}
+
+const PrivateRouteWithChildren =
+  PrivateRoute._addFileChildren(PrivateRouteChildren)
+
+interface PublicRouteChildren {
+  PublicAuthRoute: typeof PublicAuthRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicAuthRoute: PublicAuthRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
-  '': typeof ConfigureRouteWithChildren
-  '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
-  '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs': typeof BlogsIndexRoute
-  '/users': typeof UsersIndexLazyRoute
-  '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
-  '/checkout/status': typeof CheckoutStatusIndexRoute
-  '/subscribe/pro': typeof SubscribeProIndexRoute
-  '/configure/': typeof ConfigureConfigureIndexLazyRoute
-  '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
-  '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
-  '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
-  '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
+  '/': typeof PrivateIndexLazyRoute
+  '': typeof PrivateConfigureRouteWithChildren
+  '/no-organization': typeof PrivateNoOrganizationRoute
+  '/auth': typeof PublicAuthRoute
+  '/blogs/$blog-id': typeof PrivateBlogsBlogIdRouteRoute
+  '/users/$user-id': typeof PrivateUsersUserIdRouteRoute
+  '/blogs': typeof PrivateBlogsIndexRoute
+  '/users': typeof PrivateUsersIndexLazyRoute
+  '/configure': typeof PrivateConfigureConfigureSettingsRouteWithChildren
+  '/checkout/status': typeof PrivateCheckoutStatusIndexRoute
+  '/subscribe/pro': typeof PrivateSubscribeProIndexRoute
+  '/configure/': typeof PrivateConfigureConfigureIndexLazyRoute
+  '/configure/settings': typeof PrivateConfigureConfigureSettingsSettingsIndexRoute
+  '/configure/settings/custom-domain': typeof PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/subscription': typeof PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute
+  '/configure/settings/appearance': typeof PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
-  '': typeof ConfigureRouteWithChildren
-  '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
-  '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs': typeof BlogsIndexRoute
-  '/users': typeof UsersIndexLazyRoute
-  '/configure': typeof ConfigureConfigureIndexLazyRoute
-  '/checkout/status': typeof CheckoutStatusIndexRoute
-  '/subscribe/pro': typeof SubscribeProIndexRoute
-  '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
-  '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
-  '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
-  '/configure/settings/appearance': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
+  '/': typeof PrivateIndexLazyRoute
+  '': typeof PrivateConfigureRouteWithChildren
+  '/no-organization': typeof PrivateNoOrganizationRoute
+  '/auth': typeof PublicAuthRoute
+  '/blogs/$blog-id': typeof PrivateBlogsBlogIdRouteRoute
+  '/users/$user-id': typeof PrivateUsersUserIdRouteRoute
+  '/blogs': typeof PrivateBlogsIndexRoute
+  '/users': typeof PrivateUsersIndexLazyRoute
+  '/configure': typeof PrivateConfigureConfigureIndexLazyRoute
+  '/checkout/status': typeof PrivateCheckoutStatusIndexRoute
+  '/subscribe/pro': typeof PrivateSubscribeProIndexRoute
+  '/configure/settings': typeof PrivateConfigureConfigureSettingsSettingsIndexRoute
+  '/configure/settings/custom-domain': typeof PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/configure/settings/subscription': typeof PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute
+  '/configure/settings/appearance': typeof PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/_configure': typeof ConfigureRouteWithChildren
-  '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
-  '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs/': typeof BlogsIndexRoute
-  '/users/': typeof UsersIndexLazyRoute
-  '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
-  '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
-  '/checkout/status/': typeof CheckoutStatusIndexRoute
-  '/subscribe/pro/': typeof SubscribeProIndexRoute
-  '/_configure/configure/': typeof ConfigureConfigureIndexLazyRoute
-  '/_configure/configure/_settings/settings/': typeof ConfigureConfigureSettingsSettingsIndexRoute
-  '/_configure/configure/_settings/settings/custom-domain/': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
-  '/_configure/configure/_settings/settings/subscription/': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
-  '/_configure/configure/_settings/settings/appearance/': typeof ConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
+  '/_private': typeof PrivateRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
+  '/_private/_configure': typeof PrivateConfigureRouteWithChildren
+  '/_private/no-organization': typeof PrivateNoOrganizationRoute
+  '/_public/auth': typeof PublicAuthRoute
+  '/_private/': typeof PrivateIndexLazyRoute
+  '/_private/blogs/$blog-id': typeof PrivateBlogsBlogIdRouteRoute
+  '/_private/users/$user-id': typeof PrivateUsersUserIdRouteRoute
+  '/_private/blogs/': typeof PrivateBlogsIndexRoute
+  '/_private/users/': typeof PrivateUsersIndexLazyRoute
+  '/_private/_configure/configure': typeof PrivateConfigureConfigureRouteWithChildren
+  '/_private/_configure/configure/_settings': typeof PrivateConfigureConfigureSettingsRouteWithChildren
+  '/_private/checkout/status/': typeof PrivateCheckoutStatusIndexRoute
+  '/_private/subscribe/pro/': typeof PrivateSubscribeProIndexRoute
+  '/_private/_configure/configure/': typeof PrivateConfigureConfigureIndexLazyRoute
+  '/_private/_configure/configure/_settings/settings/': typeof PrivateConfigureConfigureSettingsSettingsIndexRoute
+  '/_private/_configure/configure/_settings/settings/custom-domain/': typeof PrivateConfigureConfigureSettingsSettingsCustomDomainIndexRoute
+  '/_private/_configure/configure/_settings/settings/subscription/': typeof PrivateConfigureConfigureSettingsSettingsSubscriptionIndexRoute
+  '/_private/_configure/configure/_settings/settings/appearance/': typeof PrivateConfigureConfigureSettingsSettingsAppearanceIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -390,6 +505,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
+    | '/auth'
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
@@ -407,6 +523,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
+    | '/auth'
     | '/blogs/$blog-id'
     | '/users/$user-id'
     | '/blogs'
@@ -421,46 +538,38 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_configure'
-    | '/no-organization'
-    | '/blogs/$blog-id'
-    | '/users/$user-id'
-    | '/blogs/'
-    | '/users/'
-    | '/_configure/configure'
-    | '/_configure/configure/_settings'
-    | '/checkout/status/'
-    | '/subscribe/pro/'
-    | '/_configure/configure/'
-    | '/_configure/configure/_settings/settings/'
-    | '/_configure/configure/_settings/settings/custom-domain/'
-    | '/_configure/configure/_settings/settings/subscription/'
-    | '/_configure/configure/_settings/settings/appearance/'
+    | '/_private'
+    | '/_public'
+    | '/_private/_configure'
+    | '/_private/no-organization'
+    | '/_public/auth'
+    | '/_private/'
+    | '/_private/blogs/$blog-id'
+    | '/_private/users/$user-id'
+    | '/_private/blogs/'
+    | '/_private/users/'
+    | '/_private/_configure/configure'
+    | '/_private/_configure/configure/_settings'
+    | '/_private/checkout/status/'
+    | '/_private/subscribe/pro/'
+    | '/_private/_configure/configure/'
+    | '/_private/_configure/configure/_settings/settings/'
+    | '/_private/_configure/configure/_settings/settings/custom-domain/'
+    | '/_private/_configure/configure/_settings/settings/subscription/'
+    | '/_private/_configure/configure/_settings/settings/appearance/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  ConfigureRoute: typeof ConfigureRouteWithChildren
-  NoOrganizationRoute: typeof NoOrganizationRoute
-  BlogsBlogIdRouteRoute: typeof BlogsBlogIdRouteRoute
-  UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
-  BlogsIndexRoute: typeof BlogsIndexRoute
-  UsersIndexLazyRoute: typeof UsersIndexLazyRoute
-  CheckoutStatusIndexRoute: typeof CheckoutStatusIndexRoute
-  SubscribeProIndexRoute: typeof SubscribeProIndexRoute
+  PrivateRoute: typeof PrivateRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  ConfigureRoute: ConfigureRouteWithChildren,
-  NoOrganizationRoute: NoOrganizationRoute,
-  BlogsBlogIdRouteRoute: BlogsBlogIdRouteRoute,
-  UsersUserIdRouteRoute: UsersUserIdRouteRoute,
-  BlogsIndexRoute: BlogsIndexRoute,
-  UsersIndexLazyRoute: UsersIndexLazyRoute,
-  CheckoutStatusIndexRoute: CheckoutStatusIndexRoute,
-  SubscribeProIndexRoute: SubscribeProIndexRoute,
+  PrivateRoute: PrivateRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -474,83 +583,113 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_configure",
-        "/no-organization",
-        "/blogs/$blog-id",
-        "/users/$user-id",
-        "/blogs/",
-        "/users/",
-        "/checkout/status/",
-        "/subscribe/pro/"
+        "/_private",
+        "/_public"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/_configure": {
-      "filePath": "_configure.tsx",
+    "/_private": {
+      "filePath": "_private.tsx",
       "children": [
-        "/_configure/configure"
+        "/_private/_configure",
+        "/_private/no-organization",
+        "/_private/",
+        "/_private/blogs/$blog-id",
+        "/_private/users/$user-id",
+        "/_private/blogs/",
+        "/_private/users/",
+        "/_private/checkout/status/",
+        "/_private/subscribe/pro/"
       ]
     },
-    "/no-organization": {
-      "filePath": "no-organization.tsx"
-    },
-    "/blogs/$blog-id": {
-      "filePath": "blogs/$blog-id/route.tsx"
-    },
-    "/users/$user-id": {
-      "filePath": "users/$user-id/route.tsx"
-    },
-    "/blogs/": {
-      "filePath": "blogs/index.tsx"
-    },
-    "/users/": {
-      "filePath": "users/index.lazy.tsx"
-    },
-    "/_configure/configure": {
-      "filePath": "_configure/configure",
-      "parent": "/_configure",
+    "/_public": {
+      "filePath": "_public.tsx",
       "children": [
-        "/_configure/configure/_settings",
-        "/_configure/configure/"
+        "/_public/auth"
       ]
     },
-    "/_configure/configure/_settings": {
-      "filePath": "_configure/configure/_settings.tsx",
-      "parent": "/_configure/configure",
+    "/_private/_configure": {
+      "filePath": "_private/_configure.tsx",
+      "parent": "/_private",
       "children": [
-        "/_configure/configure/_settings/settings/",
-        "/_configure/configure/_settings/settings/custom-domain/",
-        "/_configure/configure/_settings/settings/subscription/",
-        "/_configure/configure/_settings/settings/appearance/"
+        "/_private/_configure/configure"
       ]
     },
-    "/checkout/status/": {
-      "filePath": "checkout/status/index.tsx"
+    "/_private/no-organization": {
+      "filePath": "_private/no-organization.tsx",
+      "parent": "/_private"
     },
-    "/subscribe/pro/": {
-      "filePath": "subscribe/pro/index.tsx"
+    "/_public/auth": {
+      "filePath": "_public/auth.tsx",
+      "parent": "/_public"
     },
-    "/_configure/configure/": {
-      "filePath": "_configure/configure/index.lazy.tsx",
-      "parent": "/_configure/configure"
+    "/_private/": {
+      "filePath": "_private/index.lazy.tsx",
+      "parent": "/_private"
     },
-    "/_configure/configure/_settings/settings/": {
-      "filePath": "_configure/configure/_settings/settings/index.tsx",
-      "parent": "/_configure/configure/_settings"
+    "/_private/blogs/$blog-id": {
+      "filePath": "_private/blogs/$blog-id/route.tsx",
+      "parent": "/_private"
     },
-    "/_configure/configure/_settings/settings/custom-domain/": {
-      "filePath": "_configure/configure/_settings/settings/custom-domain/index.tsx",
-      "parent": "/_configure/configure/_settings"
+    "/_private/users/$user-id": {
+      "filePath": "_private/users/$user-id/route.tsx",
+      "parent": "/_private"
     },
-    "/_configure/configure/_settings/settings/subscription/": {
-      "filePath": "_configure/configure/_settings/settings/subscription/index.tsx",
-      "parent": "/_configure/configure/_settings"
+    "/_private/blogs/": {
+      "filePath": "_private/blogs/index.tsx",
+      "parent": "/_private"
     },
-    "/_configure/configure/_settings/settings/appearance/": {
-      "filePath": "_configure/configure/_settings/settings/appearance/index.lazy.tsx",
-      "parent": "/_configure/configure/_settings"
+    "/_private/users/": {
+      "filePath": "_private/users/index.lazy.tsx",
+      "parent": "/_private"
+    },
+    "/_private/_configure/configure": {
+      "filePath": "_private/_configure/configure",
+      "parent": "/_private/_configure",
+      "children": [
+        "/_private/_configure/configure/_settings",
+        "/_private/_configure/configure/"
+      ]
+    },
+    "/_private/_configure/configure/_settings": {
+      "filePath": "_private/_configure/configure/_settings.tsx",
+      "parent": "/_private/_configure/configure",
+      "children": [
+        "/_private/_configure/configure/_settings/settings/",
+        "/_private/_configure/configure/_settings/settings/custom-domain/",
+        "/_private/_configure/configure/_settings/settings/subscription/",
+        "/_private/_configure/configure/_settings/settings/appearance/"
+      ]
+    },
+    "/_private/checkout/status/": {
+      "filePath": "_private/checkout/status/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/subscribe/pro/": {
+      "filePath": "_private/subscribe/pro/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/_configure/configure/": {
+      "filePath": "_private/_configure/configure/index.lazy.tsx",
+      "parent": "/_private/_configure/configure"
+    },
+    "/_private/_configure/configure/_settings/settings/": {
+      "filePath": "_private/_configure/configure/_settings/settings/index.tsx",
+      "parent": "/_private/_configure/configure/_settings"
+    },
+    "/_private/_configure/configure/_settings/settings/custom-domain/": {
+      "filePath": "_private/_configure/configure/_settings/settings/custom-domain/index.tsx",
+      "parent": "/_private/_configure/configure/_settings"
+    },
+    "/_private/_configure/configure/_settings/settings/subscription/": {
+      "filePath": "_private/_configure/configure/_settings/settings/subscription/index.tsx",
+      "parent": "/_private/_configure/configure/_settings"
+    },
+    "/_private/_configure/configure/_settings/settings/appearance/": {
+      "filePath": "_private/_configure/configure/_settings/settings/appearance/index.lazy.tsx",
+      "parent": "/_private/_configure/configure/_settings"
     }
   }
 }
