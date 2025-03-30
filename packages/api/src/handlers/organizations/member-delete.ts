@@ -12,6 +12,17 @@ export const deleteMemberHandler = factory.createHandlers(
       return c.json({ error: "Member ID and organizationId are required" }, 400);
     }
 
+    const userId = c.var.user.id;  
+
+    const adminMember = await OrganizationMember.findOne({ 
+      userId, 
+      organizationId 
+    });
+
+    if (!adminMember || adminMember.role !== "ADMIN") {
+      return c.json({ error: "Not permitted: Only admins can remove members" }, 403);
+    }
+
     await OrganizationMember.remove({ id: memberId, organizationId });
 
     return c.json({ message: "Member removed successfully" });

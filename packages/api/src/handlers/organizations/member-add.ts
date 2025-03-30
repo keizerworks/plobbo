@@ -25,6 +25,17 @@ export const addMemberHandler = factory.createHandlers(
   ),
   async (c) => {
     const organizationId = c.var.organization.id;
+    const currentUserId = c.var.user.id;
+
+    const currentUserMember = await OrganizationMember.findOne({
+            userId: currentUserId,
+            organizationId,
+    });
+
+    if (!currentUserMember || !["ADMIN", "OWNER"].includes(currentUserMember.role)) {
+      return c.json({ error: "Not permitted. Only Admins can add members." }, 403);
+    }
+
     const { userId, role, profilePicture, bio, displayName } = c.req.valid("json");
 
     const user = await User.findById(userId);
