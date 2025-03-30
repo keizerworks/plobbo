@@ -87,8 +87,8 @@ export async function verifyOtpApi(email: string, otp: string) {
     "/auth/verify-otp",
     formData,
   );
-  const { token } = response.data;
-  cookies.set("token", token);
+  // const { token } = response.data;
+  // cookies.set("token", token);
   return response.data;
 }
 

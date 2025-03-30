@@ -15,40 +15,46 @@ export const postVerifyOtpHandler = factory.createHandlers(
   ),
 
   async (c) => {
-    const { email, otp } = c.req.valid("form");
+    try {
+      const { email, otp } = c.req.valid("form");
 
-    const user = await User.findByEmail(email);
-    if (!user) {
-      throw new HTTPException(404);
+      const user = await User.findByEmail(email);
+      if (!user) {
+        throw new HTTPException(404);
+      }
+
+      const storedOtp = await OtpCache.get(email);
+
+      if (!storedOtp) {
+        console.warn(`OTP not found or expired for ${email}`);
+        throw new HTTPException(400, { message: "OTP not found or expired" });
+      }
+
+      const isValid = storedOtp === otp;
+      if (isValid) {
+        await OtpCache.del(email);
+        console.log(`OTP verified for ${email}`);
+      } else {
+        console.warn(`Invalid OTP for ${email}`);
+      }
+
+      const token = Auth.generateSessionToken();
+      await Auth.createSession(token, user.id);
+
+      setCookie(c, "token", token, {
+        path: "/",
+        sameSite: "none",
+        httpOnly: process.env.NODE_ENV === "production",
+        domain:
+          process.env.NODE_ENV === "production" ? ".plobbo.com" : undefined,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+        maxAge: 60 * 60 * 24 * 30,
+      });
+
+      return c.json(user);
+    } catch (error) {
+      console.error(error);
+      throw new HTTPException(500, { message: "Internal server error" });
     }
-
-    const storedOtp = await OtpCache.get(email);
-
-    if (!storedOtp) {
-      console.warn(`OTP not found or expired for ${email}`);
-      throw new HTTPException(400, { message: "OTP not found or expired" });
-    }
-
-    const isValid = storedOtp === otp;
-    if (isValid) {
-      await OtpCache.del(email);
-      console.log(`OTP verified for ${email}`);
-    } else {
-      console.warn(`Invalid OTP for ${email}`);
-    }
-
-    const token = Auth.generateSessionToken();
-    await Auth.createSession(token, user.id);
-
-    setCookie(c, "token", token, {
-      path: "/",
-      sameSite: "none",
-      httpOnly: process.env.NODE_ENV === "production",
-      domain: process.env.NODE_ENV === "production" ? ".plobbo.com" : undefined,
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-      maxAge: 60 * 60 * 24 * 30,
-    });
-
-    return c.json(user);
   },
 );
