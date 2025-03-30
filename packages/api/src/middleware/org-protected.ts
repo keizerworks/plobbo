@@ -1,9 +1,9 @@
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 
-import type { Subjects } from "@plobbo/auth/subjects";
 import type { Organization } from "@plobbo/db/organization/index";
 import type { OrganizationMember } from "@plobbo/db/organization/member";
+import type { User } from "@plobbo/db/user/index";
 import { and, db, eq, getTableColumns, sql } from "@plobbo/db";
 import {
   OrganizationMemberTable,
@@ -12,7 +12,7 @@ import {
 
 interface Env {
   Variables: {
-    user: Subjects;
+    user: User.Model;
     organization: Organization.Model & {
       member: OrganizationMember.Model;
     };

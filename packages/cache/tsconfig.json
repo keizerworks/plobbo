@@ -7,7 +7,10 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "paths": {
+      "@plobbo/cache/*": ["../../packages/cache/src/*"]
+    }
   },
   "include": [
     "src/**/*.ts",

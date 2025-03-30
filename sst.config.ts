@@ -25,7 +25,6 @@ export default $config({
       import("./infra/scheduler"),
       import("./infra/www"),
       import("./infra/dash"),
-      import("./infra/auth"),
     ]);
 
     await import("./infra/commands");

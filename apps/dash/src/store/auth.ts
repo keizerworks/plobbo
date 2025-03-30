@@ -3,22 +3,27 @@ import { create } from "zustand";
 
 import type { Profile } from "~/actions/profile";
 import { getProfile } from "~/actions/profile";
+import apiClient from "~/lib/axios";
 
-import { client } from "../lib/auth/client";
 import { createSelectors } from "./zustand";
+
+interface VerifyOtpResponse {
+  token: string;
+  id: string;
+  email: string;
+  name: string | null;
+  verified: boolean;
+}
 
 interface AuthState {
   profile?: Profile;
   loaded: boolean;
   loggedIn: boolean;
   token?: string;
-  logout: () => void;
-  login: () => Promise<void>;
-  getToken: () => Promise<string | undefined>;
+  getToken: () => string | undefined;
   initialize: () => Promise<void>;
-  refreshTokens: () => Promise<string | undefined>;
   fetchUser: () => Promise<void>;
-  handleCallback: (code: string, state: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const _useAuthStore = create<AuthState>()((set, get) => ({
@@ -28,68 +33,16 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
   token: undefined,
 
   initialize: async () => {
-    const hash = new URLSearchParams(location.search.slice(1));
-    const code = hash.get("code");
-    const state = hash.get("state");
-    if (code && state) return await get().handleCallback(code, state);
-
-    const token = await get().refreshTokens();
+    const token = get().getToken();
     if (token) await get().fetchUser();
-
     set({ loaded: true });
   },
 
-  refreshTokens: async () => {
-    const refresh = cookies.get("refresh");
-    if (!refresh) return;
-
-    const currentToken = get().token;
-    const next = await client.refresh(refresh, { access: currentToken });
-    if (next.err) return;
-    if (!next.tokens) return currentToken;
-
-    cookies.set("refresh", next.tokens.refresh);
-    set({ token: next.tokens.access, loggedIn: true });
-    return next.tokens.access;
-  },
-
-  getToken: async () => {
-    const token = await get().refreshTokens();
-    if (!token) {
-      await get().login();
-      return;
-    }
+  getToken: () => {
+    const token = cookies.get("token");
+    if (!token) return undefined;
+    set({ token, loggedIn: true });
     return token;
-  },
-
-  login: async () => {
-    const { challenge, url } = await client.authorize(location.origin, "code", {
-      pkce: true,
-    });
-    sessionStorage.setItem("challenge", JSON.stringify(challenge));
-    location.href = url;
-    await new Promise((r) => setTimeout(r, 5000));
-  },
-
-  handleCallback: async (code: string, state: string) => {
-    console.log("callback", code, state);
-    const challenge = JSON.parse(
-      sessionStorage.getItem("challenge") as never,
-    ) as { state: string; verifier: string };
-
-    if (code && state === challenge.state && challenge.verifier) {
-      const exchanged = await client.exchange(
-        code,
-        location.origin,
-        challenge.verifier,
-      );
-
-      if (!exchanged.err) {
-        set({ token: exchanged.tokens.access, loggedIn: true });
-        cookies.set("refresh", exchanged.tokens.refresh);
-      }
-    }
-    window.location.replace("/");
   },
 
   fetchUser: async () => {
@@ -101,17 +54,46 @@ export const _useAuthStore = create<AuthState>()((set, get) => ({
     }
   },
 
-  logout: () => {
-    cookies.set("refresh", "", { expires: new Date() });
-    set({ profile: undefined, loggedIn: false, token: undefined });
-    window.location.replace("/");
+  logout: async () => {
+    try {
+      await logoutApi();
+      set({ profile: undefined, loggedIn: false, token: undefined });
+    } catch (error) {
+      console.error("Error logging out:", error);
+      throw error;
+    }
   },
 }));
 
 export const initializeAuth = _useAuthStore.getState().initialize;
 export const getIsLoggedIn = () => _useAuthStore.getState().loggedIn;
 export const getToken = () => _useAuthStore.getState().token;
-export const login = _useAuthStore.getState().login;
 export const logout = _useAuthStore.getState().logout;
 
 export const useAuthStore = createSelectors(_useAuthStore);
+
+// API functions
+export async function requestOtpApi(email: string) {
+  const formData = new FormData();
+  formData.set("email", email);
+  await apiClient.post("/auth/request-otp", formData);
+}
+
+export async function verifyOtpApi(email: string, otp: string) {
+  const formData = new FormData();
+  formData.set("email", email);
+  formData.set("otp", otp);
+  const response = await apiClient.post<VerifyOtpResponse>(
+    "/auth/verify-otp",
+    formData,
+  );
+  // const { token } = response.data;
+  // cookies.set("token", token);
+  return response.data;
+}
+
+export async function logoutApi() {
+  await apiClient.post("/auth/logout");
+  cookies.set("token", "", { expires: new Date() });
+  window.location.replace("/");
+}

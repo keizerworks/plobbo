@@ -6,8 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
-    "./subjects": "./src/subjects.ts",
-    "./client": "./src/client.ts"
+    ".": "./src/index.ts"
   },
   "devDependencies": {
     "@plobbo/eslint-config": "workspace:*",
@@ -16,11 +15,8 @@
     "typescript": "catalog:"
   },
   "dependencies": {
-    "@openauthjs/openauth": "^0.3.7",
     "@plobbo/core": "workspace:*",
     "@plobbo/db": "workspace:*",
-    "hono": "catalog:",
-    "ulid": "^2.3.0",
-    "valibot": "1.0.0-beta.15"
+    "ulid": "^2.3.0"
   }
 }

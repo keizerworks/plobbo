@@ -5,7 +5,7 @@ export const postgres = new sst.aws.Postgres("pg", {
   vpc,
   dev: {
     username: "postgres",
-    password: "password",
+    password: process.env.DATABASE_PASSWORD || "postgres",
     database: "plobbo",
     host: "localhost",
     port: 5432,

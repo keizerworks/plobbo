@@ -2,6 +2,8 @@ import { cors } from "hono/cors";
 import { Hono } from "hono/quick";
 import { handle } from "hono/vercel";
 
+import { postRequestOtpHanlder } from "./handlers/auth/request-otp";
+import { postVerifyOtpHandler } from "./handlers/auth/verify-otp";
 import { countBlogHandler } from "./handlers/blogs/count";
 import { getBlogHandler } from "./handlers/blogs/get";
 import { listBlogsHanlder } from "./handlers/blogs/list";
@@ -36,6 +38,10 @@ const app = new Hono()
           credentials: false,
         }),
   )
+
+  .post("/auth/request-otp", ...postRequestOtpHanlder)
+  .post("/auth/verify-otp", ...postVerifyOtpHandler)
+
   .get("/profile", ...getProfileHandler)
 
   .get("/blogs", ...listBlogsHanlder)

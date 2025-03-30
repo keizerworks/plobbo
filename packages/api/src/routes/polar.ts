@@ -6,7 +6,6 @@ import { zValidator } from "@hono/zod-validator";
 import { Webhooks } from "@polar-sh/hono";
 import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono/quick";
-import { Resource } from "sst/resource";
 import { z } from "zod";
 
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
@@ -72,7 +71,8 @@ polarRouter.post(
     }
 
     const checkout = await polar.checkouts.create({
-      productId: process.env.POLAR_PREMIUM_PRODUCT_ID as string,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      productId: process.env.POLAR_PREMIUM_PRODUCT_ID!,
       customerId: customer.id,
       successUrl: process.env.DASH_URL + "/checkout/status",
       metadata: { organizationId: organization.id },
