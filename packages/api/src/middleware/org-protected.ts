@@ -19,7 +19,7 @@ interface Env {
   };
 }
 
-export const enforeHasOrgMiddleware = (
+export const enforceHasOrgMiddleware = (
   type: "param" | "id" | "organizationId",
 ) =>
   createMiddleware<Env>(async (c, next) => {

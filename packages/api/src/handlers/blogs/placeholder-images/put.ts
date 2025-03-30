@@ -4,10 +4,10 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { uploadFile } from "@plobbo/api/lib/bucket";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
 
 export const putBlogPlaceholderImages = factory.createHandlers(
-  enforeAuthMiddleware,
+  enforceAuthMiddleware,
   zValidator("form", z.object({ file: z.instanceof(File) })),
   async (c) => {
     const body = c.req.valid("form");

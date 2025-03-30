@@ -15,8 +15,8 @@ import { OrganizationSubscription } from "@plobbo/db/subscription/index";
 
 import { removeDistributionWithACMCert } from "../lib/cloudfront";
 import { polar } from "../lib/polar";
-import { enforeAuthMiddleware } from "../middleware/auth";
-import { enforeHasOrgMiddleware } from "../middleware/org-protected";
+import { enforceAuthMiddleware } from "../middleware/auth";
+import { enforceHasOrgMiddleware } from "../middleware/org-protected";
 
 const schedulerClient = new SchedulerClient({ region: "us-east-1" });
 const polarRouter = new Hono();
@@ -24,16 +24,16 @@ const polarRouter = new Hono();
 polarRouter.get(
   "/",
 
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("organizationId"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("organizationId"),
 
   zValidator("form", z.object({ organizationId: z.string() })),
 );
 
 polarRouter.get(
   "/:id/:polarId",
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("param"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("param"),
   async (c) => {
     const id = c.req.param("polarId");
     const sub = await polar.subscriptions.get({ id });
@@ -44,8 +44,8 @@ polarRouter.get(
 polarRouter.post(
   "/",
 
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("organizationId"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("organizationId"),
 
   zValidator("form", z.object({ organizationId: z.string() })),
 

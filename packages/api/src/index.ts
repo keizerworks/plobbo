@@ -24,6 +24,13 @@ import { postOrganizationHanlder } from "./handlers/organizations/post";
 import { getProfileHandler } from "./handlers/profile/get";
 import aiRouter from "./routes/ai";
 import polarRouter from "./routes/polar";
+import { deleteBlogHandler } from "./handlers/blogs/delete";
+import { addMemberHandler } from "./handlers/organizations/member-add";
+import { getMemberHandler } from "./handlers/organizations/member-get";
+import { deleteMemberHandler } from "./handlers/organizations/member-delete";
+import { getAllMembersHandler } from "./handlers/organizations/member-getall";
+import { updateMemberHandler } from "./handlers/organizations/member-update";
+import { updateProfileHandler } from "./handlers/profile/patch";
 
 const app = new Hono()
   .basePath("/api")
@@ -37,6 +44,7 @@ const app = new Hono()
         }),
   )
   .get("/profile", ...getProfileHandler)
+  .patch("/profile/update", ...updateProfileHandler)
 
   .get("/blogs", ...listBlogsHanlder)
   .post("/blogs", ...postBlogHandler)
@@ -45,6 +53,7 @@ const app = new Hono()
   .put("/blogs/placeholder-images", ...putBlogPlaceholderImages)
   .get("/blogs/:id", ...getBlogHandler)
   .patch("/blogs/:id", ...patchBlogHanlder)
+  .delete("/blogs/:id", ...deleteBlogHandler)
 
   .put("/blogs/:id/metadata", ...putBlogMetadataHandler)
   .get("/blogs/:id/metadata", ...getBlogMetadataHandler)
@@ -56,6 +65,12 @@ const app = new Hono()
 
   .get("/organizations/:id", ...getOrganizationHandler)
   .patch("/organizations/:id", ...patchOrganizationHandler)
+
+  .post("/organization/:id/add-member", ...addMemberHandler)
+  .get("/organization/member/:id", ...getMemberHandler)
+  .patch("/organization/member/:id", ...updateMemberHandler)
+  .delete("/organization/member/:id", ...deleteMemberHandler)
+  .get("/organization/:id/members", ...getAllMembersHandler)
 
   .get("/organizations/:id/domain", ...getOrgDomainHandler)
   .delete("/organizations/:id/domain", ...deleteOrgDomainHandler)

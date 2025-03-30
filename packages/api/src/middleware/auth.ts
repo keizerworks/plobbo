@@ -9,7 +9,7 @@ interface Env {
   Variables: { user: Subjects };
 }
 
-export const enforeAuthMiddleware = createMiddleware<Env>(async (c, next) => {
+export const enforceAuthMiddleware = createMiddleware<Env>(async (c, next) => {
   const authHeader = c.req.header("Authorization");
   if (!authHeader) throw new HTTPException(401);
   const token = authHeader.split(" ")[1];

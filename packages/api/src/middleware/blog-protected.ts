@@ -20,7 +20,7 @@ interface Env {
   };
 }
 
-export const enforeHasBlogMiddleware = createMiddleware<Env>(
+export const enforceHasBlogMiddleware = createMiddleware<Env>(
   async (c, next) => {
     const user = c.var.user;
     const blogId = c.req.param("id")!;

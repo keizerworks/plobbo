@@ -2,14 +2,14 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { BlogMetadata } from "@plobbo/db/blog/metadata";
 import { putBlogMetadataSchema } from "@plobbo/validator/blog/metadata/put";
 
 export const putBlogMetadataHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasBlogMiddleware,
+  enforceAuthMiddleware,
+  enforceHasBlogMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
   zValidator(
