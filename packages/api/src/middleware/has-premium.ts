@@ -3,7 +3,7 @@ import { HTTPException } from "hono/http-exception";
 
 import { OrganizationSubscription } from "@plobbo/db/subscription/index";
 
-export const enforePremiumMiddleware = createMiddleware(async (c, next) => {
+export const enforcePremiumMiddleware = createMiddleware(async (c, next) => {
   const id = c.req.param("id");
   if (typeof id !== "string") {
     throw new HTTPException(400, {

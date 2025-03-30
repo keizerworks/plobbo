@@ -4,14 +4,14 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { Blog } from "@plobbo/db/blog/index";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 
 export const publishBlogHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasBlogMiddleware,
+  enforceAuthMiddleware,
+  enforceHasBlogMiddleware,
   zValidator("param", z.object({ id: z.string() })),
   async (c) => {
     const { blog, organization } = c.var;

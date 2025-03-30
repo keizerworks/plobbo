@@ -1,11 +1,11 @@
 import { factory } from "@plobbo/api/factory";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { OrganizationMember } from "@plobbo/db/organization/member";
 
 export const getAllMembersHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("param"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("param"),
   async (c) => {
     const organizationId = c.var.organization.id;
 

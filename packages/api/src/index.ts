@@ -65,11 +65,11 @@ const app = new Hono()
   .get("/organizations/:id", ...getOrganizationHandler)
   .patch("/organizations/:id", ...patchOrganizationHandler)
 
-  .post("/organization/add-member", ...addMemberHandler)
+  .post("/organization/:id/add-member", ...addMemberHandler)
   .get("/organization/member/:id", ...getMemberHandler)
   .patch("/organization/member/:id", ...updateMemberHandler)
   .delete("/organization/member/:id", ...deleteMemberHandler)
-  .get("/organization/members", ...getAllMembersHandler)
+  .get("/organization/:id/members", ...getAllMembersHandler)
 
   .get("/organizations/:id/domain", ...getOrgDomainHandler)
   .post("/organizations/:id/domain/verify", ...verifyOrgDomainHandler)

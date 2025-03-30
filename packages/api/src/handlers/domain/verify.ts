@@ -4,15 +4,15 @@ import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
 import { getACMValidationOption } from "@plobbo/api/lib/acm";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
-import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforcePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
+import { enforceHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 
 export const verifyOrgDomainHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("param"),
-  enforePremiumMiddleware,
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("param"),
+  enforcePremiumMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
 

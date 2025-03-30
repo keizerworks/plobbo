@@ -8,15 +8,15 @@ import { z } from "zod";
 import { factory } from "@plobbo/api/factory";
 import { uploadFile } from "@plobbo/api/lib/bucket";
 import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasBlogMiddleware } from "@plobbo/api/middleware/blog-protected";
 import { Blog } from "@plobbo/db/blog/index";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { patchBlogSchema } from "@plobbo/validator/blog/patch";
 
 export const patchBlogHanlder = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasBlogMiddleware,
+  enforceAuthMiddleware,
+  enforceHasBlogMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
 
@@ -25,8 +25,8 @@ export const patchBlogHanlder = factory.createHandlers(
       ...value,
       body: Array.isArray(value.body)
         ? value.body.map(
-            (item) => JSON.parse(item as unknown as string) as unknown,
-          )
+          (item) => JSON.parse(item as unknown as string) as unknown,
+        )
         : undefined,
       tags:
         typeof value.tags === "string"

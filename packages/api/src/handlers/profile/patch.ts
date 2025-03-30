@@ -2,11 +2,11 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { User } from "@plobbo/db/user/index";
 
 export const updateProfileHandler = factory.createHandlers(
-  enforeAuthMiddleware,
+  enforceAuthMiddleware,
   zValidator(
     "json",
     z.object({

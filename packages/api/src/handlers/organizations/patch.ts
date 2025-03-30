@@ -7,16 +7,16 @@ import { z } from "zod";
 import { factory } from "@plobbo/api/factory";
 import { deleteFile, uploadFile } from "@plobbo/api/lib/bucket";
 import { invalidateCloudFrontPaths } from "@plobbo/api/lib/cloudfront";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import cache from "@plobbo/cache";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { Organization } from "@plobbo/db/organization/index";
 import { updateOrganizationSchema } from "@plobbo/validator/organization/update";
 
 export const patchOrganizationHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("param"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("param"),
 
   zValidator("form", updateOrganizationSchema),
   zValidator("param", z.object({ id: z.string() })),

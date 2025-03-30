@@ -4,15 +4,15 @@ import { ulid } from "ulid";
 
 import { factory } from "@plobbo/api/factory";
 import { uploadFile } from "@plobbo/api/lib/bucket";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { Blog } from "@plobbo/db/blog/index";
 import { BlogMetadata } from "@plobbo/db/blog/metadata";
 import { createBlogSchema } from "@plobbo/validator/blog/create";
 
 export const postBlogHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("organizationId"),
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("organizationId"),
 
   zValidator("form", createBlogSchema),
 

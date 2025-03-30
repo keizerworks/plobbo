@@ -1,9 +1,9 @@
 import { factory } from "@plobbo/api/factory";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { OrganizationMember } from "@plobbo/db/organization/member";
 
 export const getMemberHandler = factory.createHandlers(
-  enforeAuthMiddleware,
+  enforceAuthMiddleware,
   async (c) => {
     const memberId = c.req.param("id");
 

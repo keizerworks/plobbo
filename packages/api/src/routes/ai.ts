@@ -6,9 +6,9 @@ import { Hono } from "hono/quick";
 import { z } from "zod";
 
 import { openAiOptions } from "@plobbo/api/lib/openai";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
 
-const aiRouter = new Hono().use(enforeAuthMiddleware);
+const aiRouter = new Hono().use(enforceAuthMiddleware);
 
 aiRouter.post(
   "/command",

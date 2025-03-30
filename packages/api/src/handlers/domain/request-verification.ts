@@ -8,16 +8,16 @@ import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
 import { factory } from "@plobbo/api/factory";
-import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
-import { enforePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
-import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
+import { enforceAuthMiddleware } from "@plobbo/api/middleware/auth";
+import { enforcePremiumMiddleware } from "@plobbo/api/middleware/has-premium";
+import { enforceHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { requestDomainVerificationSchema } from "@plobbo/validator/organization/domain";
 
 export const requestVerificationOrgDomainHandler = factory.createHandlers(
-  enforeAuthMiddleware,
-  enforeHasOrgMiddleware("param"),
-  enforePremiumMiddleware,
+  enforceAuthMiddleware,
+  enforceHasOrgMiddleware("param"),
+  enforcePremiumMiddleware,
 
   zValidator("param", z.object({ id: z.string() })),
   zValidator("form", requestDomainVerificationSchema),
