@@ -2,6 +2,7 @@ import type { PlateStaticProps } from "@udecode/plate";
 import type { VariantProps } from "class-variance-authority";
 import { cn } from "@udecode/cn";
 import { PlateStatic } from "@udecode/plate";
+import { PlateContent } from "@udecode/plate/react";
 import { cva } from "class-variance-authority";
 
 export const editorVariants = cva(
@@ -45,8 +46,18 @@ export function EditorStatic({
   ...props
 }: PlateStaticProps & VariantProps<typeof editorVariants>) {
   return (
-    <PlateStatic
-      className={cn(editorVariants({ variant }), className)}
+    // <PlateStatic
+    //   className={cn(editorVariants({ variant }), className)}
+    //   {...props}
+    // />
+    <PlateContent
+      className={cn(
+        editorVariants({
+          variant,
+        }),
+        className,
+      )}
+      disableDefaultStyles
       {...props}
     />
   );

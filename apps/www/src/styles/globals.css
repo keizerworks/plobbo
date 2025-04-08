@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+ * Balanced leading for improved readability — not too tight, not too loose.
+ */
+
 @layer base {
   * {
     @apply box-border min-w-0 whitespace-normal;
@@ -12,35 +16,35 @@
   }
 
   h1 {
-    @apply scroll-m-20 text-3xl font-extrabold leading-[1.1] tracking-tight md:text-4xl md:leading-[1.1] lg:text-5xl lg:leading-[1.1] xl:text-[54px] xl:leading-[1.1];
+    @apply scroll-m-20 text-3xl font-extrabold !leading-normal tracking-tight md:text-4xl md:!leading-normal lg:text-5xl lg:!leading-snug xl:text-[54px] xl:!leading-[1.4];
   }
 
   h2 {
-    @apply scroll-m-20 text-2xl font-bold leading-[1.1] tracking-tight md:text-3xl md:leading-[1.1] lg:text-4xl lg:leading-[1.1];
+    @apply scroll-m-20 text-2xl font-bold !leading-normal tracking-tight md:text-3xl md:!leading-snug lg:text-4xl lg:!leading-loose;
   }
 
-  h3 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight md:text-2xl md:leading-[1.1] lg:text-3xl lg:leading-[1.1];
+  h3 
+    @apply scroll-m-20 text-xl font-semibold !leading-normal tracking-tight md:text-2xl md:!leading-snug lg:text-3xl lg:!leading-relaxed;
   }
 
   h4 {
-    @apply scroll-m-20 text-lg font-semibold tracking-tight md:text-xl md:leading-[1.1] lg:text-2xl lg:leading-[1.1];
+    @apply scroll-m-20 text-lg font-semibold !leading-normal tracking-tight md:text-xl md:!leading-snug lg:text-2xl lg:!leading-snug;
   }
 
   h5 {
-    @apply font-medium md:text-lg;
+    @apply font-medium !leading-normal md:text-lg;
   }
 
   p {
-    @apply text-base;
+    @apply text-base !leading-relaxed md:text-lg md:!leading-relaxed;
   }
 
   small {
-    @apply text-xs;
+    @apply text-xs !leading-snug;
   }
 
   blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
+    @apply mt-6 border-l-2 pl-6 italic !leading-relaxed text-muted-foreground;
   }
 }
 

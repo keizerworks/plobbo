@@ -75,26 +75,29 @@ export default async function Page({ params }: Props) {
   });
 
   return (
-    <div className="mx-auto min-h-dvh max-w-5xl border-l border-r">
-      <header className="mx-auto flex w-full max-w-6xl items-center gap-x-3 bg-muted px-4 py-4">
-        <div className="relative aspect-square size-8 overflow-hidden">
-          <Image
-            fill
-            src={blog.organization.logo}
-            alt={blog.organization.slug}
-            className="object-cover"
-          />
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-10 flex w-full items-center bg-muted/30 px-4 py-2 backdrop-blur-md">
+        <div className="w-5xl mx-auto flex items-center gap-2">
+          <div className="relative aspect-square size-8 overflow-hidden">
+            <Image
+              fill
+              src={blog.organization.logo}
+              alt={blog.organization.slug}
+              className="rounded-full object-cover"
+            />
+          </div>
+
+          <h5 className="font-bold">{blog.organization.name}</h5>
         </div>
-        <h5 className="font-bold">{blog.organization.name}</h5>
       </header>
 
-      <main className="mx-auto w-full max-w-4xl space-y-8 py-12">
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-8 overflow-y-scroll px-4 py-12 pb-[200px]">
         <div className="space-y-2">
           <h1>{blog.title}</h1>
           <p>{blog.metadata.description}</p>
 
           {blog.image ? (
-            <div className="relative aspect-[16_/_6] w-full overflow-hidden rounded-md">
+            <div className="relative aspect-[16_/_6] w-full overflow-hidden rounded-sm">
               <Image
                 src={blog.image}
                 alt={blog.slug}
@@ -105,7 +108,12 @@ export default async function Page({ params }: Props) {
           ) : null}
         </div>
 
-        <EditorStatic components={components} editor={editor} />
+        <EditorStatic
+          components={components}
+          editor={editor}
+          variant="default"
+          className="unset"
+        />
       </main>
     </div>
   );
