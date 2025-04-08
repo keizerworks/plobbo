@@ -6,7 +6,6 @@ import { and, db, eq } from "@plobbo/db";
 import { BlogMetadataTable, BlogTable } from "@plobbo/db/blog/blog.sql";
 import { Blog } from "@plobbo/db/blog/index";
 import { OrganizationTable } from "@plobbo/db/organization/organization.sql";
-import { Separator } from "@plobbo/ui/components/separato";
 
 import ThemeSwitcher from "~/components/theme-switcher";
 
@@ -45,7 +44,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 mx-auto w-full items-center justify-between gap-x-3 bg-muted/20 px-4 py-4 backdrop-blur-md">
+      <header className="sticky border-b border-neutral-800 top-0 z-50 mx-auto w-full items-center justify-between gap-x-3 bg-muted/20 px-4 py-4 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <div className="relative aspect-square size-8 overflow-hidden">

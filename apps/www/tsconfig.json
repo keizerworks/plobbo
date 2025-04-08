@@ -22,14 +22,6 @@
       "@plobbo/api/*": ["../../packages/api/src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "open-next.config.ts",
-    "postcss.config.mjs",
-    "tailwind.config.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

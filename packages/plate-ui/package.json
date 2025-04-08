@@ -12,7 +12,7 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "tailwind-merge": "catalog:",
-    "tailwindcss-animate": "catalog:"
+    "tw-animate-css": "catalog:"
   },
   "devDependencies": {
     "@plobbo/eslint-config": "workspace:*",
@@ -20,7 +20,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
-    "postcss": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
     "react": "catalog:react19",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"

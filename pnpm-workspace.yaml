@@ -5,12 +5,12 @@ packages:
 
 catalog:
   hono: ^4.6.20
-  tailwind-merge: ^2.5.4
-  tailwindcss-animate: ^1.0.7
-  tailwindcss: ^3.4.14
+  tailwind-merge: ^3.0.1
+  tw-animate-css: ^1.2.4
+  tailwindcss: ^4.0.8
   eslint: ^9.20.0
   autoprefixer: ^10.4.20
-  postcss: ^8.4.47
+  "@tailwindcss/postcss": ^4.0.8
   prettier: ^3.4.2
   typescript: ^5.6.3
   "@types/node": ^20
