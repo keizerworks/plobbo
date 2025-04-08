@@ -9,7 +9,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-sans: "Noto Sans", sans-serif;
+  --font-sans: "Inter", sans-serif;
 
   --background: hsl(0 0% 100%);
   --foreground: hsl(0 0% 3.9%);
