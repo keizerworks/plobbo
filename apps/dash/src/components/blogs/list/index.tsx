@@ -65,7 +65,7 @@ export const BlogsTable = () => {
   });
 
   return (
-    <>
+    <div className="pt-8">
       <DataTable table={table}>
         <DataTableToolbar table={table} filterFields={filterFields}>
           <BlogsTableToolbarActions table={table} />
@@ -79,6 +79,6 @@ export const BlogsTable = () => {
         showTrigger={false}
         onSuccess={() => rowAction?.row.toggleSelected(false)}
       />
-    </>
+    </div>
   );
 };

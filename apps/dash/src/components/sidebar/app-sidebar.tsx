@@ -22,9 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>{activeOrgId ? <NavMain /> : null}</SidebarContent>
       <SidebarFooter>
-        {activeOrg && activeOrg.subscription?.status !== "ACTIVE" ? (
-          <SidebarSubscribeForm />
-        ) : null}
+        {activeOrg && activeOrg.subscription?.status !== "ACTIVE" ? null : null}
         <NavUser />
       </SidebarFooter>
     </Sidebar>

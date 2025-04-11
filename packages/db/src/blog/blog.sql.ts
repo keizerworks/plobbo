@@ -10,6 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { baseTable } from "../base-table";
+import { JourneyTable } from "../journey/journey.sql";
 import {
   OrganizationMemberTable,
   OrganizationTable,
@@ -20,10 +21,17 @@ export const BlogStatusEnum = pgEnum("blog_status", ["DRAFT", "PUBLISHED"]);
 export const BlogTable = pgTable("blog", {
   ...baseTable("blog"),
   organizationId: varchar({ length: 34 })
-    .references(() => OrganizationTable.id)
+    .references(() => OrganizationTable.id, {
+      onDelete: "cascade",
+    })
     .notNull(),
   authorId: varchar({ length: 34 })
-    .references(() => OrganizationMemberTable.id)
+    .references(() => OrganizationMemberTable.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  journeyTableId: varchar({ length: 34 })
+    .references(() => JourneyTable.id, { onDelete: "cascade" })
     .notNull(),
   title: text().notNull(),
   slug: varchar({ length: 255 }).notNull(),

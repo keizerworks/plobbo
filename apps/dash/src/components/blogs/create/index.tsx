@@ -89,7 +89,7 @@ export const CreateBlog = () => {
 
   return (
     <Credenza open={open} onOpenChange={setOpen}>
-      <CredenzaTrigger className={buttonVariants({ size: "sm" })}>
+      <CredenzaTrigger className={buttonVariants({ size: "default" })}>
         New Blog
       </CredenzaTrigger>
 

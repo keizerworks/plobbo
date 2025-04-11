@@ -14,8 +14,6 @@ export default function Header() {
             src="/assets/logo/dark-expanded.svg"
             alt="logo"
           />
-
-
           <Image
             className="hidden dark:block"
             fill
