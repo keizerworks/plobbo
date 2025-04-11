@@ -26,7 +26,7 @@
     "react-dom": "catalog:react19",
     "server-only": "^0.0.1",
     "tailwind-merge": "catalog:",
-    "tailwindcss-animate": "catalog:",
+    "tw-animate-css": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "@types/react-dom": "catalog:react19",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
-    "postcss": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "^5"
   },

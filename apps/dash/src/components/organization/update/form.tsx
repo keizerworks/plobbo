@@ -70,7 +70,9 @@ export const UpdateOrganizationForm = (data: Organization) => {
   return (
     <Card className="border-0 shadow-none">
       <CardHeader className="border-b p-4 px-0">
-        <CardTitle>Update Organization</CardTitle>
+        <CardTitle className="text-3xl font-bold">
+          Update Organization
+        </CardTitle>
         <CardDescription>
           Enter the details for your Organization. Click save when you&apos;re
           done.

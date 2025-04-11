@@ -50,9 +50,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <SidebarProvider>
+      <SidebarProvider className="tracking-tight">
         <AppSidebar variant="inset" />
-        <SidebarInset className="m-2 flex-1 overflow-hidden rounded-lg border shadow-lg">
+        <SidebarInset className="m-2 flex-1 overflow-hidden rounded-lg border shadow-none">
           <DashboardHeader />
           <Separator className="mx-auto w-[calc(100%_-_2rem)]" />
           <Outlet />
