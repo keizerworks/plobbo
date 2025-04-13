@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { useLocation, useParams } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { Link, useLocation, useParams } from "@tanstack/react-router";
+import { Slash } from "lucide-react";
 
 import UpdateBlogMetadataForm from "../blogs/metadata/update";
 import PublishBlog from "../blogs/publish";
@@ -17,7 +17,7 @@ import {
 import { SidebarTrigger } from "./sidebar";
 
 export default function DashboardHeader() {
-  const blogId = useParams({ strict: false, select: (s) => s["blog-id"] });
+  const blogId = useParams({ strict: false, select: (s) => s["journey-id"] });
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -25,16 +25,17 @@ export default function DashboardHeader() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <header className="flex h-12 shrink-0 items-center gap-2 px-4">
+    <header className="flex h-10 shrink-0 items-center gap-2 px-4">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="mr-2 -ml-1" />
 
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              <BreadcrumbPage className="tracking-tighter font-semibold">
+                <Link to={"/"}>Dashboard</Link>
+              </BreadcrumbPage>
             </BreadcrumbItem>
-
             {segments.map((segment, index) => {
               // Create the path up to this segment
               const path = `/${segments.slice(0, index + 1).join("/")}`;
@@ -48,16 +49,16 @@ export default function DashboardHeader() {
 
               return (
                 <React.Fragment key={path}>
-                  <BreadcrumbSeparator>
-                    <ChevronRight className="h-4 w-4" />
-                  </BreadcrumbSeparator>
+                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
                   <BreadcrumbItem>
                     {isLast ? (
-                      <BreadcrumbPage>{formattedSegment}</BreadcrumbPage>
-                    ) : (
-                      <BreadcrumbLink href={path}>
+                      <BreadcrumbPage className="tracking-tighter font-semibold">
                         {formattedSegment}
-                      </BreadcrumbLink>
+                      </BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbPage className="tracking-tighter font-semibold">
+                        <Link to={path}>{formattedSegment}</Link>
+                      </BreadcrumbPage>
                     )}
                   </BreadcrumbItem>
                 </React.Fragment>

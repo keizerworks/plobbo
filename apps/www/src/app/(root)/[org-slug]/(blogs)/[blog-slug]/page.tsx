@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import type { BlogMetadata } from "@plobbo/db/blog/metadata";
@@ -89,7 +90,11 @@ export default async function Page({ params }: Props) {
                 className="rounded-full object-cover"
               />
             </div>
-            <h5 className="font-bold">{blog.organization.name}</h5>
+            <h5 className="font-semibold">
+              <Link href={blog.organization.slug}>
+                {blog.organization.name}
+              </Link>
+            </h5>{" "}
           </div>
           <ThemeSwitcher />
         </div>

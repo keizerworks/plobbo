@@ -39,7 +39,9 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 
 export default function UpdateBlogMetadataForm() {
-  const blog: Blog | undefined = useLoaderData({ from: "/blogs/$blog-id" });
+  const blog: Blog | undefined = useLoaderData({
+    from: "/journey/$journey-id",
+  });
 
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);

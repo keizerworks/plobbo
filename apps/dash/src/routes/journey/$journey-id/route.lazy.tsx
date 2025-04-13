@@ -2,7 +2,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { PlateEditor } from "~/components/editor/plate-editor";
 
-export const Route = createLazyFileRoute("/blogs/$blog-id")({
+export const Route = createLazyFileRoute("/journey/$journey-id")({
   component: RouteComponent,
 });
 

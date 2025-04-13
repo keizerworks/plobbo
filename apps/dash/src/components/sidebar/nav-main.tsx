@@ -35,8 +35,8 @@ export function NavMain() {
           isActive: pathname === "/",
         },
         {
-          title: "Blogs",
-          url: "/blogs",
+          title: "Journey",
+          url: "/journey",
           icon: Newspaper,
           isActive: pathname.startsWith("/blogs"),
         },

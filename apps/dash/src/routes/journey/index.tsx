@@ -34,7 +34,7 @@ const parser = {
 
 const loader = createLoader(parser);
 
-export const Route = createFileRoute("/blogs/")({
+export const Route = createFileRoute("/journey/")({
   validateSearch: loader,
   loader: async ({ location }) => {
     const search = location.search as unknown as inferParserType<

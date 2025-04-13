@@ -58,9 +58,9 @@ export const CreateBlog = () => {
     },
     onSuccess: async ({ id }) => {
       await navigate({
-        from: "/blogs",
-        to: "/blogs/$blog-id",
-        params: { "blog-id": id },
+        from: "/journey",
+        to: "/journey/$journey-id",
+        params: { "journey-id": id },
         search: true,
       });
     },
@@ -90,14 +90,14 @@ export const CreateBlog = () => {
   return (
     <Credenza open={open} onOpenChange={setOpen}>
       <CredenzaTrigger className={buttonVariants({ size: "default" })}>
-        New Blog
+        Create Journey
       </CredenzaTrigger>
 
       <CredenzaContent className="px-0 sm:max-w-[425px]">
         <CredenzaHeader className="max-mb:pb-4 space-y-0 gap-x-0 gap-y-1 px-4 text-left md:px-6">
-          <CredenzaTitle>New Blog</CredenzaTitle>
+          <CredenzaTitle>New Journey</CredenzaTitle>
           <CredenzaDescription>
-            Enter the details for your new blog. Click save when you&apos;re
+            Enter the details for your new Journy. Click save when you&apos;re
             done.
           </CredenzaDescription>
         </CredenzaHeader>
@@ -145,7 +145,7 @@ export const CreateBlog = () => {
 
             <CredenzaFooter className="-mx-4 mt-4 border-t px-4 pt-2 max-md:pb-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
               <Button type="submit" className="w-full">
-                Create Blog
+                Create Journey
               </Button>
             </CredenzaFooter>
           </form>

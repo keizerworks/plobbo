@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 export default function PublishBlog() {
   const blogId: string | undefined = useParams({
     strict: false,
-    select: (s) => s["blog-id"],
+    select: (s) => s["journey-id"],
   });
 
   const { mutate, isPending } = useMutation({
@@ -26,7 +26,12 @@ export default function PublishBlog() {
   }
 
   return (
-    <Button loading={isPending} onClick={onSubmit} size="sm">
+    <Button
+      loading={isPending}
+      onClick={onSubmit}
+      size="sm"
+      className="rounded-sm"
+    >
       Publish
     </Button>
   );

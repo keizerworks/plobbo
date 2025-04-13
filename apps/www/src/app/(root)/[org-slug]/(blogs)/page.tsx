@@ -55,7 +55,9 @@ export default async function Page({ params }: Props) {
                 className="rounded-full object-cover"
               />
             </div>
-            <h5 className="font-semibold">{organization.name}</h5>
+            <h5 className="font-semibold">
+              <Link href={organization.slug}>{organization.name}</Link>
+            </h5>
           </div>
           <ThemeSwitcher />
         </div>
@@ -63,7 +65,7 @@ export default async function Page({ params }: Props) {
       <div className="mx-auto max-w-6xl">
         <main className="mx-auto w-full max-w-5xl px-4 py-16">
           <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2">
-            {blogs.map((blog) => (
+            {blogs.reverse().map((blog) => (
               <Link
                 href={"/" + organization.slug + "/" + blog.slug}
                 className="group relative flex h-full flex-col overflow-hidden rounded bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:shadow-md hover:ring-neutral-300 dark:bg-neutral-900 dark:ring-neutral-800 dark:hover:ring-neutral-700"

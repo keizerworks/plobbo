@@ -30,9 +30,9 @@ export const BlogTable = pgTable("blog", {
       onDelete: "cascade",
     })
     .notNull(),
-  journeyTableId: varchar({ length: 34 })
-    .references(() => JourneyTable.id, { onDelete: "cascade" })
-    .notNull(),
+  // journeyTableId: varchar({ length: 34 })
+  //   .references(() => JourneyTable.id, { onDelete: "cascade" })
+  //   .notNull(),
   title: text().notNull(),
   slug: varchar({ length: 255 }).notNull(),
   image: varchar({ length: 255 }),
