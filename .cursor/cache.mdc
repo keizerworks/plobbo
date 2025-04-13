@@ -1,0 +1,128 @@
+---
+description: Cache Package (ioredis Client)
+globs: packages/cache/src/index.ts
+---
+
+## Architecture Overview
+
+The cache package provides a configured client instance for connecting to the application's central cache cluster (likely Valkey or Redis).
+
+-   Uses **`ioredis`** as the client library, specifically configuring a `Cluster` client.
+-   Connects to the cache endpoint and credentials managed via SST resources (`Resource.valkey`).
+-   Exports a single, ready-to-use `ioredis` Cluster instance for other packages to consume.
+-   Domain-specific caching logic (key management, serialization, TTLs) is **not** implemented within this package but should be handled by consumers using the exported client.
+
+## Main Cache Client Configuration
+
+The main cache client is configured and exported from `src/index.ts`:
+
+-   It initializes an `ioredis` `Cluster` client.
+-   Connection details (`host`, `port`, `username`, `password`) are sourced from `Resource.valkey` provided by the SST deployment environment.
+-   Key `redisOptions` include:
+    -   `enableAutoPipelining: true`: Optimizes command batching.
+    -   `tls: { checkServerIdentity: () => undefined }`: Enables TLS but **disables server identity verification**. See Security Considerations.
+    -   `username`, `password`: For authentication.
+
+```typescript
+// packages/cache/src/index.ts
+import { Cluster } from "ioredis";
+import { Resource } from "sst/resource";
+
+// Get connection details from SST Resources for Valkey/Redis cluster
+const { host, port, username, password } = Resource.valkey;
+
+// Create ioredis Cluster instance
+const cache = new Cluster([{ host, port }], { // Initial node(s)
+  redisOptions: {
+    enableAutoPipelining: true, // Optimize command batching
+    tls: {
+      // WARNING: Disables TLS server identity verification!
+      checkServerIdentity: () => undefined,
+    },
+    username, // Authentication username
+    password, // Authentication password
+  },
+});
+
+// Export the configured client instance
+export default cache;
+```
+
+## General Caching Conventions (For Consumers)
+
+While this package only provides the client, consumers interacting with the cache via the exported `cache` instance should adhere to the following conventions:
+
+### Cache Key Conventions
+
+1.  **Prefixing:** Always use a domain-specific prefix (e.g., `user:`, `blog:`, `session:`) followed by a colon (`:`) to prevent key collisions between different types of data.
+2.  **Clarity:** Use descriptive names for prefixes that align with domain concepts.
+3.  **Separators:** Use colons (`:`) consistently to separate parts of a key (e.g., `user:profile:123`, `order:items:987`).
+4.  **Constants:** Define prefixes as constants within the consuming module (e.g., repository, service) for consistency and maintainability.
+
+    *Examples:*
+    * `blog:blg_01HY8JV4N8ZC6QYR0T8FG3TGD8` - Blog post by ID
+    * `user:profile:usr_01HY8JX0G74NPMXF75XBV317HZ` - User profile by user ID
+    * `auth:otp:+12345678901` - OTP code keyed by phone number
+
+### TTL (Time-To-Live) Management
+
+1.  **Set Expiration:** Always set a TTL for cached data unless there's a strong reason for it to persist indefinitely (which is rare).
+2.  **Appropriate Values:** Choose TTL values suitable for the data's volatility (e.g., short TTLs for frequently changing data or temporary codes, longer TTLs for relatively static data).
+3.  **Units:** Use seconds when setting TTLs with the `EX` option in `ioredis` commands.
+4.  **Consistency:** Apply TTLs consistently when setting or updating cached data.
+
+### Error Handling
+
+1.  **Graceful Degradation:** Treat the cache as an enhancement, not a critical dependency. Applications should generally function correctly (albeit potentially slower) if the cache is unavailable.
+2.  **Catch Errors:** Wrap cache operations (`cache.get()`, `cache.set()`, etc.) in `try...catch` blocks where appropriate, especially in critical code paths.
+3.  **Logging:** Log cache errors (connection issues, command errors) for monitoring but avoid letting them crash the application or block essential functionality.
+4.  **Cache Misses:** Handle cache misses gracefully (return `null` or `undefined`) and implement logic to fetch data from the source (e.g., database) when a miss occurs (see Cache-Aside Pattern).
+
+### Serialization/Deserialization
+
+1.  **Format:** Use JSON as the standard format for storing complex objects (non-string/number values).
+2.  **Serialization:** Use `JSON.stringify()` before `cache.set()` or similar commands.
+3.  **Deserialization:** Use `JSON.parse()` after `cache.get()` or similar commands, retrieving string data.
+4.  **Type Safety:** Cast the result of `JSON.parse()` to the expected TypeScript type (e.g., `as UserModel`). Be mindful that `Date` objects are serialized as strings and need manual conversion back if required.
+
+### Transaction and Pipeline Support
+
+1.  **Pipelines (`cache.pipeline()`):** Use pipelines to batch multiple commands that don't depend on each other's results, reducing network round trips, especially for bulk operations.
+2.  **Transactions (`cache.multi()`):** Use transactions when a sequence of commands needs to be executed atomically (all succeed or all fail). Be aware of limitations, especially in cluster mode.
+
+### Cache Invalidation Strategy
+
+1.  **Write-Through/Aside Invalidation:** When data is updated or deleted in the primary data source (database), explicitly invalidate (`cache.del()`) the corresponding cache entry.
+2.  **TTL:** Rely on TTLs for automatic expiration of stale data.
+3.  **Clear Naming:** Use clear function names in consuming code for operations that invalidate cache entries (e.g., `updateUserAndInvalidateCache`).
+
+### Integration with Database Layer (Cache-Aside Pattern)
+
+When using the cache alongside a database:
+
+1.  **Read Operation:**
+    a. Attempt to fetch the data from the cache using its key.
+    b. If found (cache hit), parse and return the cached data.
+    c. If not found (cache miss), fetch the data from the database.
+    d. If found in the database, serialize and store it in the cache (with an appropriate TTL).
+    e. Return the data fetched from the database.
+2.  **Write Operation (Create/Update):**
+    a. Update/Insert the data in the database.
+    b. Invalidate the corresponding entry in the cache (`cache.del(key)`). (Alternatively, update the cache directly, but invalidation is often simpler).
+3.  **Delete Operation:**
+    a. Delete the data from the database.
+    b. Invalidate the corresponding entry in the cache.
+
+### Cluster-Aware Operations
+
+Since the client is an `ioredis` `Cluster` instance:
+
+1.  **Key Distribution:** Keys are automatically distributed across cluster slots based on a hash of the key.
+2.  **Cross-Slot Operations:** Avoid commands that operate on multiple keys residing in different slots (e.g., `MSET`, `MGET`, `DEL` with multiple keys) unless all keys involved map to the *same* slot. Use hash tags (`{some_tag}key1`, `{some_tag}key2`) in keys to force them into the same slot if needed for multi-key operations, but use this judiciously. Pipelines generally handle multi-key operations across slots correctly by routing commands individually. Transactions (`MULTI`/`EXEC`) operating on keys across different slots are typically not supported or reliable in Redis Cluster.
+
+## Security Considerations
+
+1.  **TLS Verification Disabled:** As mentioned in the Configuration section, the client currently disables TLS server identity verification (`checkServerIdentity: () => undefined`). **This is insecure** and makes the connection vulnerable to Man-in-the-Middle (MitM) attacks. This should be rectified by configuring proper certificate validation unless there's a very specific, documented reason for bypassing it in a highly trusted environment.
+2.  **Sensitive Data:** Avoid storing highly sensitive data (like raw passwords, unencrypted tokens) in the cache. If sensitive data must be cached, ensure it is appropriately encrypted or hashed *before* serialization.
+3.  **Authentication:** The client uses username/password authentication, configured via SST resources. Ensure access to these resources is secure.
+4.  **Network Access:** Restrict network access to the cache cluster (e.g., via security groups, firewall rules) to only authorized application components.

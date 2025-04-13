@@ -1,0 +1,230 @@
+---
+description: Plobbo Monorepo Structure
+globs: '**/*.ts, **/*.js, **/*.json, **/*.tsx'
+---
+
+## Overview
+
+This TypeScript monorepo, managed with pnpm workspaces, houses the applications and shared libraries for the Plobbo platform. It follows a structured architecture with clear separation of concerns between applications, shared packages, and infrastructure definitions.
+
+-   `apps/`: Contains standalone frontend applications (Dashboard and Marketing Site).
+-   `packages/`: Contains shared backend services (API) and reusable libraries (Auth, DB, UI, Core, etc.).
+-   `infra/`: Contains Infrastructure as Code (IaC) definitions using SST.
+-   Root configurations manage linting (ESLint), TypeScript, and pnpm workspace settings.
+
+## Applications (apps/)
+
+The applications directory contains user-facing frontends:
+
+### Dashboard (apps/dash)
+
+A **React (Vite)** single-page application providing the main user interface for logged-in users to manage their content and settings.
+
+-   **Framework/Libs:** Vite, React, TypeScript, TanStack Router, TanStack Query, Zustand, shadcn/ui, PlateJS.
+-   **Purpose:** Core user dashboard for managing blogs, organizations, settings, subscriptions, etc.
+-   **Features:** Data tables, rich text editing (PlateJS), organization management, custom domain configuration, subscription handling.
+-   **Architecture:** Client-side rendering, interacts heavily with the API package via client-side actions/queries. Uses TanStack Router for routing and TanStack Query for server state management. Zustand for global client state.
+-   **Depends On:** `packages/api` (via client calls), `packages/auth` (client usage), `packages/ui`, `packages/plate-ui`, `packages/validator` (possibly for forms).
+
+### Marketing Site (apps/www)
+
+A **Next.js** application serving the public website, blog rendering, legal pages, and user waitlist.
+
+-   **Framework/Libs:** Next.js, React, TypeScript, shadcn/ui, OpenNext (for SST deployment).
+-   **Purpose:** Public-facing website, marketing content, dynamically rendered blogs, legal documents (Terms, Privacy), waitlist signup.
+-   **Features:** Landing pages, pricing information, customer showcases, server-rendered blog posts based on organization/blog slugs, waitlist form submission. Includes an API route handler potentially for specific tasks or proxying.
+-   **Architecture:** Mix of Server-Side Rendering (SSR) and Static Site Generation (SSG) typical of Next.js. Deployed via SST using the OpenNext adapter. Uses Next.js App Router.
+-   **Depends On:** `packages/ui`, `packages/core`, `packages/db` (potentially for waitlist/blog data), `packages/api` (potentially via internal API route).
+
+## Shared Packages (packages/)
+
+The packages directory contains reusable modules shared across applications and potentially other packages:
+
+### API (packages/api)
+
+The primary backend **Hono** RESTful API service.
+
+-   **Framework/Libs:** Hono, TypeScript, Zod.
+-   **Purpose:** Handles client requests from `apps/dash` and potentially `apps/www`, performs business logic, interacts with data stores.
+-   **Architecture:** Handler-based structure (`src/handlers`), centralized middleware (`src/middleware`), uses Hono factory pattern, Zod for validation. Deployed as serverless functions (likely via SST on AWS Lambda). Includes scheduled Lambda functions (`scheduler-lambdas/`).
+-   **Depends On:** `packages/auth`, `packages/db`, `packages/cache`, `packages/core`, `packages/validator`.
+
+### Auth (packages/auth)
+
+Authentication service and client library.
+
+-   **Framework/Libs:** OpenAuth.js, TypeScript.
+-   **Purpose:** Provides authentication (likely email code flow) as a standalone service/issuer. Defines the auth client configuration and data structures (subjects) for verified tokens.
+-   **Depends On:** `packages/core` (for mailer), `packages/db` (for user lookup/creation).
+
+### Cache (packages/cache)
+
+Provides a configured cache client instance.
+
+-   **Framework/Libs:** `ioredis`.
+-   **Purpose:** Connects to the Valkey/Redis cache cluster (defined in `infra/`). Exports a pre-configured `ioredis` Cluster client.
+-   **Depends On:** Minimal external dependencies (`ioredis`).
+
+### Core (packages/core)
+
+Core utilities and potentially shared services (currently lean).
+
+-   **Framework/Libs:** TypeScript.
+-   **Purpose:** Provides shared utilities like the mailer (`src/mailer/`). May contain base types or helpers used by other packages (e.g., `src/db/` helpers). (Note: Event emitters, AWS SDK clients, etc. mentioned in the reference doc aren't explicitly visible here yet).
+-   **Depends On:** External libraries (e.g., for mailing).
+
+### Database (packages/db)
+
+Database access layer and schema definitions.
+
+-   **Framework/Libs:** Drizzle ORM, node-postgres (`pg`).
+-   **Purpose:** Defines the PostgreSQL database schema, manages migrations (Drizzle Kit), provides type-safe data access functions.
+-   **Architecture:** Uses a Namespace pattern for repositories (static async functions within `export namespace Domain { ... }`), domain-based file structure, standardized base table columns and ID generation.
+-   **Depends On:** Minimal external dependencies (`drizzle-orm`, `pg`, `ulid`).
+
+### Plate UI (packages/plate-ui)
+
+Shared UI component library specifically for the PlateJS rich text editor.
+
+-   **Framework/Libs:** React, TypeScript, PlateJS, shadcn/ui (likely).
+-   **Purpose:** Provides customized and reusable components for the PlateJS editor used in `apps/dash`. Encapsulates editor configuration and UI elements.
+-   **Depends On:** `packages/ui` (likely), external libraries (React, PlateJS).
+
+### UI (packages/ui)
+
+General-purpose shared React UI component library.
+
+-   **Framework/Libs:** React, TypeScript, shadcn/ui (likely based on `components.json` and structure), Tailwind CSS.
+-   **Purpose:** Provides a consistent look-and-feel across applications (`apps/dash`, `apps/www`) through reusable UI components (Buttons, Cards, Forms, etc.).
+-   **Depends On:** External libraries (React, shadcn/ui primitives, tailwind).
+
+### Validator (packages/validator)
+
+Shared data validation schemas.
+
+-   **Framework/Libs:** Zod, TypeScript.
+-   **Purpose:** Defines reusable Zod schemas for validating API request data, form inputs, etc. Organized by domain.
+-   **Depends On:** External libraries (Zod).
+
+## Infrastructure (infra/)
+
+Infrastructure as Code definitions managed using **SST (Serverless Stack Toolkit)**.
+
+-   Defines AWS cloud resources using TypeScript.
+-   Manages VPC, PostgreSQL Database (RDS), Valkey/Redis Cache (ElastiCache), S3 Buckets (`storage.ts`), SES (Email), Route 53 (DNS), CloudFront (potentially via OpenNext), Lambda functions (API, Auth), and Vercel deployments (Dash, WWW).
+-   Handles environment configuration and resource binding for applications and packages.
+
+## Tooling
+
+Shared development tooling is configured primarily at the monorepo root:
+
+-   **ESLint:** Configured via `eslint.config.js` files in root and packages/apps for code linting.
+-   **Prettier:** (Assumed) Used for code formatting, likely configured in `package.json` or `.prettierrc.js`.
+-   **TypeScript:** Base configuration (`tsconfig.base.json` - assumption) likely exists at the root, extended by individual `tsconfig.json` files in apps/packages.
+-   **pnpm:** Used as the package manager and for workspace management (`pnpm-workspace.yaml`).
+
+## Package Dependencies (Simplified)
+
+```mermaid
+graph TD
+    subgraph Apps
+        A(apps/dash)
+        B(apps/www)
+    end
+    subgraph Packages
+        C(packages/api)
+        D(packages/auth)
+        E(packages/cache)
+        F(packages/core)
+        G(packages/db)
+        H(packages/plate-ui)
+        I(packages/ui)
+        J(packages/validator)
+    end
+    subgraph Infrastructure
+        K(infra/**.ts)
+    end
+
+    A -- API Calls --> C
+    A -- Uses --> D
+    A -- Uses --> H
+    A -- Uses --> I
+    A -- Uses --> J
+
+    B -- API Calls? --> C
+    B -- Uses --> I
+    B -- Uses --> F
+    B -- Uses --> G
+    B -- Uses --> J
+
+
+    C -- Depends On --> D
+    C -- Depends On --> E
+    C -- Depends On --> F
+    C -- Depends On --> G
+    C -- Depends On --> J
+
+    D -- Depends On --> F
+    D -- Depends On --> G
+
+    H -- Depends On --> I
+
+    %% Arrows point from depender to dependency
+```
+*(Note: This dependency graph is inferred; review `package.json` files for exact dependencies.)*
+
+## Import Conventions
+
+1.  **Grouping:** Imports should be grouped in the following order:
+    1.  Node.js built-in modules (e.g., `fs`, `path`)
+    2.  External dependencies (e.g., `react`, `hono`, `zod`) - preferably alphabetical.
+    3.  Internal monorepo packages using aliases (e.g., `@plobbo/auth`, `@plobbo/db`).
+    4.  Relative imports (e.g., `../components`, `./utils`).
+2.  **Aliases:** Always use the defined workspace alias (e.g., `@plobbo/package-name`) when importing from other packages within the monorepo. Avoid relative paths across package boundaries (`../packages/...`).
+3.  **Exports:** Prefer named exports over default exports for better tree-shaking and clarity.
+
+## Package Entry Points
+
+Each package should typically export its public API from its main `src/index.ts` file. This provides a clear and consistent entry point for consumers.
+
+## Scripts and Commands
+
+Common scripts available via `pnpm run <script>` (likely defined in root and/or package `package.json` files):
+
+-   `dev`: Starts development servers for applications (e.g., `api`, `dash`, `www`).
+-   `build`: Builds applications and packages for production.
+-   `lint`: Runs ESLint checks across the codebase.
+-   `fmt` / `format`: (Assumed) Runs Prettier formatting.
+-   `test`: (Assumed) Runs unit/integration tests.
+-   `db:generate`: Generates Drizzle ORM migration files based on schema changes (`packages/db`).
+-   `db:migrate`: Applies pending database migrations (`packages/db`).
+-   `sst:deploy <stage>`: Deploys infrastructure and services using SST.
+-   `sst:remove <stage>`: Removes deployed infrastructure using SST.
+
+## Deployment Pipeline
+
+-   **CI/CD:** Uses GitHub Actions.
+-   **Branching:** follows GitHub Flow (e.g., feature branches -> dev -> staging -> main/prod).
+-   **Environments:** Supports multiple deployment stages (e.g., `dev`, `staging`, `production`) managed by SST.
+-   **Deployment Tool:** SST orchestrates the deployment of backend services (API, Auth), infrastructure, and potentially triggers Vercel deployments for frontends (`apps/dash`, `apps/www`).
+-   **Checks:** Linting, testing, and build steps are run before deployment. Database migration safety checks might be included.
+
+## Versioning
+
+-   Internal packages use pnpm workspace linking (`workspace:*` protocol).
+-   Versioning for deployment artifacts is likely managed by the CI/CD process or SST, not necessarily strict SemVer on internal packages.
+-   The `pnpm-lock.yaml` file is committed to ensure reproducible dependency installations.
+
+## Documentation
+
+-   Each application and package should include a `README.md` explaining its purpose, setup, and usage.
+-   This central `MONOREPO.md` (or similar) document provides the high-level overview.
+-   The `.mdc` files in `cursor/` might contain specific component/package documentation or AI context rules.
+
+## Local Development
+
+-   Requires Node.js, pnpm, and likely Docker.
+-   **Services:** Docker Compose (`docker-compose.yml` - assumed) should be available to easily spin up local instances of PostgreSQL and Valkey/Redis.
+-   **Environment:** Uses `.env` files for environment variables and secrets. Check for `.env.example` files.
+-   **Setup:** Run `pnpm install` after cloning.
+-   **Running:** Use `pnpm sst dev` to start development servers. 
