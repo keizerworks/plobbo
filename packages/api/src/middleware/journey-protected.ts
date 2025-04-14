@@ -53,7 +53,7 @@ export const enforeHasJourneyMiddleware = createMiddleware<Env>(
 
     if (!record) {
       throw new HTTPException(403, {
-        message: "You are not a member of this organization",
+        message: "Journey not found or you don't have access to it",
       });
     }
 

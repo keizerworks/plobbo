@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const createBlogSchema = z.object({
   organizationId: z.string(),
+  journeyId: z.string(),
   title: z.string().min(2, {
     message: "Title must be at least 2 characters long",
   }),
@@ -15,7 +16,6 @@ export const createBlogSchema = z.object({
         "Slug can only contain lowercase letters, numbers, and hyphens. Hyphens cannot be at the start or end.",
     }),
   image: z.instanceof(File).optional(),
-  journeyId: z.string(),
 });
 
 export type CreateBlogInterface = z.infer<typeof createBlogSchema>;
