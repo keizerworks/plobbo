@@ -4,10 +4,10 @@ import { handle } from "hono/vercel";
 
 import { countBlogHandler } from "./handlers/blogs/count";
 import { getBlogHandler } from "./handlers/blogs/get";
-import { listBlogsHanlder } from "./handlers/blogs/list";
+import { listBlogsHandler } from "./handlers/blogs/list";
 import { getBlogMetadataHandler } from "./handlers/blogs/metadata/get";
 import { putBlogMetadataHandler } from "./handlers/blogs/metadata/put";
-import { patchBlogHanlder } from "./handlers/blogs/patch";
+import { patchBlogHandler } from "./handlers/blogs/patch";
 import { putBlogPlaceholderImages } from "./handlers/blogs/placeholder-images/put";
 import { postBlogHandler } from "./handlers/blogs/post";
 import { publishBlogHandler } from "./handlers/blogs/publish";
@@ -16,12 +16,14 @@ import { getOrgDomainHandler } from "./handlers/domain/get";
 import { requestVerificationOrgDomainHandler } from "./handlers/domain/request-verification";
 import { verifyOrgDomainHandler } from "./handlers/domain/verify";
 import { verifyCnameOrgDomainHandler } from "./handlers/domain/verify-cname";
-import { listJourneyHanlder } from "./handlers/journey/list";
+import { listJourneyHandler } from "./handlers/journey/list";
+import { patchJourneyHandler } from "./handlers/journey/patch";
+import { postJourneyHandler } from "./handlers/journey/post";
 import { countOrganizationHandler } from "./handlers/organizations/count";
 import { getOrganizationHandler } from "./handlers/organizations/get";
-import { listOrganizationHanlder } from "./handlers/organizations/list";
+import { listOrganizationHandler } from "./handlers/organizations/list";
 import { patchOrganizationHandler } from "./handlers/organizations/patch";
-import { postOrganizationHanlder } from "./handlers/organizations/post";
+import { postOrganizationHandler } from "./handlers/organizations/post";
 import { getProfileHandler } from "./handlers/profile/get";
 import aiRouter from "./routes/ai";
 import polarRouter from "./routes/polar";
@@ -39,22 +41,25 @@ const app = new Hono()
   )
   .get("/profile", ...getProfileHandler)
 
-  .get("/blogs", ...listBlogsHanlder)
+  .get("/blogs", ...listBlogsHandler)
   .post("/blogs", ...postBlogHandler)
   .get("/blogs/count", ...countBlogHandler)
 
   .put("/blogs/placeholder-images", ...putBlogPlaceholderImages)
   .get("/blogs/:id", ...getBlogHandler)
-  .patch("/blogs/:id", ...patchBlogHanlder)
+  .patch("/blogs/:id", ...patchBlogHandler)
 
   .put("/blogs/:id/metadata", ...putBlogMetadataHandler)
   .get("/blogs/:id/metadata", ...getBlogMetadataHandler)
   .post("/blogs/:id/publish", ...publishBlogHandler)
 
-  .get("/journey", ...listJourneyHanlder)
+  .get("/journey", ...listJourneyHandler)
+  .post("/journey", ...postJourneyHandler)
 
-  .get("/organizations", ...listOrganizationHanlder)
-  .post("/organizations", ...postOrganizationHanlder)
+  .patch("/journey/:id", ...patchJourneyHandler)
+
+  .get("/organizations", ...listOrganizationHandler)
+  .post("/organizations", ...postOrganizationHandler)
   .get("/organizations/count", ...countOrganizationHandler)
 
   .get("/organizations/:id", ...getOrganizationHandler)

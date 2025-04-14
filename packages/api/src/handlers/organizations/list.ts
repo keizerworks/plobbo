@@ -2,7 +2,7 @@ import { factory } from "@plobbo/api/factory";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { Organization } from "@plobbo/db/organization/index";
 
-export const listOrganizationHanlder = factory.createHandlers(
+export const listOrganizationHandler = factory.createHandlers(
   enforeAuthMiddleware,
   async (c) => c.json(await Organization.findAll({ userId: c.var.user.id })),
 );

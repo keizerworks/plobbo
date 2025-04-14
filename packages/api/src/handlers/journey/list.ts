@@ -4,7 +4,7 @@ import { factory } from "@plobbo/api/factory";
 import { Journey } from "@plobbo/db/journey/index";
 import { journeyListFilterSchema } from "@plobbo/validator/journey/list";
 
-export const listJourneyHanlder = factory.createHandlers(
+export const listJourneyHandler = factory.createHandlers(
   zValidator("query", journeyListFilterSchema),
   async (c) => {
     const query = c.req.valid("query");

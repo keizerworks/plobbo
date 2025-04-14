@@ -14,7 +14,7 @@ import { Blog } from "@plobbo/db/blog/index";
 import { OrganizationDomain } from "@plobbo/db/organization/domain";
 import { patchBlogSchema } from "@plobbo/validator/blog/patch";
 
-export const patchBlogHanlder = factory.createHandlers(
+export const patchBlogHandler = factory.createHandlers(
   enforeAuthMiddleware,
   enforeHasBlogMiddleware,
 
