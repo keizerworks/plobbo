@@ -36,10 +36,7 @@ import { getActiveOrgId } from "~/store/active-org";
 
 export const CreateBlog = () => {
   const navigate = useNavigate();
-  const params = useParams({ from: "/journey/$journey-id" });
-  const journeyId = params["journey-id"];
-  const orgnaizationId = getActiveOrgId();
-  if (!orgnaizationId) return null;
+  const journeyId = useParams({ from: "/journey/$journey-id" })["journey-id"];
 
   const [open, setOpen] = useState(false);
   const form = useForm<CreateBlogInterface>({
@@ -53,31 +50,22 @@ export const CreateBlog = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async (values: CreateBlogInterface) => {
       const formData = new FormData();
-      formData.append("organizationId", values.organizationId);
-      formData.append("journeyId", values.journeyId);
-      formData.append("title", values.title);
-      formData.append("slug", values.slug);
-      if (values.image) {
-        formData.append("image", values.image);
+      for (const [key, value] of Object.entries(values)) {
+        if (value) formData.append(key, value);
       }
-      console.log(formData);
       return createBlog(formData);
     },
 
     onSuccess: async ({ id }) => {
       await navigate({
-        from: "/journey",
         to: "/journey/$journey-id",
         params: { "journey-id": id },
-        search: true,
       });
     },
     onError: console.error,
   });
 
   function onSubmit(values: CreateBlogInterface) {
-    console.log(values);
-    console.log("hello world");
     toast.promise(async () => mutateAsync(values), {
       loading: (
         <div className="flex items-center gap-x-2">
@@ -96,7 +84,7 @@ export const CreateBlog = () => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     form.setValue("organizationId", getActiveOrgId()!);
     form.setValue("journeyId", journeyId);
-  }, [form]);
+  }, [form, journeyId]);
 
   return (
     <Credenza open={open} onOpenChange={setOpen}>
@@ -120,10 +108,7 @@ export const CreateBlog = () => {
 
         <Form {...form}>
           <form
-            onSubmit={(e) => {
-              console.log("Native form submit fired");
-              form.handleSubmit(onSubmit)(e);
-            }}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="no-scrollbar flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 max-md:pt-3 md:px-6"
           >
             <BaseFormField

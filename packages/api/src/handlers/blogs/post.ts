@@ -26,16 +26,16 @@ export const postBlogHandler = factory.createHandlers(
 
     const journey = (
       await db
-        .select({ id: Journey.columns.id })
+        .select(Journey.columns)
         .from(JourneyTable)
         .innerJoin(
           OrganizationTable,
-          eq(OrganizationTable.id, JourneyTable.organizaitonId),
+          eq(JourneyTable.organizaitonId, OrganizationTable.id),
         )
         .where(
           and(
             eq(JourneyTable.id, body.journeyId),
-            eq(OrganizationTable.id, member.organizationId),
+            eq(OrganizationTable.id, body.organizationId),
           ),
         )
     )[0];
