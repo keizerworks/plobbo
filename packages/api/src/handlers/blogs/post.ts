@@ -25,6 +25,7 @@ export const postBlogHandler = factory.createHandlers(
       authorId: member.id,
       title: body.title,
       slug: body.title,
+      journeyId: body.journeyId,
     };
 
     if (body.image) {

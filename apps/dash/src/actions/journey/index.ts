@@ -1,12 +1,18 @@
-import { CreateJourneyInterface } from "@plobbo/validator/journey/create";
-
 import { JourneyTable } from "~/interface/journey";
 import apiClient from "~/lib/axios";
 
 export const getJourney = async (id: string) =>
-  apiClient.get("journey/" + id).then((r) => r.data);
+  apiClient
+    .get<JourneyTable[]>(`journey`, {
+      params: {
+        organizationId: id,
+      },
+    })
+    .then((r) => r.data);
 
-export const createJourney = async (data: CreateJourneyInterface) => {
-  console.log(data);
+export const getJourneyById = async (id: string) =>
+  apiClient.get<JourneyTable>("journey/" + id).then((r) => r.data);
+
+export const createJourney = async (data: FormData) => {
   return apiClient.post<JourneyTable>("journey", data).then((r) => r.data);
 };

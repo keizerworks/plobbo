@@ -49,13 +49,15 @@ export const CreateBlog = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async (values: CreateBlogInterface) => {
       const formData = new FormData();
-      for (const key of Object.keys(values)) {
-        // @ts-expect-error -- Object.keys fails to infer literal key
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        formData.set(key, values[key]);
+      formData.append("organizationId", values.organizationId);
+      formData.append("title", values.title);
+      formData.append("slug", values.slug);
+      if (values.image) {
+        formData.append("image", values.image);
       }
       return createBlog(formData);
     },
+
     onSuccess: async ({ id }) => {
       await navigate({
         from: "/journey",
@@ -92,14 +94,16 @@ export const CreateBlog = () => {
       <CredenzaTrigger
         className={buttonVariants({ size: "default", variant: "rounded" })}
       >
-        Create Journey
+        Create Story
       </CredenzaTrigger>
 
-      <CredenzaContent className="px-0 sm:max-w-[425px]">
+      <CredenzaContent className="px-0 sm:max-w-[425px] ">
         <CredenzaHeader className="max-mb:pb-4 space-y-0 gap-x-0 gap-y-1 px-4 text-left md:px-6">
-          <CredenzaTitle>New Journey</CredenzaTitle>
-          <CredenzaDescription>
-            Enter the details for your new Journy. Click save when you&apos;re
+          <CredenzaTitle className="text-3xl font-semibold tracking-tight">
+            New Story
+          </CredenzaTitle>
+          <CredenzaDescription className="leading-snug">
+            Enter the details for your new story. Click save when you&apos;re
             done.
           </CredenzaDescription>
         </CredenzaHeader>
@@ -132,7 +136,7 @@ export const CreateBlog = () => {
               name="title"
               label="Title"
               render={({ field }) => (
-                <Input placeholder="How to write blog" {...field} />
+                <Input placeholder="a story about" {...field} />
               )}
             />
 
@@ -141,13 +145,13 @@ export const CreateBlog = () => {
               name="slug"
               label="Slug"
               render={({ field }) => (
-                <Input placeholder="how-to-write-a-blog" {...field} />
+                <Input placeholder="a-story-about" {...field} />
               )}
             />
 
             <CredenzaFooter className="-mx-4 mt-4 border-t px-4 pt-2 max-md:pb-2 md:-mx-6 md:mt-6 md:px-6 md:pt-6">
               <Button type="submit" className="w-full">
-                Create Journey
+                Create Story
               </Button>
             </CredenzaFooter>
           </form>

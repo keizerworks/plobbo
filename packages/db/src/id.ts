@@ -5,7 +5,6 @@ export const type = {
   journey: "jrny",
   blog: "blg",
   org: "org",
-  journey: "joruney",
   org_domain: "dns",
   org_member: "mem",
   org_sub: "sub",

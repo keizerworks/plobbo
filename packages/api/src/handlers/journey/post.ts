@@ -20,6 +20,7 @@ export const postJourneyHandler = factory.createHandlers(
     const input: Journey.CreateInput = {
       organizaitonId: body.organizationId,
       title: body.title,
+      description: body.description,
     };
 
     if (body.image) {

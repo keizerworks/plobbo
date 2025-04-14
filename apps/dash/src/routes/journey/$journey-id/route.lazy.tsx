@@ -10,13 +10,13 @@ export const Route = createLazyFileRoute("/journey/$journey-id")({
 });
 
 function RouteComponent() {
-  const journeyId = Route.useLoaderData();
+  const journey = Route.useLoaderData();
   const { profile } = useAuthStore();
   const navigate = useNavigate();
   const handleSearch = (name: string) => {
     navigate({
       to: "/journey/$journey-id",
-      params: { "journey-id": journeyId },
+      params: { "journey-id": journey.id },
       search: { name: name.length > 0 ? name : undefined },
     });
   };
@@ -26,9 +26,13 @@ function RouteComponent() {
         <header className="flex items-center max-w-[1536px] mx-auto p-8 gap-x-2 justify-between w-full">
           <div>
             <h1 className="font-semibold text-4xl tracking-tighter ">
-              {journeyId}
+              {journey.title}
             </h1>
-            <small className="text-sm">A story to remember</small>
+            <small className="text-sm">
+              {journey.description
+                ? journey.description
+                : "A story to remember"}
+            </small>
           </div>
           <div className="flex items-center gap-2">
             <CreateBlog />
@@ -49,7 +53,6 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      {journeyId}
     </main>
   );
 }
