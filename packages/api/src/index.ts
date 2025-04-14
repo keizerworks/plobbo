@@ -16,6 +16,7 @@ import { getOrgDomainHandler } from "./handlers/domain/get";
 import { requestVerificationOrgDomainHandler } from "./handlers/domain/request-verification";
 import { verifyOrgDomainHandler } from "./handlers/domain/verify";
 import { verifyCnameOrgDomainHandler } from "./handlers/domain/verify-cname";
+import { getJourneyHandler } from "./handlers/journey/get";
 import { listJourneyHandler } from "./handlers/journey/list";
 import { patchJourneyHandler } from "./handlers/journey/patch";
 import { postJourneyHandler } from "./handlers/journey/post";
@@ -56,7 +57,8 @@ const app = new Hono()
   .get("/journey", ...listJourneyHandler)
   .post("/journey", ...postJourneyHandler)
 
-  .patch("/journey/:id", ...patchJourneyHandler)
+  .get("/journey/:journeyId", ...getJourneyHandler)
+  .patch("/journey/:journeyId", ...patchJourneyHandler)
 
   .get("/organizations", ...listOrganizationHandler)
   .post("/organizations", ...postOrganizationHandler)
