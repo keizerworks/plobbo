@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,6 +36,10 @@ import { getActiveOrgId } from "~/store/active-org";
 
 export const CreateBlog = () => {
   const navigate = useNavigate();
+  const params = useParams({ from: "/journey/$journey-id" });
+  const journeyId = params["journey-id"];
+  const orgnaizationId = getActiveOrgId();
+  if (!orgnaizationId) return null;
 
   const [open, setOpen] = useState(false);
   const form = useForm<CreateBlogInterface>({
@@ -50,11 +54,13 @@ export const CreateBlog = () => {
     mutationFn: async (values: CreateBlogInterface) => {
       const formData = new FormData();
       formData.append("organizationId", values.organizationId);
+      formData.append("journeyId", values.journeyId);
       formData.append("title", values.title);
       formData.append("slug", values.slug);
       if (values.image) {
         formData.append("image", values.image);
       }
+      console.log(formData);
       return createBlog(formData);
     },
 
@@ -70,6 +76,8 @@ export const CreateBlog = () => {
   });
 
   function onSubmit(values: CreateBlogInterface) {
+    console.log(values);
+    console.log("hello world");
     toast.promise(async () => mutateAsync(values), {
       loading: (
         <div className="flex items-center gap-x-2">
@@ -87,6 +95,7 @@ export const CreateBlog = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     form.setValue("organizationId", getActiveOrgId()!);
+    form.setValue("journeyId", journeyId);
   }, [form]);
 
   return (
@@ -111,7 +120,10 @@ export const CreateBlog = () => {
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={(e) => {
+              console.log("Native form submit fired");
+              form.handleSubmit(onSubmit)(e);
+            }}
             className="no-scrollbar flex max-h-[70vh] flex-col gap-y-2 overflow-y-scroll px-4 max-md:pt-3 md:px-6"
           >
             <BaseFormField
