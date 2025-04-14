@@ -1,11 +1,15 @@
 import { FormEvent, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import {
   createLazyFileRoute,
   useLoaderData,
   useNavigate,
 } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 
+import { createJourney } from "~/actions/journey";
 import {
   Dialog,
   DialogContent,
@@ -93,7 +97,7 @@ function RouteComponent() {
               delay: 0.5,
             }}
           >
-            <CreateJourney />
+            {activeOrgId && <CreateJourney orgId={activeOrgId} />}
           </motion.div>
         </div>
       </section>
@@ -161,15 +165,31 @@ const BackgroundGradient = () => {
   );
 };
 
-const CreateJourney = () => {
+const CreateJourney = ({ orgId }: { orgId: string }) => {
   const [journeyName, setJourneyName] = useState<string>("");
   const navigate = useNavigate();
+  const { isPending, mutate } = useMutation({
+    mutationFn: createJourney,
+    onSuccess: (data) => {
+      toast.success("created jounrey successfully!!");
+      navigate({
+        to: "/journey/$journey-id",
+        params: { "journey-id": journeyName },
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      console.log(orgId);
+      toast.error("Failed to create journey");
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (journeyName.trim().length === 0) return;
-    navigate({
-      to: "/journey/$journey-id",
-      params: { "journey-id": journeyName },
+    mutate({
+      organizationId: orgId,
+      title: journeyName,
     });
   };
 
@@ -197,9 +217,16 @@ const CreateJourney = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" className="rounded-full">
-              Create
-            </Button>
+            {isPending ? (
+              <Button type="submit" className="rounded-full">
+                <Loader2 className="animate-spin" />
+                Creating...
+              </Button>
+            ) : (
+              <Button type="submit" className="rounded-full">
+                Create
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>
