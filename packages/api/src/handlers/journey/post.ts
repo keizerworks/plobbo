@@ -1,7 +1,9 @@
 import { zValidator } from "@hono/zod-validator";
 import { HTTPException } from "hono/http-exception";
+import { ulid } from "ulid";
 
 import { factory } from "@plobbo/api/factory";
+import { uploadFile } from "@plobbo/api/lib/bucket";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
 import { enforeHasOrgMiddleware } from "@plobbo/api/middleware/org-protected";
 import { Journey } from "@plobbo/db/journey/index";
@@ -19,6 +21,12 @@ export const postJourneyHandler = factory.createHandlers(
       organizaitonId: body.organizationId,
       title: body.title,
     };
+
+    if (body.image) {
+      const filename = "journey/" + encodeURI(ulid() + "-" + body.title);
+      input.image = process.env.NEXT_PUBLIC_S3_DOMAIN + "/" + filename;
+      await uploadFile(filename, body.image);
+    }
 
     const journey = await Journey.create(input);
     if (!journey)
