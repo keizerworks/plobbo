@@ -6,6 +6,7 @@ import { OrganizationTable } from "../organization/organization.sql";
 export const JourneyTable = pgTable("journey", (pg) => ({
   ...baseTable("journey"),
   title: pg.varchar({ length: 255 }),
+  description: pg.text(),
   image: pg.varchar({ length: 255 }),
   organizaitonId: pg
     .varchar({ length: 34 })
