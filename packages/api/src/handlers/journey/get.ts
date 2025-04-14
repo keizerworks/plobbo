@@ -10,7 +10,7 @@ export const getJourneyHandler = factory.createHandlers(
   async (c) => {
     const journey = await Journey.findById(c.req.valid("param").journeyId);
     if (!journey)
-      throw new HTTPException(400, { message: "Failed to create journey" });
+      throw new HTTPException(404, { message: "Journey not found" });
     return c.json(journey);
   },
 );
