@@ -12,11 +12,11 @@ export const patchJourneyHandler = factory.createHandlers(
   enforeAuthMiddleware,
   enforeHasJourneyMiddleware,
 
-  zValidator("json", patchJourneySchema),
+  zValidator("form", patchJourneySchema),
   zValidator("param", z.object({ journeyId: z.string() })),
 
   async (c) => {
-    const body = c.req.valid("json");
+    const body = c.req.valid("form");
     const journey = c.var.journey;
 
     const updatedJourney = await Journey.update({ ...journey, ...body });
