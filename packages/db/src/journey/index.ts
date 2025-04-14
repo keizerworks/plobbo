@@ -1,17 +1,20 @@
-import { eq, InferSelectModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { eq, getTableColumns } from "drizzle-orm";
 
-import { db } from "..";
+import { db } from "../index";
 import { JourneyTable } from "./journey.sql";
 
 export namespace Journey {
   export type Model = InferSelectModel<typeof JourneyTable>;
-  export type CreateInput = InferSelectModel<typeof JourneyTable>;
+  export type CreateInput = InferInsertModel<typeof JourneyTable>;
   export type UpdateInput = Partial<CreateInput> & {
     id: Model["id"];
   };
 
-  export async function create(value: CreateInput) {
-    return (await db.insert(JourneyTable).values(value).returning())[0];
+  export const columns = getTableColumns(JourneyTable);
+
+  export async function create(values: CreateInput) {
+    return (await db.insert(JourneyTable).values(values).returning())[0];
   }
 
   export async function update({ id, ...input }: UpdateInput) {
@@ -24,12 +27,26 @@ export namespace Journey {
   }
 
   export async function findById(id: string): Promise<Model | undefined> {
-    return (
-      await db.select().from(JourneyTable).where(eq(JourneyTable.id, id))
-    )[0];
+    const [journey] = await db
+      .select()
+      .from(JourneyTable)
+      .where(eq(JourneyTable.id, id))
+      .limit(1);
+
+    return journey;
   }
 
-  export async function remove(id: string): Promise<void> {
-    await db.delete(JourneyTable).where(eq(JourneyTable.id, id));
+  export async function findAll(filters: {
+    organizationId?: string;
+  }): Promise<Model[]> {
+    let query = db.select().from(JourneyTable).$dynamic();
+
+    if (filters.organizationId) {
+      query = query.where(
+        eq(JourneyTable.organizaitonId, filters.organizationId),
+      );
+    }
+
+    return query;
   }
 }

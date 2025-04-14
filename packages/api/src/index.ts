@@ -16,6 +16,7 @@ import { getOrgDomainHandler } from "./handlers/domain/get";
 import { requestVerificationOrgDomainHandler } from "./handlers/domain/request-verification";
 import { verifyOrgDomainHandler } from "./handlers/domain/verify";
 import { verifyCnameOrgDomainHandler } from "./handlers/domain/verify-cname";
+import { listJourneyHanlder } from "./handlers/journey/list";
 import { countOrganizationHandler } from "./handlers/organizations/count";
 import { getOrganizationHandler } from "./handlers/organizations/get";
 import { listOrganizationHanlder } from "./handlers/organizations/list";
@@ -49,6 +50,8 @@ const app = new Hono()
   .put("/blogs/:id/metadata", ...putBlogMetadataHandler)
   .get("/blogs/:id/metadata", ...getBlogMetadataHandler)
   .post("/blogs/:id/publish", ...publishBlogHandler)
+
+  .get("/journey", ...listJourneyHanlder)
 
   .get("/organizations", ...listOrganizationHanlder)
   .post("/organizations", ...postOrganizationHanlder)

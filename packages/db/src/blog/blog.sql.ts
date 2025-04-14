@@ -20,6 +20,7 @@ export const BlogStatusEnum = pgEnum("blog_status", ["DRAFT", "PUBLISHED"]);
 
 export const BlogTable = pgTable("blog", {
   ...baseTable("blog"),
+
   organizationId: varchar({ length: 34 })
     .references(() => OrganizationTable.id, {
       onDelete: "cascade",
@@ -30,9 +31,10 @@ export const BlogTable = pgTable("blog", {
       onDelete: "cascade",
     })
     .notNull(),
-  // journeyTableId: varchar({ length: 34 })
-  //   .references(() => JourneyTable.id, { onDelete: "cascade" })
-  //   .notNull(),
+  journeyId: varchar({ length: 34 })
+    .references(() => JourneyTable.id)
+    .notNull(),
+
   title: text().notNull(),
   slug: varchar({ length: 255 }).notNull(),
   image: varchar({ length: 255 }),

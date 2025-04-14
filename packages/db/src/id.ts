@@ -2,6 +2,7 @@ import { ulid } from "ulid";
 
 export const type = {
   user: "usr",
+  journey: "jrny",
   blog: "blg",
   org: "org",
   journey: "joruney",

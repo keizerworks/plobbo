@@ -1,15 +1,13 @@
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable } from "drizzle-orm/pg-core";
 
 import { baseTable } from "../base-table";
-import { OrganizationMemberTable } from "../organization/organization.sql";
+import { OrganizationTable } from "../organization/organization.sql";
 
-export const JourneyTable = pgTable("journey", {
+export const JourneyTable = pgTable("journey", (pg) => ({
   ...baseTable("journey"),
-  title: text().notNull(),
-  description: text().notNull(),
-  authorId: varchar({ length: 34 })
-    .references(() => OrganizationMemberTable.id, {
-      onDelete: "cascade",
-    })
+  title: pg.varchar({ length: 255 }),
+  organizaitonId: pg
+    .varchar({ length: 34 })
+    .references(() => OrganizationTable.id)
     .notNull(),
-});
+}));

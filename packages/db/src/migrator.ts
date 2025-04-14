@@ -12,7 +12,7 @@ export async function handler() {
     database: Resource.pg.database,
   });
 
-  const db = drizzle(pool);
+  const db = drizzle(pool, { casing: "snake_case" });
   await migrate(db, { migrationsFolder: "./migrations" });
 
   return {

@@ -109,6 +109,10 @@ export namespace Blog {
       query = query.where(eq(BlogTable.status, filter.status));
     }
 
+    if (filter?.journeyId) {
+      query = query.where(eq(BlogTable.journeyId, filter.journeyId));
+    }
+
     if (filter?.userId) {
       query = query.where(eq(OrganizationMemberTable.userId, filter.userId));
     }

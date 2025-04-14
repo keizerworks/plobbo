@@ -10,6 +10,7 @@ export const listBlogFitlerSchema = z.object({
   userId: z.string().optional(),
   search: z.string().optional(),
   organizationId: z.string().optional(),
+  journeyId: z.string().optional(),
 });
 
 export const listBlogSortSchema = z.object({
