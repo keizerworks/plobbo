@@ -11,10 +11,10 @@ export const postJourneyHandler = factory.createHandlers(
   enforeAuthMiddleware,
   enforeHasOrgMiddleware("organizationId"),
 
-  zValidator("json", createJourneySchema),
+  zValidator("form", createJourneySchema),
 
   async (c) => {
-    const body = c.req.valid("json");
+    const body = c.req.valid("form");
     const input: Journey.CreateInput = {
       organizaitonId: body.organizationId,
       title: body.title,
