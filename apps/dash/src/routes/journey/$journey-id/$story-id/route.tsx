@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Loader } from "lucide-react";
-import { z } from "zod";
 
-export const Route = createFileRoute("/journey/$journey-id")({
-  validateSearch: z.object({ name: z.string().optional() }),
+import { getBlog } from "~/actions/blog";
+
+export const Route = createFileRoute("/journey/$journey-id/$story-id")({
+  validateSearch: () => ({}),
   loader: async ({ params }) => {
-    console.log(params);
-    return params["journey-id"];
+    return getBlog(params["journey-id"]);
   },
   pendingComponent: () => (
     <div className="flex size-full items-center justify-center">

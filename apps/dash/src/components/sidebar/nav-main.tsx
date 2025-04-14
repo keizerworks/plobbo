@@ -67,6 +67,7 @@ export function NavMain() {
                 asChild
                 isActive={item.isActive}
                 tooltip={item.title}
+                className="font-semibold tracking-tight hover:text-black"
               >
                 <Link to={item.url}>
                   <item.icon />

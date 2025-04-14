@@ -9,7 +9,6 @@ import PublishBlog from "../blogs/publish";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -17,7 +16,7 @@ import {
 import { SidebarTrigger } from "./sidebar";
 
 export default function DashboardHeader() {
-  const blogId = useParams({ strict: false, select: (s) => s["journey-id"] });
+  const storyId = useParams({ strict: false, select: (s) => s["story-id"] });
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -69,8 +68,12 @@ export default function DashboardHeader() {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <PublishBlog />
-        {blogId ? <UpdateBlogMetadataForm /> : null}
+        {storyId ? (
+          <>
+            <UpdateBlogMetadataForm />
+            <PublishBlog />
+          </>
+        ) : null}
       </div>
     </header>
   );

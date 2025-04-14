@@ -40,7 +40,7 @@ import { Textarea } from "~/components/ui/textarea";
 
 export default function UpdateBlogMetadataForm() {
   const blog: Blog | undefined = useLoaderData({
-    from: "/journey/$journey-id",
+    from: "/journey/$journey-id/$story-id",
   });
 
   const [open, setOpen] = useState(false);
@@ -132,7 +132,7 @@ export default function UpdateBlogMetadataForm() {
                     <ImageUpload
                       edit
                       aspectVideo
-                      defaultSrc={blog.image ?? ""}
+                      defaultSrc={blog?.image ?? ""}
                       onChange={(file) => field.onChange(file)}
                     />
                   </FormControl>

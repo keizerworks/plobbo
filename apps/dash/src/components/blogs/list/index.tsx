@@ -11,12 +11,14 @@ import type {
 } from "~/interface/data-table";
 import type { OrganizationMember } from "~/interface/organization";
 import { DataTable } from "~/components/data-table";
+import { DataTableToolbar } from "~/components/data-table/tool-bar";
 import { Input } from "~/components/ui/input";
 import { useDataTable } from "~/hooks/use-data-table";
 import { toSentenceCase } from "~/lib/utils";
 
 import { DeleteBlogsDialog } from "../delete-blogs-dialog";
 import { getColumns, getStatusIcon } from "./columns";
+import { BlogsTableToolbarActions } from "./tool-bar-actions";
 
 export interface BlogList extends Blog {
   author: OrganizationMember;
@@ -83,6 +85,7 @@ export const BlogsTable = () => {
         ]);
       }
     } else if (titleFilterIndex >= 0) {
+      // If no search query but we have a title filter, remove it
       const updatedFilters = [...columnFilters];
       updatedFilters.splice(titleFilterIndex, 1);
       table.setColumnFilters(updatedFilters);
@@ -106,10 +109,11 @@ export const BlogsTable = () => {
           </div>
         </div>
       </header>
-      <DataTable
-        table={table}
-        className="max-w-[1536px] mx-auto w-full p-8"
-      ></DataTable>
+      <DataTable table={table} className="max-w-[1536px] mx-auto w-full p-8">
+        <DataTableToolbar table={table} filterFields={filterFields}>
+          <BlogsTableToolbarActions table={table} />
+        </DataTableToolbar>
+      </DataTable>
       <DeleteBlogsDialog
         open={rowAction?.type === "delete"}
         onOpenChange={() => setRowAction(null)}

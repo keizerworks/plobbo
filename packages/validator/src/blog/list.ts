@@ -23,10 +23,10 @@ export const listBlogSortSchema = z.object({
 });
 
 export const listBlogSortFilterSchema = z.object({
-  filter: listBlogFitlerSchema.optional(),
-  sort: listBlogSortSchema.optional(),
-  page: z.number().optional(),
-  perPage: z.number().optional(),
+  // filter: listBlogFitlerSchema.optional(),
+  // sort: listBlogSortSchema.optional(),
+  // page: z.number().optional(),
+  // perPage: z.number().optional(),
 });
 
 export type ListBlogSortFilterInterface = z.infer<
