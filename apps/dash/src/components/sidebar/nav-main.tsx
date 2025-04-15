@@ -35,8 +35,8 @@ export function NavMain() {
           isActive: pathname === "/",
         },
         {
-          title: "Blogs",
-          url: "/blogs",
+          title: "Journey",
+          url: "/journey",
           icon: Newspaper,
           isActive: pathname.startsWith("/blogs"),
         },
@@ -67,6 +67,7 @@ export function NavMain() {
                 asChild
                 isActive={item.isActive}
                 tooltip={item.title}
+                className="font-semibold tracking-tight hover:text-black"
               >
                 <Link to={item.url}>
                   <item.icon />

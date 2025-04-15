@@ -9,7 +9,7 @@ import { Organization } from "@plobbo/db/organization/index";
 import { OrganizationMember } from "@plobbo/db/organization/member";
 import { createOrganizationSchema } from "@plobbo/validator/organization/create";
 
-export const postOrganizationHanlder = factory.createHandlers(
+export const postOrganizationHandler = factory.createHandlers(
   enforeAuthMiddleware,
   zValidator("form", createOrganizationSchema),
 

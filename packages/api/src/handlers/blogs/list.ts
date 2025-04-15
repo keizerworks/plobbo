@@ -8,7 +8,7 @@ import {
   listBlogSortFilterSchema,
 } from "@plobbo/validator/blog/list";
 
-export const listBlogsHanlder = factory.createHandlers(
+export const listBlogsHandler = factory.createHandlers(
   validator("query", (value, c) => {
     const parsed = listBlogSortFilterSchema
       .extend({

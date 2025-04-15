@@ -1,0 +1,1 @@
+ALTER TABLE "blog" ALTER COLUMN "journey_id" SET NOT NULL;

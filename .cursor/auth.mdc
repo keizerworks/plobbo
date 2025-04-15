@@ -1,0 +1,148 @@
+---
+description: Authentication Module (using OpenAuth.js)
+globs: packages/auth/src/**/*.ts
+---
+
+## Architecture Overview
+
+This module provides authentication services using the `@openauthjs/openauth` library. It acts as an **authentication issuer**, handling user login primarily via an **email-based one-time code** flow.
+
+Key aspects of the architecture:
+
+-   **OpenAuth.js Framework:** Leverages `@openauthjs/openauth` for core authentication logic, flows, and potentially session/token management.
+-   **Issuer Model:** Deployed as a central authentication service (likely an AWS Lambda function via Hono) that other applications (clients) interact with.
+-   **Email Code Provider:** Uses `CodeProvider` and `CodeUI` from OpenAuth.js for handling the email code login flow.
+-   **Database Integration:** Interacts with the user database (`@plobbo/db/user`) during the success callback to find or create users.
+-   **Mailer Integration:** Uses a mailer service (`@plobbo/core/mailer`) to send login codes to users.
+-   **Subject-Based:** Defines data structures ("subjects") using Valibot (`subjects.ts`) that represent the authenticated entity (e.g., user details) included in the final authentication context/token.
+-   **Client Configuration:** Provides a client setup (`client.ts`) for applications that will consume this authentication service.
+
+## Core Components
+
+The module consists of several key files:
+
+### `index.ts` (Authentication Issuer)
+
+This file defines the main authentication service endpoint using `issuer` from OpenAuth.js.
+
+-   Configures the authentication providers (currently `CodeProvider` for email codes).
+-   Integrates with the mailer (`sendMail`) to dispatch login codes.
+-   Defines the `success` callback logic:
+    -   Validates claims (ensures email is present).
+    -   Finds the user in the database by email or creates a new user if one doesn't exist.
+    -   Creates an authenticated "subject" containing user data.
+-   Uses `hono/aws-lambda` to handle requests, indicating deployment as a serverless function.
+
+```typescript
+// Example structure from index.ts
+import { issuer } from "@openauthjs/openauth";
+import { CodeProvider } from "@openauthjs/openauth/provider/code";
+import { CodeUI } from "@openauthjs/openauth/ui/code";
+// ... other imports ...
+import { User } from "@plobbo/db/user/index";
+import { subjects } from "./subjects";
+import { sendMail } from "@plobbo/core/mailer/index";
+
+const app = issuer({
+  // ... theme, allow config ...
+  subjects,
+  providers: {
+    code: CodeProvider(
+      CodeUI({
+        sendCode: async ({ email }, code) => {
+          if (!email) throw new Error("Email is required");
+          // Logic to send email using sendMail
+          await sendMail({ /* ... mail details ... */ });
+        },
+      }),
+    ),
+  },
+  success: async (ctx, value) => {
+    if (!("email" in value.claims)) throw new Error("email missing in claims");
+    let user = await User.findByEmail(value.claims.email);
+    if (!user) user = await User.create({ email: value.claims.email });
+    if (!user) throw new Error("Failed to create user");
+    return ctx.subject("user", user);
+  },
+});
+
+export const handler = handle(app);
+```
+
+### `client.ts` (Authentication Client Setup)
+
+This file configures how client applications should connect to the authentication issuer.
+
+-   Uses `createClient` from `@openauthjs/openauth/client`.
+-   Specifies the `clientID` (e.g., "api") and the `issuer` URL (dynamically retrieved, likely via SST resources).
+-   Client applications will use this configuration (or a similar one) along with OpenAuth client-side libraries to initiate login flows and validate tokens/sessions provided by the issuer.
+
+```typescript
+// From client.ts
+import { createClient } from "@openauthjs/openauth/client";
+import { Resource } from "sst/resource";
+
+export const client = createClient({
+  clientID: "api",
+  issuer: Resource.auth.url, // URL of the deployed issuer (index.ts)
+});
+```
+
+### `subjects.ts` (Subject Definition)
+
+Defines the structure of the data associated with a successful authentication using `createSubjects` and `valibot`.
+
+-   Currently defines a `user` subject containing fields like `id`, `name`, `email`, and `verified`.
+-   This structure dictates the user information available after a successful login.
+
+```typescript
+// From subjects.ts
+import { createSubjects } from "@openauthjs/openauth/subject";
+import type { InferOutput } from "valibot";
+import { boolean, nullable, object, string } from "valibot";
+
+export const subjects = createSubjects({
+  user: object({
+    id: string(),
+    name: nullable(string()),
+    email: string(),
+    verified: boolean(),
+  }),
+});
+
+export type Subjects = InferOutput<(typeof subjects)["user"]>;
+```
+
+## Authentication Flow (Email Code)
+
+1.  A client application, using the OpenAuth client configuration, directs the user to the authentication issuer's endpoint.
+2.  The user interacts with the `CodeUI`, likely entering their email address.
+3.  The issuer's `sendCode` function (defined in `index.ts`) is triggered, sending a one-time code via the configured mailer.
+4.  The user receives the code and enters it into the `CodeUI`.
+5.  OpenAuth validates the code.
+6.  If valid, the `success` callback in `index.ts` is executed:
+    * The user is looked up or created in the database.
+    * An authenticated session/token is generated by OpenAuth, containing the `user` subject data.
+7.  The client application receives the session/token, verifying it using the OpenAuth client library. The authenticated user data (from the `user` subject) is now available to the client.
+
+## Integration with Applications (Client-Side)
+
+Client applications (APIs, frontends) should use an OpenAuth-compatible client library configured as shown in `client.ts`.
+
+-   Initiate the login flow (e.g., redirecting to the issuer or using specific client-side functions).
+-   Handle the callback from the issuer after successful login.
+-   Validate the received token/session using the client library and the issuer's URL.
+-   Extract user information from the validated token/session (based on the `subjects` definition).
+-   Protect routes/endpoints by checking for a valid token/session.
+
+## Security Considerations
+
+While OpenAuth.js handles many core security aspects, consider the following:
+
+1.  **Issuer Endpoint Security:** Ensure the Lambda function endpoint (`Resource.auth.url`) is properly secured (e.g., HTTPS).
+2.  **Mailer Security:** Protect the mailer service and credentials used to send codes. Implement rate limiting on code requests if not handled by OpenAuth.
+3.  **Database Security:** Secure database credentials and interactions.
+4.  **Client Secrets:** If using flows requiring client secrets, manage them securely.
+5.  **Standard Practices:** Follow standard security practices for OAuth 2.0 / OpenID Connect if applicable (e.g., state parameter for CSRF protection in appropriate flows).
+6.  **Dependencies:** Keep OpenAuth.js and other dependencies updated to patch vulnerabilities.
+7.  **Auditing:** Implement logging around key events (code sending, success callback execution, errors) for monitoring.

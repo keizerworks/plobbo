@@ -81,20 +81,6 @@ export default function Page() {
     },
   };
 
-  const statsVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        delay: 1.7,
-      },
-    },
-  };
-
   const imageVariants = {
     hidden: { y: 40, opacity: 0 },
     visible: {
@@ -112,7 +98,7 @@ export default function Page() {
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col items-center justify-start px-4 pb-8 pt-6 text-center transition-all sm:px-6 sm:pt-24 md:pt-32 lg:pt-16">
       <motion.h1
-        className="hont-bold mt-4 flex flex-col gap-1 text-3xl capitalize leading-tight tracking-tighter sm:mt-6 sm:text-5xl sm:leading-[1.1] md:text-6xl md:leading-[1]"
+        className="font-bold mt-4 flex flex-col gap-1 text-3xl capitalize leading-tight tracking-tighter sm:mt-6 sm:text-5xl sm:leading-[1.1] md:text-6xl md:leading-[1]"
         initial="hidden"
         animate="visible"
         variants={containerVariants}

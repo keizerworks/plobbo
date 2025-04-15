@@ -15,12 +15,13 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as NoOrganizationImport } from './routes/no-organization'
 import { Route as ConfigureImport } from './routes/_configure'
-import { Route as BlogsIndexImport } from './routes/blogs/index'
+import { Route as JourneyIndexImport } from './routes/journey/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
-import { Route as BlogsBlogIdRouteImport } from './routes/blogs/$blog-id/route'
+import { Route as JourneyJourneyIdRouteImport } from './routes/journey/$journey-id/route'
 import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
 import { Route as CheckoutStatusIndexImport } from './routes/checkout/status/index'
 import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
+import { Route as JourneyJourneyIdStoryIdRouteImport } from './routes/journey/$journey-id/$story-id/route'
 import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
 import { Route as ConfigureConfigureSettingsSettingsSubscriptionIndexImport } from './routes/_configure/configure/_settings/settings/subscription/index'
 import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
@@ -67,11 +68,11 @@ const UsersIndexLazyRoute = UsersIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
 
-const BlogsIndexRoute = BlogsIndexImport.update({
-  id: '/blogs/',
-  path: '/blogs/',
+const JourneyIndexRoute = JourneyIndexImport.update({
+  id: '/journey/',
+  path: '/journey/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/blogs/index.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/journey/index.lazy').then((d) => d.Route))
 
 const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
   id: '/users/$user-id',
@@ -79,12 +80,12 @@ const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const BlogsBlogIdRouteRoute = BlogsBlogIdRouteImport.update({
-  id: '/blogs/$blog-id',
-  path: '/blogs/$blog-id',
+const JourneyJourneyIdRouteRoute = JourneyJourneyIdRouteImport.update({
+  id: '/journey/$journey-id',
+  path: '/journey/$journey-id',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./routes/blogs/$blog-id/route.lazy').then((d) => d.Route),
+  import('./routes/journey/$journey-id/route.lazy').then((d) => d.Route),
 )
 
 const ConfigureConfigureIndexLazyRoute =
@@ -114,6 +115,17 @@ const ConfigureConfigureSettingsRoute = ConfigureConfigureSettingsImport.update(
     getParentRoute: () => ConfigureConfigureRoute,
   } as any,
 )
+
+const JourneyJourneyIdStoryIdRouteRoute =
+  JourneyJourneyIdStoryIdRouteImport.update({
+    id: '/$story-id',
+    path: '/$story-id',
+    getParentRoute: () => JourneyJourneyIdRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/journey/$journey-id/$story-id/route.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const ConfigureConfigureSettingsSettingsIndexRoute =
   ConfigureConfigureSettingsSettingsIndexImport.update({
@@ -184,11 +196,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoOrganizationImport
       parentRoute: typeof rootRoute
     }
-    '/blogs/$blog-id': {
-      id: '/blogs/$blog-id'
-      path: '/blogs/$blog-id'
-      fullPath: '/blogs/$blog-id'
-      preLoaderRoute: typeof BlogsBlogIdRouteImport
+    '/journey/$journey-id': {
+      id: '/journey/$journey-id'
+      path: '/journey/$journey-id'
+      fullPath: '/journey/$journey-id'
+      preLoaderRoute: typeof JourneyJourneyIdRouteImport
       parentRoute: typeof rootRoute
     }
     '/users/$user-id': {
@@ -198,11 +210,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdRouteImport
       parentRoute: typeof rootRoute
     }
-    '/blogs/': {
-      id: '/blogs/'
-      path: '/blogs'
-      fullPath: '/blogs'
-      preLoaderRoute: typeof BlogsIndexImport
+    '/journey/': {
+      id: '/journey/'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyIndexImport
       parentRoute: typeof rootRoute
     }
     '/users/': {
@@ -211,6 +223,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/users'
       preLoaderRoute: typeof UsersIndexLazyImport
       parentRoute: typeof rootRoute
+    }
+    '/journey/$journey-id/$story-id': {
+      id: '/journey/$journey-id/$story-id'
+      path: '/$story-id'
+      fullPath: '/journey/$journey-id/$story-id'
+      preLoaderRoute: typeof JourneyJourneyIdStoryIdRouteImport
+      parentRoute: typeof JourneyJourneyIdRouteImport
     }
     '/_configure/configure': {
       id: '/_configure/configure'
@@ -329,14 +348,28 @@ const ConfigureRouteWithChildren = ConfigureRoute._addFileChildren(
   ConfigureRouteChildren,
 )
 
+interface JourneyJourneyIdRouteRouteChildren {
+  JourneyJourneyIdStoryIdRouteRoute: typeof JourneyJourneyIdStoryIdRouteRoute
+}
+
+const JourneyJourneyIdRouteRouteChildren: JourneyJourneyIdRouteRouteChildren = {
+  JourneyJourneyIdStoryIdRouteRoute: JourneyJourneyIdStoryIdRouteRoute,
+}
+
+const JourneyJourneyIdRouteRouteWithChildren =
+  JourneyJourneyIdRouteRoute._addFileChildren(
+    JourneyJourneyIdRouteRouteChildren,
+  )
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs': typeof BlogsIndexRoute
+  '/journey': typeof JourneyIndexRoute
   '/users': typeof UsersIndexLazyRoute
+  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
   '/checkout/status': typeof CheckoutStatusIndexRoute
   '/subscribe/pro': typeof SubscribeProIndexRoute
@@ -351,10 +384,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs': typeof BlogsIndexRoute
+  '/journey': typeof JourneyIndexRoute
   '/users': typeof UsersIndexLazyRoute
+  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/configure': typeof ConfigureConfigureIndexLazyRoute
   '/checkout/status': typeof CheckoutStatusIndexRoute
   '/subscribe/pro': typeof SubscribeProIndexRoute
@@ -369,10 +403,11 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/_configure': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/blogs/$blog-id': typeof BlogsBlogIdRouteRoute
+  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
-  '/blogs/': typeof BlogsIndexRoute
+  '/journey/': typeof JourneyIndexRoute
   '/users/': typeof UsersIndexLazyRoute
+  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
   '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
   '/checkout/status/': typeof CheckoutStatusIndexRoute
@@ -390,10 +425,11 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
-    | '/blogs/$blog-id'
+    | '/journey/$journey-id'
     | '/users/$user-id'
-    | '/blogs'
+    | '/journey'
     | '/users'
+    | '/journey/$journey-id/$story-id'
     | '/configure'
     | '/checkout/status'
     | '/subscribe/pro'
@@ -407,10 +443,11 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
-    | '/blogs/$blog-id'
+    | '/journey/$journey-id'
     | '/users/$user-id'
-    | '/blogs'
+    | '/journey'
     | '/users'
+    | '/journey/$journey-id/$story-id'
     | '/configure'
     | '/checkout/status'
     | '/subscribe/pro'
@@ -423,10 +460,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_configure'
     | '/no-organization'
-    | '/blogs/$blog-id'
+    | '/journey/$journey-id'
     | '/users/$user-id'
-    | '/blogs/'
+    | '/journey/'
     | '/users/'
+    | '/journey/$journey-id/$story-id'
     | '/_configure/configure'
     | '/_configure/configure/_settings'
     | '/checkout/status/'
@@ -443,9 +481,9 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ConfigureRoute: typeof ConfigureRouteWithChildren
   NoOrganizationRoute: typeof NoOrganizationRoute
-  BlogsBlogIdRouteRoute: typeof BlogsBlogIdRouteRoute
+  JourneyJourneyIdRouteRoute: typeof JourneyJourneyIdRouteRouteWithChildren
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
-  BlogsIndexRoute: typeof BlogsIndexRoute
+  JourneyIndexRoute: typeof JourneyIndexRoute
   UsersIndexLazyRoute: typeof UsersIndexLazyRoute
   CheckoutStatusIndexRoute: typeof CheckoutStatusIndexRoute
   SubscribeProIndexRoute: typeof SubscribeProIndexRoute
@@ -455,9 +493,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ConfigureRoute: ConfigureRouteWithChildren,
   NoOrganizationRoute: NoOrganizationRoute,
-  BlogsBlogIdRouteRoute: BlogsBlogIdRouteRoute,
+  JourneyJourneyIdRouteRoute: JourneyJourneyIdRouteRouteWithChildren,
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
-  BlogsIndexRoute: BlogsIndexRoute,
+  JourneyIndexRoute: JourneyIndexRoute,
   UsersIndexLazyRoute: UsersIndexLazyRoute,
   CheckoutStatusIndexRoute: CheckoutStatusIndexRoute,
   SubscribeProIndexRoute: SubscribeProIndexRoute,
@@ -476,9 +514,9 @@ export const routeTree = rootRoute
         "/",
         "/_configure",
         "/no-organization",
-        "/blogs/$blog-id",
+        "/journey/$journey-id",
         "/users/$user-id",
-        "/blogs/",
+        "/journey/",
         "/users/",
         "/checkout/status/",
         "/subscribe/pro/"
@@ -496,17 +534,24 @@ export const routeTree = rootRoute
     "/no-organization": {
       "filePath": "no-organization.tsx"
     },
-    "/blogs/$blog-id": {
-      "filePath": "blogs/$blog-id/route.tsx"
+    "/journey/$journey-id": {
+      "filePath": "journey/$journey-id/route.tsx",
+      "children": [
+        "/journey/$journey-id/$story-id"
+      ]
     },
     "/users/$user-id": {
       "filePath": "users/$user-id/route.tsx"
     },
-    "/blogs/": {
-      "filePath": "blogs/index.tsx"
+    "/journey/": {
+      "filePath": "journey/index.tsx"
     },
     "/users/": {
       "filePath": "users/index.lazy.tsx"
+    },
+    "/journey/$journey-id/$story-id": {
+      "filePath": "journey/$journey-id/$story-id/route.tsx",
+      "parent": "/journey/$journey-id"
     },
     "/_configure/configure": {
       "filePath": "_configure/configure",

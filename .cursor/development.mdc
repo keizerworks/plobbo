@@ -1,0 +1,130 @@
+---
+description: Development Guidelines
+globs: **/*.ts, **/*.js
+---
+## Coding Style and Standards
+
+This project follows strict coding standards across all packages and applications:
+
+- Use TypeScript for all new code
+- Follow ESLint configurations provided in the tooling package
+- Use Prettier for consistent code formatting
+- Write self-documenting code with meaningful variable and function names
+- Add JSDoc comments for public APIs and complex functions
+- Use early returns to reduce nesting and improve readability
+- Prefer const over let, never use var
+- Use async/await instead of Promise chains
+
+## TypeScript Best Practices
+
+Follow these TypeScript best practices throughout the codebase:
+
+- Enable strict mode for all TypeScript files
+- Use explicit typing for function parameters and return values
+- Leverage type inference where appropriate
+- Use interfaces for object shapes that will be implemented or extended
+- Use type for unions, intersections, and mapped types
+- Use enums for well-defined value sets
+- Avoid using `any` - use `unknown` and type guards instead
+- Use generics for reusable components and functions
+
+## Error Handling
+
+Follow these error handling guidelines:
+
+- Use try/catch blocks for all async operations
+- Log errors with appropriate context
+- Handle errors at the appropriate level of abstraction
+- Return meaningful error responses from API endpoints
+- Use custom error classes for specific errors
+- Don't swallow errors without logging or handling them
+- Return consistent error structures from API endpoints
+
+## Logging
+
+Use these logging conventions:
+
+- Use console.log, console.warn, and console.error appropriately
+- Include context in log messages (e.g., user IDs, request IDs)
+- Log the start and completion of significant operations
+- Log errors with stack traces in development
+- Log sensitive information only in appropriate environments
+- Structure logs for easy parsing and analysis
+
+## Testing
+
+Follow these testing principles:
+
+- Write unit tests for business logic and utilities
+- Use integration tests for API endpoints and database operations
+- Mock external dependencies in unit tests
+- Use test doubles (stubs, spies) instead of complex mocks when possible
+- Test both success and failure paths
+- Keep tests independent and isolated
+- Maintain high test coverage for critical paths
+
+## File and Directory Structure
+
+Maintain consistent file and directory structure:
+
+- Follow the established monorepo structure
+- Keep related files together
+- Separate interfaces from implementations
+- Use consistent file naming conventions
+- Export public APIs from index.ts files
+
+## Pull Request Guidelines
+
+When submitting pull requests:
+
+- Keep PRs focused on a single concern
+- Write clear PR descriptions that explain the changes
+- Reference related issues in PR descriptions
+- Include tests for new functionality and bug fixes
+- Ensure all CI checks pass before requesting review
+- Address review comments promptly and thoroughly
+- Rebase on the target branch before merging
+
+## Security Practices
+
+Follow these security guidelines:
+
+- Never commit secrets or credentials to the repository
+- Use environment variables for configuration
+- Validate all user input at the API boundaries
+- Implement proper authentication and authorization checks
+- Follow the principle of least privilege
+- Keep dependencies up to date
+- Use parameterized queries for database operations
+- Implement rate limiting for public APIs
+
+## Performance Considerations
+
+Keep performance in mind:
+
+- Optimize database queries and use appropriate indexes
+- Implement caching for frequently accessed data
+- Use connection pooling for database connections
+- Minimize round trips to external services
+- Profile and optimize slow operations
+- Be mindful of memory usage in Lambda functions
+- Optimize bundle sizes for client applications
+
+## Documentation
+
+Maintain high-quality documentation:
+
+- Keep README files up to date
+- Document complex business logic and decisions
+- Document API endpoints with request/response examples
+- Include setup and development instructions
+- Document environment variables and configuration
+- Document database schema and migrations
+- Add comments for non-obvious code
+
+@file:.cursor/rules/monorepo.mdc
+@file:.cursor/rules/api.mdc
+@file:.cursor/rules/db.mdc
+@file:.cursor/rules/auth.mdc
+@file:.cursor/rules/cache.mdc
+@file:.cursor/rules/development.mdc

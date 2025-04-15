@@ -62,7 +62,7 @@ export default function JoinWaitlistForm() {
 
         <Button
           loading={pending}
-          className="absolute right-1 top-1 hidden h-10 rounded-[8px] px-4 font-semibold tracking-tight md:block"
+          className="absolute dark:bg-white dark:hover:bg-neutral-200 right-1 top-1 hidden h-10 rounded-[4px] bg-black hover:bg-neutral-800 px-4 font-semibold tracking-tight md:block"
           type="submit"
           size="sm"
         >

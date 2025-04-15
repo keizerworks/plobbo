@@ -150,7 +150,7 @@ export function getColumns({
         const author = cell.getValue() as BlogList["author"];
         return (
           <Link
-            from="/blogs"
+            from="/journey"
             to="/users/$user-id"
             params={{ "user-id": author.id }}
             className="hover:underline"
@@ -179,10 +179,9 @@ export function getColumns({
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuItem asChild>
                 <Link
-                  to="/blogs/$blog-id"
-                  // @ts-expect-error -- idk2
+                  to="/journey/$journey-id"
                   search={undefined}
-                  params={{ "blog-id": row.id }}
+                  params={{ "journey-id": row.id }}
                 >
                   Edit
                 </Link>

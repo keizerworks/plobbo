@@ -3,6 +3,7 @@ import { Edit, X } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 
 import { cn } from "~/lib/utils";
+
 import { Button } from "./ui/button";
 
 interface ImageUploadProps {
@@ -10,6 +11,7 @@ interface ImageUploadProps {
   onChange: (file: File | undefined) => void;
   aspectVideo?: boolean;
   edit?: boolean;
+  className?: string;
 }
 
 export function ImageUpload({
@@ -17,6 +19,7 @@ export function ImageUpload({
   onChange,
   aspectVideo,
   edit,
+  className,
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | undefined>(defaultSrc);
 
@@ -73,7 +76,7 @@ export function ImageUpload({
         <div
           className={`cursor-pointer rounded-lg border border-dashed p-4 text-center ${
             isDragActive ? "border-primary" : "border-muted-foreground"
-          }`}
+          } ${className}`}
         >
           {isDragActive ? (
             <p className="text-sm">Drop the image here ...</p>

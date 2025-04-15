@@ -4,7 +4,6 @@ import "~/styles/globals.css";
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans } from "next/font/google";
 import Image from "next/image";
-import Link from "next/link";
 
 import { Toaster } from "@plobbo/ui/components/sonner";
 

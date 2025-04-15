@@ -34,7 +34,7 @@
     "react-hook-form": "^7.54.2",
     "sonner": "^1.7.4",
     "tailwind-merge": "catalog:",
-    "tailwindcss-animate": "catalog:",
+    "tw-animate-css": "catalog:",
     "vaul": "^1.1.2",
     "zod": "catalog:"
   },
@@ -45,7 +45,7 @@
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "autoprefixer": "catalog:",
-    "postcss": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
     "react": "catalog:react19",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
@@ -53,7 +53,6 @@
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
-    "./tailwind.config": "./tailwind.config.ts",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts"
