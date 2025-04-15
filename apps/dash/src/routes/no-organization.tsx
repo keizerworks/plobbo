@@ -1,22 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-import { CreateOrganizationTrigger } from '~/components/organization/create/trigger'
+import { CreateOrganizationTrigger } from "~/components/organization/create/trigger";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '~/components/ui/card'
-import { Separator } from '~/components/ui/separator'
+} from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 
-export const Route = createFileRoute('/no-organization')({
+export const Route = createFileRoute("/no-organization")({
   component: () => {
     return (
       <Card className="m-auto rounded-lg border-0 shadow-none">
         <CardHeader className="text-center">
-          <CardTitle>No Organizations</CardTitle>
-          <CardDescription className="text-sm text-gray-500">
+          <CardTitle className="text-4xl font-semibold tracking-tighter">
+            No Organizations
+          </CardTitle>
+          <CardDescription className="text-sm text-gray-700">
             You&apos;re not a member of any organizations yet
           </CardDescription>
         </CardHeader>
@@ -36,7 +38,7 @@ export const Route = createFileRoute('/no-organization')({
           ask your admin to add you to an organization
         </CardDescription>
       </Card>
-    )
+    );
   },
   errorComponent: () => {
     return (
@@ -48,6 +50,6 @@ export const Route = createFileRoute('/no-organization')({
           </p>
         </div>
       </div>
-    )
+    );
   },
-})
+});

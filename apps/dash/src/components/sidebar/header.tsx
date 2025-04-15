@@ -16,9 +16,11 @@ import {
 import { SidebarTrigger } from "./sidebar";
 
 export default function DashboardHeader() {
-  const storyId = useParams({ strict: false, select: (s) => s["story-id"] });
-  const location = useLocation();
-  const pathname = location.pathname;
+  const stryId: string | undefined = useParams({
+    strict: false,
+    select: (s) => s["story-id"],
+  });
+  const pathname = useLocation().pathname;
 
   // Create breadcrumb segments from the pathname
   const segments = pathname.split("/").filter(Boolean);
@@ -68,7 +70,7 @@ export default function DashboardHeader() {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        {storyId ? (
+        {stryId ? (
           <>
             <UpdateBlogMetadataForm />
             <PublishBlog />

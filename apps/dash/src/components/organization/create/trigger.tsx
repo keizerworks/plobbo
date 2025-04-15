@@ -9,7 +9,7 @@ export const CreateOrganizationTrigger = () => {
   };
 
   return (
-    <Button onClick={handleCreateOrg} className="gap-x-2">
+    <Button onClick={handleCreateOrg} className="gap-x-2 rounded-full">
       <PlusCircle className="size-4" />
       Create Organization
     </Button>

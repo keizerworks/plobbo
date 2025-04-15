@@ -90,8 +90,10 @@ export const CreateOrganization = () => {
     <Credenza open={open} onOpenChange={setOpen}>
       <CredenzaContent className="px-0 sm:max-w-[425px]">
         <CredenzaHeader className="max-mb:pb-4 gap-0 space-y-0 px-4 text-left md:px-6">
-          <CredenzaTitle>Create Organization</CredenzaTitle>
-          <CredenzaDescription>
+          <CredenzaTitle className="text-2xl font-semibold tracking-tight">
+            Create Organization
+          </CredenzaTitle>
+          <CredenzaDescription className="p-0 pt-2 leading-tight text-neutral-600">
             Enter the details for your new organization. Click save when
             you&apos;re done.
           </CredenzaDescription>

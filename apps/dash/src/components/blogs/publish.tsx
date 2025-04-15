@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 export default function PublishBlog() {
   const blogId: string | undefined = useParams({
     strict: false,
-    select: (s) => s["journey-id"],
+    select: (s) => s["story-id"],
   });
 
   const { mutate, isPending } = useMutation({

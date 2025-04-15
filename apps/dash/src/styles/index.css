@@ -6,6 +6,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-family: "Inter", sans-serif;
+}
+
 :root {
   --font-sans: "Inter", sans-serif;
   --background: hsl(0 0% 100%);
