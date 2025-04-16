@@ -23,6 +23,7 @@ function RouteComponent() {
       search: { name: name.length > 0 ? name : undefined },
     }).catch(console.error);
   };
+
   const filteredStories = useMemo(() => {
     return stories.filter((journey) =>
       journey.title.toLowerCase().includes(name),

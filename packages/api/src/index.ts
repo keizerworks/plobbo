@@ -4,7 +4,7 @@ import { handle } from "hono/vercel";
 
 import { countBlogHandler } from "./handlers/blogs/count";
 import { getBlogHandler } from "./handlers/blogs/get";
-import { listBlogsHandler } from "./handlers/blogs/list";
+import { listBlogsByJourneyIdHandler, listBlogsHandler } from "./handlers/blogs/list";
 import { getBlogMetadataHandler } from "./handlers/blogs/metadata/get";
 import { putBlogMetadataHandler } from "./handlers/blogs/metadata/put";
 import { patchBlogHandler } from "./handlers/blogs/patch";
