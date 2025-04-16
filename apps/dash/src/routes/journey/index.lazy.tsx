@@ -1,5 +1,5 @@
-import { FormEvent, useMemo, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createLazyFileRoute,
   useLoaderData,
@@ -11,7 +11,7 @@ import { Clock, Loader2, Search } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 
-import { createJourney } from "~/actions/journey";
+import { createJourney, getJourney } from "~/actions/journey";
 import { ImageUpload } from "~/components/image-upload";
 import {
   Dialog,
@@ -41,8 +41,17 @@ export const Route = createLazyFileRoute("/journey/")({
 
 function RouteComponent() {
   const { profile } = useAuthStore();
-  const { journeys, activeOrgId } = useLoaderData({ from: "/journey/" });
+  const { journeys: initialJourneys, activeOrgId } = useLoaderData({
+    from: "/journey/",
+  });
+
+  const { data: journeys } = useQuery({
+    queryKey: ["journeys", activeOrgId],
+    queryFn: () => getJourney(activeOrgId),
+    initialData: initialJourneys,
+  });
   const navigate = useNavigate();
+
   const { jrny } = useLocation().search;
   const handleSearch = (name: string) => {
     navigate({
@@ -59,7 +68,7 @@ function RouteComponent() {
 
   return (
     <main className="mx-auto flex w-full flex-col h-full">
-      {journeys.length < 0 ? (
+      {journeys.length < 1 ? (
         <section className="max-w-7xl mx-auto relative h-full w-full flex items-center justify-center">
           <div className="absolute inset-0 backdrop-blur-[70px] z-20 " />
           <BackgroundGradient />
@@ -143,11 +152,11 @@ function RouteComponent() {
               </div>
             </div>
           </div>
-          <div className="max-w-[1536px] grid grid-cols-3 gap-[10px] p-8">
+          <div className="max-w-[1536px] mx-auto grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-[10px] p-8">
             {filteredJourney.map((journey) => {
               return (
                 <Card
-                  className="p-[20px] rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
+                  className="p-[20px] flex flex-col justify-between rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
                   onClick={() => {
                     navigate({
                       to: "/journey/$journey-id",
@@ -170,7 +179,6 @@ function RouteComponent() {
                             </span>
                           </AvatarFallback>
                         </Avatar>
-
                         {journey.title}
                       </div>
                     </CardTitle>
@@ -263,18 +271,20 @@ const CreateJourney = ({ orgId, name }: { orgId: string; name?: string }) => {
   const [journeyDescription, setJourneyDescription] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | undefined>(undefined); // State for the image file
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { isPending, mutate } = useMutation({
     mutationFn: createJourney,
     onSuccess: (data) => {
       toast.success("Created journey successfully!");
+      queryClient.invalidateQueries({ queryKey: ["journeys", orgId] });
       navigate({
-        to: `/journey`,
+        to: "/journey/$journey-id",
         params: { "journey-id": data.id },
       });
     },
     onError: (error) => {
-      console.log(orgId);
+      console.log(error);
       toast.error("Failed to create journey");
     },
   });

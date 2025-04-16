@@ -35,7 +35,7 @@ export function DeleteBlogsDialog({
     mutationFn: deleteBlogs,
     onSuccess: () => {
       props.onOpenChange?.(false);
-      toast.success("Blogs deleted");
+      toast.success("story deleted");
       onSuccess?.();
     },
     onError: (e) => toast.error(e.message),

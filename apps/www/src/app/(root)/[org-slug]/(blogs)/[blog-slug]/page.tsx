@@ -91,7 +91,7 @@ export default async function Page({ params }: Props) {
               />
             </div>
             <h5 className="font-semibold">
-              <Link href={blog.organization.slug}>
+              <Link href={`/${blog.organization.name}`}>
                 {blog.organization.name}
               </Link>
             </h5>{" "}

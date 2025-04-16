@@ -10,12 +10,12 @@ import { Button } from "../ui/button";
 export default function PublishBlog() {
   const blogId: string | undefined = useParams({
     strict: false,
-    select: (s) => s["journey-id"],
+    select: (s) => s["story-id"],
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: publishBlog,
-    onSuccess: () => toast.success("Blog published successfully"),
+    onSuccess: () => toast.success("story published successfully"),
   });
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

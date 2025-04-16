@@ -1,5 +1,6 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
+  and,
   asc,
   desc,
   count as drizzleCount,
@@ -90,13 +91,13 @@ export namespace Blog {
       .select({
         ...columns,
         author: sql<OrganizationMember.Model>`(
-					SELECT to_json(obj)
-					FROM (
-						SELECT *
-						FROM ${OrganizationMemberTable}
-						WHERE ${OrganizationMemberTable.id} = ${BlogTable.authorId}
-					) AS obj
-				)`.as("author"),
+          SELECT to_json(obj)
+          FROM (
+            SELECT *
+            FROM ${OrganizationMemberTable}
+            WHERE ${OrganizationMemberTable.id} = ${BlogTable.authorId}
+          ) AS obj
+        )`.as("author"),
       })
       .from(BlogTable)
       .innerJoin(
@@ -104,57 +105,62 @@ export namespace Blog {
         eq(BlogTable.authorId, OrganizationMemberTable.id),
       )
       .$dynamic();
-
+  
+    const conditions = [];
+  
     if (filter?.status) {
-      query = query.where(eq(BlogTable.status, filter.status));
+      conditions.push(eq(BlogTable.status, filter.status));
     }
-
+  
     if (filter?.journeyId) {
-      query = query.where(eq(BlogTable.journeyId, filter.journeyId));
+      conditions.push(eq(BlogTable.journeyId, filter.journeyId));
     }
-
+  
     if (filter?.userId) {
-      query = query.where(eq(OrganizationMemberTable.userId, filter.userId));
+      conditions.push(eq(OrganizationMemberTable.userId, filter.userId));
     }
-
+  
     if (filter?.organizationId) {
-      query = query.where(eq(BlogTable.organizationId, filter.organizationId));
+      conditions.push(eq(BlogTable.organizationId, filter.organizationId));
     }
-
+  
     if (filter?.search?.length) {
-      query = query.where(
+      conditions.push(
         or(
           ilike(BlogTable.title, filter.search),
           ilike(BlogTable.slug, filter.search),
         ),
       );
     }
-
-    if (sort?.title)
+  
+    if (conditions.length) {
+      query = query.where(and(...conditions));
+    }
+  
+    // Sorting (keep this part as-is)
+    if (sort?.title) {
       query = query.orderBy(
         (sort.title === "asc" ? asc : desc)(BlogTable.title),
       );
-
-    if (sort?.status)
+    }
+    if (sort?.status) {
       query = query.orderBy(
         (sort.status === "asc" ? asc : desc)(BlogTable.status),
       );
-
-    if (sort?.slug)
+    }
+    if (sort?.slug) {
       query = query.orderBy((sort.slug === "asc" ? asc : desc)(BlogTable.slug));
-
+    }
     if (sort?.createdAt) {
       query = query.orderBy(
         (sort.createdAt === "asc" ? asc : desc)(BlogTable.createdAt),
       );
     }
-
     if (sort?.updatedAt) {
       query = query.orderBy(
         (sort.updatedAt === "asc" ? asc : desc)(BlogTable.updatedAt),
       );
     }
-
     if (sort?.authorName) {
       query = query.orderBy(
         (sort.authorName === "asc" ? asc : desc)(
@@ -162,46 +168,7 @@ export namespace Blog {
         ),
       );
     }
-
+  
     return await query;
   };
-
-  export const count = async (
-    filters?: ListBlogSortFilterInterface["filter"],
-  ) => {
-    let query = db.select({ count: drizzleCount() }).from(BlogTable).$dynamic();
-
-    if (filters?.status) {
-      query = query.where(eq(BlogTable.status, filters.status));
-    }
-
-    if (filters?.userId) {
-      query = query
-        .innerJoin(
-          OrganizationMemberTable,
-          eq(OrganizationMemberTable.id, BlogTable.authorId),
-        )
-        .where(eq(OrganizationMemberTable.userId, filters.userId));
-    }
-
-    if (filters?.organizationId) {
-      query = query.where(eq(BlogTable.organizationId, filters.organizationId));
-    }
-
-    if (filters?.search?.length) {
-      query = query.where(
-        or(
-          ilike(BlogTable.title, filters.search),
-          ilike(BlogTable.slug, filters.search),
-        ),
-      );
-    }
-
-    const res = (await query)[0];
-    return res?.count ?? 0;
-  };
-
-  export async function remove(id: string): Promise<void> {
-    await db.delete(BlogTable).where(eq(BlogTable.id, id));
-  }
 }

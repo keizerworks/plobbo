@@ -17,11 +17,11 @@ import { Route as NoOrganizationImport } from './routes/no-organization'
 import { Route as ConfigureImport } from './routes/_configure'
 import { Route as JourneyIndexImport } from './routes/journey/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
-import { Route as JourneyJourneyIdRouteImport } from './routes/journey/$journey-id/route'
 import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
+import { Route as JourneyJourneyIdIndexImport } from './routes/journey/$journey-id/index'
 import { Route as CheckoutStatusIndexImport } from './routes/checkout/status/index'
 import { Route as ConfigureConfigureSettingsImport } from './routes/_configure/configure/_settings'
-import { Route as JourneyJourneyIdStoryIdRouteImport } from './routes/journey/$journey-id/$story-id/route'
+import { Route as JourneyJourneyIdStoryIdIndexImport } from './routes/journey/$journey-id/$story-id/index'
 import { Route as ConfigureConfigureSettingsSettingsIndexImport } from './routes/_configure/configure/_settings/settings/index'
 import { Route as ConfigureConfigureSettingsSettingsSubscriptionIndexImport } from './routes/_configure/configure/_settings/settings/subscription/index'
 import { Route as ConfigureConfigureSettingsSettingsCustomDomainIndexImport } from './routes/_configure/configure/_settings/settings/custom-domain/index'
@@ -80,14 +80,6 @@ const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const JourneyJourneyIdRouteRoute = JourneyJourneyIdRouteImport.update({
-  id: '/journey/$journey-id',
-  path: '/journey/$journey-id',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/journey/$journey-id/route.lazy').then((d) => d.Route),
-)
-
 const ConfigureConfigureIndexLazyRoute =
   ConfigureConfigureIndexLazyImport.update({
     id: '/',
@@ -103,6 +95,14 @@ const SubscribeProIndexRoute = SubscribeProIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const JourneyJourneyIdIndexRoute = JourneyJourneyIdIndexImport.update({
+  id: '/journey/$journey-id/',
+  path: '/journey/$journey-id/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/journey/$journey-id/index.lazy').then((d) => d.Route),
+)
+
 const CheckoutStatusIndexRoute = CheckoutStatusIndexImport.update({
   id: '/checkout/status/',
   path: '/checkout/status/',
@@ -116,13 +116,13 @@ const ConfigureConfigureSettingsRoute = ConfigureConfigureSettingsImport.update(
   } as any,
 )
 
-const JourneyJourneyIdStoryIdRouteRoute =
-  JourneyJourneyIdStoryIdRouteImport.update({
-    id: '/$story-id',
-    path: '/$story-id',
-    getParentRoute: () => JourneyJourneyIdRouteRoute,
+const JourneyJourneyIdStoryIdIndexRoute =
+  JourneyJourneyIdStoryIdIndexImport.update({
+    id: '/journey/$journey-id/$story-id/',
+    path: '/journey/$journey-id/$story-id/',
+    getParentRoute: () => rootRoute,
   } as any).lazy(() =>
-    import('./routes/journey/$journey-id/$story-id/route.lazy').then(
+    import('./routes/journey/$journey-id/$story-id/index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -196,13 +196,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoOrganizationImport
       parentRoute: typeof rootRoute
     }
-    '/journey/$journey-id': {
-      id: '/journey/$journey-id'
-      path: '/journey/$journey-id'
-      fullPath: '/journey/$journey-id'
-      preLoaderRoute: typeof JourneyJourneyIdRouteImport
-      parentRoute: typeof rootRoute
-    }
     '/users/$user-id': {
       id: '/users/$user-id'
       path: '/users/$user-id'
@@ -223,13 +216,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/users'
       preLoaderRoute: typeof UsersIndexLazyImport
       parentRoute: typeof rootRoute
-    }
-    '/journey/$journey-id/$story-id': {
-      id: '/journey/$journey-id/$story-id'
-      path: '/$story-id'
-      fullPath: '/journey/$journey-id/$story-id'
-      preLoaderRoute: typeof JourneyJourneyIdStoryIdRouteImport
-      parentRoute: typeof JourneyJourneyIdRouteImport
     }
     '/_configure/configure': {
       id: '/_configure/configure'
@@ -252,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutStatusIndexImport
       parentRoute: typeof rootRoute
     }
+    '/journey/$journey-id/': {
+      id: '/journey/$journey-id/'
+      path: '/journey/$journey-id'
+      fullPath: '/journey/$journey-id'
+      preLoaderRoute: typeof JourneyJourneyIdIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/subscribe/pro/': {
       id: '/subscribe/pro/'
       path: '/subscribe/pro'
@@ -265,6 +258,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/configure/'
       preLoaderRoute: typeof ConfigureConfigureIndexLazyImport
       parentRoute: typeof ConfigureConfigureImport
+    }
+    '/journey/$journey-id/$story-id/': {
+      id: '/journey/$journey-id/$story-id/'
+      path: '/journey/$journey-id/$story-id'
+      fullPath: '/journey/$journey-id/$story-id'
+      preLoaderRoute: typeof JourneyJourneyIdStoryIdIndexImport
+      parentRoute: typeof rootRoute
     }
     '/_configure/configure/_settings/settings/': {
       id: '/_configure/configure/_settings/settings/'
@@ -348,32 +348,19 @@ const ConfigureRouteWithChildren = ConfigureRoute._addFileChildren(
   ConfigureRouteChildren,
 )
 
-interface JourneyJourneyIdRouteRouteChildren {
-  JourneyJourneyIdStoryIdRouteRoute: typeof JourneyJourneyIdStoryIdRouteRoute
-}
-
-const JourneyJourneyIdRouteRouteChildren: JourneyJourneyIdRouteRouteChildren = {
-  JourneyJourneyIdStoryIdRouteRoute: JourneyJourneyIdStoryIdRouteRoute,
-}
-
-const JourneyJourneyIdRouteRouteWithChildren =
-  JourneyJourneyIdRouteRoute._addFileChildren(
-    JourneyJourneyIdRouteRouteChildren,
-  )
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey': typeof JourneyIndexRoute
   '/users': typeof UsersIndexLazyRoute
-  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
   '/checkout/status': typeof CheckoutStatusIndexRoute
+  '/journey/$journey-id': typeof JourneyJourneyIdIndexRoute
   '/subscribe/pro': typeof SubscribeProIndexRoute
   '/configure/': typeof ConfigureConfigureIndexLazyRoute
+  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdIndexRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
   '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
@@ -384,14 +371,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey': typeof JourneyIndexRoute
   '/users': typeof UsersIndexLazyRoute
-  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/configure': typeof ConfigureConfigureIndexLazyRoute
   '/checkout/status': typeof CheckoutStatusIndexRoute
+  '/journey/$journey-id': typeof JourneyJourneyIdIndexRoute
   '/subscribe/pro': typeof SubscribeProIndexRoute
+  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdIndexRoute
   '/configure/settings': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/configure/settings/custom-domain': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
   '/configure/settings/subscription': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
@@ -403,16 +390,16 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/_configure': typeof ConfigureRouteWithChildren
   '/no-organization': typeof NoOrganizationRoute
-  '/journey/$journey-id': typeof JourneyJourneyIdRouteRouteWithChildren
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey/': typeof JourneyIndexRoute
   '/users/': typeof UsersIndexLazyRoute
-  '/journey/$journey-id/$story-id': typeof JourneyJourneyIdStoryIdRouteRoute
   '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
   '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
   '/checkout/status/': typeof CheckoutStatusIndexRoute
+  '/journey/$journey-id/': typeof JourneyJourneyIdIndexRoute
   '/subscribe/pro/': typeof SubscribeProIndexRoute
   '/_configure/configure/': typeof ConfigureConfigureIndexLazyRoute
+  '/journey/$journey-id/$story-id/': typeof JourneyJourneyIdStoryIdIndexRoute
   '/_configure/configure/_settings/settings/': typeof ConfigureConfigureSettingsSettingsIndexRoute
   '/_configure/configure/_settings/settings/custom-domain/': typeof ConfigureConfigureSettingsSettingsCustomDomainIndexRoute
   '/_configure/configure/_settings/settings/subscription/': typeof ConfigureConfigureSettingsSettingsSubscriptionIndexRoute
@@ -425,15 +412,15 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
-    | '/journey/$journey-id'
     | '/users/$user-id'
     | '/journey'
     | '/users'
-    | '/journey/$journey-id/$story-id'
     | '/configure'
     | '/checkout/status'
+    | '/journey/$journey-id'
     | '/subscribe/pro'
     | '/configure/'
+    | '/journey/$journey-id/$story-id'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
     | '/configure/settings/subscription'
@@ -443,14 +430,14 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/no-organization'
-    | '/journey/$journey-id'
     | '/users/$user-id'
     | '/journey'
     | '/users'
-    | '/journey/$journey-id/$story-id'
     | '/configure'
     | '/checkout/status'
+    | '/journey/$journey-id'
     | '/subscribe/pro'
+    | '/journey/$journey-id/$story-id'
     | '/configure/settings'
     | '/configure/settings/custom-domain'
     | '/configure/settings/subscription'
@@ -460,16 +447,16 @@ export interface FileRouteTypes {
     | '/'
     | '/_configure'
     | '/no-organization'
-    | '/journey/$journey-id'
     | '/users/$user-id'
     | '/journey/'
     | '/users/'
-    | '/journey/$journey-id/$story-id'
     | '/_configure/configure'
     | '/_configure/configure/_settings'
     | '/checkout/status/'
+    | '/journey/$journey-id/'
     | '/subscribe/pro/'
     | '/_configure/configure/'
+    | '/journey/$journey-id/$story-id/'
     | '/_configure/configure/_settings/settings/'
     | '/_configure/configure/_settings/settings/custom-domain/'
     | '/_configure/configure/_settings/settings/subscription/'
@@ -481,24 +468,26 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ConfigureRoute: typeof ConfigureRouteWithChildren
   NoOrganizationRoute: typeof NoOrganizationRoute
-  JourneyJourneyIdRouteRoute: typeof JourneyJourneyIdRouteRouteWithChildren
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
   JourneyIndexRoute: typeof JourneyIndexRoute
   UsersIndexLazyRoute: typeof UsersIndexLazyRoute
   CheckoutStatusIndexRoute: typeof CheckoutStatusIndexRoute
+  JourneyJourneyIdIndexRoute: typeof JourneyJourneyIdIndexRoute
   SubscribeProIndexRoute: typeof SubscribeProIndexRoute
+  JourneyJourneyIdStoryIdIndexRoute: typeof JourneyJourneyIdStoryIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ConfigureRoute: ConfigureRouteWithChildren,
   NoOrganizationRoute: NoOrganizationRoute,
-  JourneyJourneyIdRouteRoute: JourneyJourneyIdRouteRouteWithChildren,
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
   JourneyIndexRoute: JourneyIndexRoute,
   UsersIndexLazyRoute: UsersIndexLazyRoute,
   CheckoutStatusIndexRoute: CheckoutStatusIndexRoute,
+  JourneyJourneyIdIndexRoute: JourneyJourneyIdIndexRoute,
   SubscribeProIndexRoute: SubscribeProIndexRoute,
+  JourneyJourneyIdStoryIdIndexRoute: JourneyJourneyIdStoryIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -514,12 +503,13 @@ export const routeTree = rootRoute
         "/",
         "/_configure",
         "/no-organization",
-        "/journey/$journey-id",
         "/users/$user-id",
         "/journey/",
         "/users/",
         "/checkout/status/",
-        "/subscribe/pro/"
+        "/journey/$journey-id/",
+        "/subscribe/pro/",
+        "/journey/$journey-id/$story-id/"
       ]
     },
     "/": {
@@ -534,12 +524,6 @@ export const routeTree = rootRoute
     "/no-organization": {
       "filePath": "no-organization.tsx"
     },
-    "/journey/$journey-id": {
-      "filePath": "journey/$journey-id/route.tsx",
-      "children": [
-        "/journey/$journey-id/$story-id"
-      ]
-    },
     "/users/$user-id": {
       "filePath": "users/$user-id/route.tsx"
     },
@@ -548,10 +532,6 @@ export const routeTree = rootRoute
     },
     "/users/": {
       "filePath": "users/index.lazy.tsx"
-    },
-    "/journey/$journey-id/$story-id": {
-      "filePath": "journey/$journey-id/$story-id/route.tsx",
-      "parent": "/journey/$journey-id"
     },
     "/_configure/configure": {
       "filePath": "_configure/configure",
@@ -574,12 +554,18 @@ export const routeTree = rootRoute
     "/checkout/status/": {
       "filePath": "checkout/status/index.tsx"
     },
+    "/journey/$journey-id/": {
+      "filePath": "journey/$journey-id/index.tsx"
+    },
     "/subscribe/pro/": {
       "filePath": "subscribe/pro/index.tsx"
     },
     "/_configure/configure/": {
       "filePath": "_configure/configure/index.lazy.tsx",
       "parent": "/_configure/configure"
+    },
+    "/journey/$journey-id/$story-id/": {
+      "filePath": "journey/$journey-id/$story-id/index.tsx"
     },
     "/_configure/configure/_settings/settings/": {
       "filePath": "_configure/configure/_settings/settings/index.tsx",

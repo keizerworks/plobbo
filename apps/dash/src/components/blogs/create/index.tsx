@@ -36,7 +36,7 @@ import { getActiveOrgId } from "~/store/active-org";
 
 export const CreateBlog = () => {
   const navigate = useNavigate();
-  const journeyId = useParams({ from: "/journey/$journey-id" })["journey-id"];
+  const journeyId = useParams({ from: "/journey/$journey-id/" })["journey-id"];
 
   const [open, setOpen] = useState(false);
   const form = useForm<CreateBlogInterface>({
@@ -58,8 +58,8 @@ export const CreateBlog = () => {
 
     onSuccess: async ({ id }) => {
       await navigate({
-        to: "/journey/$journey-id",
-        params: { "journey-id": id },
+        to: "/journey/$journey-id/$story-id",
+        params: { "journey-id": journeyId, "story-id": id },
       });
     },
     onError: console.error,
@@ -70,7 +70,7 @@ export const CreateBlog = () => {
       loading: (
         <div className="flex items-center gap-x-2">
           <Loader className="size-4 animate-spin" />
-          <p className="text-sm">initiating new blog</p>
+          <p className="text-sm">initiating new story</p>
         </div>
       ),
       success: () => "created blog successfully",

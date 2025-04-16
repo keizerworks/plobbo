@@ -40,7 +40,7 @@ import { Textarea } from "~/components/ui/textarea";
 
 export default function UpdateBlogMetadataForm() {
   const blog: Blog | undefined = useLoaderData({
-    from: "/journey/$journey-id/$story-id",
+    from: "/journey/$journey-id/$story-id/",
   });
 
   const [open, setOpen] = useState(false);
@@ -59,7 +59,7 @@ export default function UpdateBlogMetadataForm() {
     mutationFn: putBlogMetadata,
     onSuccess: () => {
       setOpen(false);
-      toast.success("Blog metadata updated successfully");
+      toast.success("story metadata updated successfully");
     },
     onError: ({ message }) => toast.error(message),
   });

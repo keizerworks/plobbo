@@ -1,5 +1,3 @@
-"use client";
-
 import { Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -13,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { logout, useAuthStore } from "~/store/auth";
+
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -23,7 +22,6 @@ import {
 export function NavUser() {
   const user = useAuthStore.use.profile?.();
   const { isMobile } = useSidebar();
-
   if (!user) {
     return null;
   }
