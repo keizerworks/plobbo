@@ -17,6 +17,7 @@ export const Route = createFileRoute("/journey/$journey-id/")({
     });
 
     const [journey, stories] = await Promise.all([dataPromise, storiesPromise]);
+    console.log({ journey, stories });
     return { journey, stories };
   },
   pendingComponent: () => (

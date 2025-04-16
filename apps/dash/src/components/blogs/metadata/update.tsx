@@ -59,7 +59,7 @@ export default function UpdateBlogMetadataForm() {
     mutationFn: putBlogMetadata,
     onSuccess: () => {
       setOpen(false);
-      toast.success("Blog metadata updated successfully");
+      toast.success("story metadata updated successfully");
     },
     onError: ({ message }) => toast.error(message),
   });

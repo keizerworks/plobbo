@@ -1,9 +1,10 @@
-import { useNavigate, useParams } from "@tanstack/react-router";
-import { Clock, Link, MoreVertical } from "lucide-react";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Clock, LinkIcon } from "lucide-react";
 
 import { BlogStatusEnum } from "@plobbo/validator/blog/list";
 
 import { cn } from "~/lib/utils";
+import { getActiveOrg } from "~/store/active-org";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
@@ -45,6 +46,7 @@ export function StoryCard({
     });
   };
 
+  const orgnaization = getActiveOrg();
   return (
     <div className="flex flex-col">
       <Card
@@ -95,10 +97,16 @@ export function StoryCard({
                 <div
                   className={`flex ${description ? "pt-4 " : ""} flex-wrap text-neutral-700 items-center gap-4 text-sm tracking-tight `}
                 >
-                  <div className="flex font-medium items-center gap-1">
-                    <Link className="h-4 w-4" />
-                    <span>{slug}</span>
-                  </div>
+                  {status === BlogStatusEnum.PUBLISHED && (
+                    <a
+                      target="_blank"
+                      href={`https://plobbo.com/${orgnaization?.slug}/${slug}`}
+                      className="flex font-medium items-center gap-1 cursor-pointer hover:underline"
+                    >
+                      <LinkIcon size={12} />
+                      {slug}
+                    </a>
+                  )}
                   <div className="flex font-medium items-center gap-1">
                     <Clock className="h-4 w-4" />
                     <span>{date}</span>

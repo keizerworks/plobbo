@@ -15,7 +15,7 @@ export default function PublishBlog() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: publishBlog,
-    onSuccess: () => toast.success("Blog published successfully"),
+    onSuccess: () => toast.success("story published successfully"),
   });
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
