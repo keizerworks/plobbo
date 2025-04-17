@@ -170,11 +170,11 @@ function RouteComponent() {
               </div>
             </div>
           </div>
-          <div className="max-w-[1536px] mx-auto grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-8">
+          <div className="max-w-[1536px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-8">
             {filteredJourney.map((journey) => {
               return (
                 <Card
-                  className="p-[20px] border border-neutral-300 bg-[#FAF9F7] flex flex-col justify-between rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
+                  className="p-[20px] w-full border border-neutral-300 bg-[#FAF9F7] flex flex-col justify-between rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
                   onClick={() => {
                     navigate({
                       to: "/journey/$journey-id",

@@ -1,7 +1,5 @@
-"use client";
-
 import type { LucideIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Cog, LayoutDashboard, Newspaper, Users } from "lucide-react";
 
@@ -19,7 +17,7 @@ interface NavItemInterface {
   title: string;
   url: string;
   icon: LucideIcon;
-  isActive?: boolean;
+  isActive: boolean;
 }
 
 export function NavMain() {
@@ -35,10 +33,16 @@ export function NavMain() {
           isActive: pathname === "/",
         },
         {
+          title: "Plobbo Ai",
+          url: "/plobbo-ai",
+          icon: LayoutDashboard,
+          isActive: pathname.startsWith("/plobbo-ai"),
+        },
+        {
           title: "Journey",
           url: "/journey",
           icon: Newspaper,
-          isActive: pathname.startsWith("/blogs"),
+          isActive: pathname.startsWith("/journey"),
         },
         {
           title: "Users",
@@ -67,7 +71,7 @@ export function NavMain() {
                 asChild
                 isActive={item.isActive}
                 tooltip={item.title}
-                className="font-semibold tracking-tight hover:text-black"
+                className={`tracking-tight ${item.isActive && "border shadow-xs "} hover:text-black`}
               >
                 <Link to={item.url}>
                   <item.icon />
