@@ -17,30 +17,64 @@ function RouteComponent() {
         <div className="inset-0 backdrop-blur-3xl z-40 absolute" />
         <BackgroundGradient />
         <div className="text-center relative z-50">
-          <h1 className="text-5xl flex justify-center items-center gap-2 font-semibold">
+          <motion.h1
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 12,
+              mass: 1,
+            }}
+            className="text-5xl flex justify-center items-center gap-2 font-semibold"
+          >
             <Stars size={38} />
             Plobbo Ai
-          </h1>
-          <p className="text-base font-medium">
+          </motion.h1>
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 12,
+              mass: 1,
+              delay: 0.2,
+            }}
+            className="text-base font-medium"
+          >
             Let's Brainstorm with your Ai buddy in plobbo
-          </p>
+          </motion.p>
           <div className="space-x-2 pt-2">
-            {prompts.map((prompt) => {
+            {prompts.map((prompt, index) => {
               return (
-                <Button
-                  key={prompt}
-                  size="sm"
-                  variant="outline"
-                  className="bg-background/60"
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 12,
+                    mass: 1,
+                    delay: 0.45 + index * 0.04,
+                  }}
+                  className="inline-block"
                 >
-                  {prompt}
-                </Button>
+                  <Button
+                    key={prompt}
+                    size="sm"
+                    variant="outline"
+                    className="bg-background/60"
+                  >
+                    {prompt}
+                  </Button>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </div>
-      <footer className="flex relative max-w-[1536px] mx-auto px-8 pb-8 max-w-7xl mx-auto gap-x-2 justify-between w-full">
+      <footer className="flex relative max-w-[1536px] px-8 pb-8 mx-auto gap-x-2 justify-between w-full">
         <div className="bg-[#FAF9F7] border p-4 rounded-md flex items-end w-full flex-col">
           <Textarea
             placeholder="Enter what you want plobbo ai to do..."

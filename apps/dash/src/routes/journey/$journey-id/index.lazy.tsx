@@ -43,7 +43,7 @@ function RouteComponent() {
                 {["Let's", "Make", "Story"].map((word, index) => (
                   <motion.span
                     key={index}
-                    className="mx-1"
+                    className={`mx-1 ${word === "Story" && "underline"}`}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{
@@ -163,7 +163,7 @@ function RouteComponent() {
   );
 }
 
-export const BackgroundGradient = () => {
+const BackgroundGradient = () => {
   return (
     <motion.svg
       className="absolute opacity-50 scale-75 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
