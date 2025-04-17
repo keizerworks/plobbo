@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Stars, WandSparkles } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
+import { WandSparkles } from "lucide-react";
 
+import { Plobbo } from "~/assets/plobbo";
+import AnimatedChatComponent from "~/components/plobbo-ai/aniamted-response";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 
@@ -11,80 +14,100 @@ export const Route = createLazyFileRoute("/plobbo-ai/")({
 
 function RouteComponent() {
   const prompts = ["Generate Ocean", "Analyze", "Research", "Generate Story"];
+  const [sendMessage, setSendMessage] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
   return (
     <section className="max-h-[calc(100dvh-60px)] h-full bg-white justify-between flex flex-col">
-      <div className="flex-1 relative h-full flex items-center justify-center px-8 pt-8">
-        <div className="inset-0 backdrop-blur-3xl z-40 absolute" />
-        <BackgroundGradient />
-        <div className="text-center relative z-50">
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 12,
-              mass: 1,
-            }}
-            className="text-5xl flex justify-center items-center gap-2 font-semibold"
-          >
-            <Stars size={38} />
-            Plobbo Ai
-          </motion.h1>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 12,
-              mass: 1,
-              delay: 0.2,
-            }}
-            className="text-base font-medium"
-          >
-            Let's Brainstorm with your Ai buddy in plobbo
-          </motion.p>
-          <div className="space-x-2 pt-2">
-            {prompts.map((prompt, index) => {
-              return (
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 12,
-                    mass: 1,
-                    delay: 0.45 + index * 0.04,
-                  }}
-                  className="inline-block"
-                >
-                  <Button
-                    key={prompt}
-                    size="sm"
-                    variant="outline"
-                    className="bg-background/60"
+      {!sendMessage ? (
+        <div className="flex-1 relative h-full flex items-center justify-center px-8 pt-8">
+          <div className="inset-0 backdrop-blur-3xl z-40 absolute" />
+          <BackgroundGradient />
+          <div className="text-center relative z-50">
+            <motion.h1
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 100,
+                damping: 12,
+                mass: 1,
+              }}
+              className="text-5xl flex justify-center items-center gap-2 font-semibold"
+            >
+              <Plobbo /> Plobbo Ai
+            </motion.h1>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 100,
+                damping: 12,
+                mass: 1,
+                delay: 0.2,
+              }}
+              className="text-base font-medium"
+            >
+              Let's Brainstorm with your Ai buddy in plobbo
+            </motion.p>
+            <div className="space-x-2 pt-2">
+              {prompts.map((prompt, index) => {
+                return (
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 12,
+                      mass: 1,
+                      delay: 0.45 + index * 0.04,
+                    }}
+                    className="inline-block"
                   >
-                    {prompt}
-                  </Button>
-                </motion.div>
-              );
-            })}
+                    <Button
+                      key={prompt}
+                      size="sm"
+                      variant="outline"
+                      className="bg-background/60"
+                    >
+                      {prompt}
+                    </Button>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <AnimatedChatComponent />
+      )}
       <footer className="flex relative max-w-[1536px] px-8 pb-8 mx-auto gap-x-2 justify-between w-full">
-        <div className="bg-[#FAF9F7] border p-4 rounded-md flex items-end w-full flex-col">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSendMessage(true);
+          }}
+          className="bg-[#FAF9F7] border p-4 rounded-md flex items-end w-full flex-col"
+        >
           <Textarea
             placeholder="Enter what you want plobbo ai to do..."
             className="bg-[#FAF9F7] resize-none p-0 h-12 outline-none border-none focus-visible:outline-none focus-visible:ring-0 placeholder:text-neutral-600 shadow-none font-medium tracking-tight"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                setSendMessage((prev) => !prev); // Toggle the state
+                setValue("");
+              }
+            }}
           />
-          <Button className="rounded-full">
+          <Button type="submit" className="rounded-full">
             <WandSparkles />
             Submit
           </Button>
-        </div>
+        </form>
       </footer>
     </section>
   );
