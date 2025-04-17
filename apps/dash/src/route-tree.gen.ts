@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as NoOrganizationImport } from './routes/no-organization'
 import { Route as ConfigureImport } from './routes/_configure'
+import { Route as PlobboAiIndexImport } from './routes/plobbo-ai/index'
 import { Route as JourneyIndexImport } from './routes/journey/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$user-id/route'
 import { Route as SubscribeProIndexImport } from './routes/subscribe/pro/index'
@@ -67,6 +68,14 @@ const UsersIndexLazyRoute = UsersIndexLazyImport.update({
   path: '/users/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
+
+const PlobboAiIndexRoute = PlobboAiIndexImport.update({
+  id: '/plobbo-ai/',
+  path: '/plobbo-ai/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/plobbo-ai/index.lazy').then((d) => d.Route),
+)
 
 const JourneyIndexRoute = JourneyIndexImport.update({
   id: '/journey/',
@@ -208,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/journey'
       fullPath: '/journey'
       preLoaderRoute: typeof JourneyIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/plobbo-ai/': {
+      id: '/plobbo-ai/'
+      path: '/plobbo-ai'
+      fullPath: '/plobbo-ai'
+      preLoaderRoute: typeof PlobboAiIndexImport
       parentRoute: typeof rootRoute
     }
     '/users/': {
@@ -354,6 +370,7 @@ export interface FileRoutesByFullPath {
   '/no-organization': typeof NoOrganizationRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey': typeof JourneyIndexRoute
+  '/plobbo-ai': typeof PlobboAiIndexRoute
   '/users': typeof UsersIndexLazyRoute
   '/configure': typeof ConfigureConfigureSettingsRouteWithChildren
   '/checkout/status': typeof CheckoutStatusIndexRoute
@@ -373,6 +390,7 @@ export interface FileRoutesByTo {
   '/no-organization': typeof NoOrganizationRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey': typeof JourneyIndexRoute
+  '/plobbo-ai': typeof PlobboAiIndexRoute
   '/users': typeof UsersIndexLazyRoute
   '/configure': typeof ConfigureConfigureIndexLazyRoute
   '/checkout/status': typeof CheckoutStatusIndexRoute
@@ -392,6 +410,7 @@ export interface FileRoutesById {
   '/no-organization': typeof NoOrganizationRoute
   '/users/$user-id': typeof UsersUserIdRouteRoute
   '/journey/': typeof JourneyIndexRoute
+  '/plobbo-ai/': typeof PlobboAiIndexRoute
   '/users/': typeof UsersIndexLazyRoute
   '/_configure/configure': typeof ConfigureConfigureRouteWithChildren
   '/_configure/configure/_settings': typeof ConfigureConfigureSettingsRouteWithChildren
@@ -414,6 +433,7 @@ export interface FileRouteTypes {
     | '/no-organization'
     | '/users/$user-id'
     | '/journey'
+    | '/plobbo-ai'
     | '/users'
     | '/configure'
     | '/checkout/status'
@@ -432,6 +452,7 @@ export interface FileRouteTypes {
     | '/no-organization'
     | '/users/$user-id'
     | '/journey'
+    | '/plobbo-ai'
     | '/users'
     | '/configure'
     | '/checkout/status'
@@ -449,6 +470,7 @@ export interface FileRouteTypes {
     | '/no-organization'
     | '/users/$user-id'
     | '/journey/'
+    | '/plobbo-ai/'
     | '/users/'
     | '/_configure/configure'
     | '/_configure/configure/_settings'
@@ -470,6 +492,7 @@ export interface RootRouteChildren {
   NoOrganizationRoute: typeof NoOrganizationRoute
   UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
   JourneyIndexRoute: typeof JourneyIndexRoute
+  PlobboAiIndexRoute: typeof PlobboAiIndexRoute
   UsersIndexLazyRoute: typeof UsersIndexLazyRoute
   CheckoutStatusIndexRoute: typeof CheckoutStatusIndexRoute
   JourneyJourneyIdIndexRoute: typeof JourneyJourneyIdIndexRoute
@@ -483,6 +506,7 @@ const rootRouteChildren: RootRouteChildren = {
   NoOrganizationRoute: NoOrganizationRoute,
   UsersUserIdRouteRoute: UsersUserIdRouteRoute,
   JourneyIndexRoute: JourneyIndexRoute,
+  PlobboAiIndexRoute: PlobboAiIndexRoute,
   UsersIndexLazyRoute: UsersIndexLazyRoute,
   CheckoutStatusIndexRoute: CheckoutStatusIndexRoute,
   JourneyJourneyIdIndexRoute: JourneyJourneyIdIndexRoute,
@@ -505,6 +529,7 @@ export const routeTree = rootRoute
         "/no-organization",
         "/users/$user-id",
         "/journey/",
+        "/plobbo-ai/",
         "/users/",
         "/checkout/status/",
         "/journey/$journey-id/",
@@ -529,6 +554,9 @@ export const routeTree = rootRoute
     },
     "/journey/": {
       "filePath": "journey/index.tsx"
+    },
+    "/plobbo-ai/": {
+      "filePath": "plobbo-ai/index.tsx"
     },
     "/users/": {
       "filePath": "users/index.lazy.tsx"
