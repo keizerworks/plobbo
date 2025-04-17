@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 
 import { CreateBlog } from "~/components/blogs/create";
 import { StoryCard } from "~/components/blogs/story-card";
+import { PlobboCircle } from "~/components/plobbo-circle";
 import { Input } from "~/components/ui/input";
 
 export const Route = createLazyFileRoute("/journey/$journey-id/")({
@@ -31,10 +32,10 @@ function RouteComponent() {
   }, [stories, name]);
 
   return (
-    <main className="flex size-full flex-col max-h-[calc(100dvh-60px)] overflow-y-scroll">
-      {stories.length === 0 ? (
+    <main className="flex size-full  bg-white flex-col max-h-[calc(100dvh-60px)] overflow-y-scroll">
+      {stories.length < 1 ? (
         <section className="max-w-7xl mx-auto relative h-full w-full flex items-center justify-center">
-          <div className="absolute inset-0 backdrop-blur-[70px] z-20 " />
+          <div className="absolute bg-white/80 inset-0 backdrop-blur-[70px] z-20 " />
           <BackgroundGradient />
           <div className="flex flex-col justify-center items-center relative z-50 -translate-y-10">
             <div className="text-center">
@@ -57,6 +58,23 @@ function RouteComponent() {
                   </motion.span>
                 ))}
               </h1>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 12,
+                  mass: 1,
+                  delay: 0.3,
+                }}
+                className="flex items-center justify-center py-4 gap-2"
+              >
+                <PlobboCircle value="green" />
+                <PlobboCircle value="violet" />
+                <PlobboCircle value="yellow" />
+                <PlobboCircle value="pink" />
+              </motion.div>
               <motion.p
                 className="text-black"
                 initial={{ y: 20, opacity: 0 }}
@@ -66,7 +84,7 @@ function RouteComponent() {
                   stiffness: 100,
                   damping: 12,
                   mass: 1,
-                  delay: 0.3,
+                  delay: 0.4,
                 }}
               >
                 Where ideas turn into stories worth telling
@@ -80,7 +98,7 @@ function RouteComponent() {
                 stiffness: 100,
                 damping: 12,
                 mass: 1,
-                delay: 0.5,
+                delay: 0.6,
               }}
               className="mt-4"
             >
@@ -90,7 +108,7 @@ function RouteComponent() {
         </section>
       ) : (
         <>
-          <div className="border-b">
+          <div className="">
             <header className="flex lg:flex-row gap-4 flex-col lg:items-center items-start max-w-[1536px] mx-auto p-8 gap-x-2 justify-between w-full">
               <div className="max-w-4xl flex flex-col gap-3">
                 <h1 className="font-semibold text-4xl tracking-tighter ">
@@ -107,11 +125,11 @@ function RouteComponent() {
             </header>
           </div>
 
-          <div className="border-b bg-white z-30 top-0 sticky">
-            <div className="max-w-[1536px] grid grid-cols-1 md:grid-cols-2 mx-auto w-full py-4 px-8">
+          <div className="z-30 top-0 sticky">
+            <div className="max-w-[1536px] grid grid-cols-1 md:grid-cols-2 mx-auto w-full py-0 px-8">
               <div className="relative">
                 <Input
-                  placeholder="Find your documented journey..."
+                  placeholder="Find your documented story..."
                   className="bg-[#F6F6F6] outline-none focus-visible:outline-none focus-visible:ring-0 placeholder:text-neutral-600 font-medium tracking-tight"
                   onChange={(e) => handleSearch(e.target.value)}
                 />

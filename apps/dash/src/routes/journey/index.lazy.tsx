@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/plate-ui/dialog";
+import { PlobboCircle } from "~/components/plobbo-circle";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import {
@@ -67,10 +68,10 @@ function RouteComponent() {
   }, [jrny]);
 
   return (
-    <main className="mx-auto flex w-full flex-col h-full">
+    <main className="mx-auto bg-white flex w-full flex-col h-full">
       {journeys.length < 1 ? (
         <section className="max-w-7xl mx-auto relative h-full w-full flex items-center justify-center">
-          <div className="absolute inset-0 backdrop-blur-[70px] z-20 " />
+          <div className="absolute bg-white/80 inset-0 backdrop-blur-[70px] z-20 " />
           <BackgroundGradient />
           <div className="flex flex-col justify-center items-center relative z-50 -translate-y-10">
             <div className="text-center">
@@ -93,6 +94,23 @@ function RouteComponent() {
                   </motion.span>
                 ))}
               </h1>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 12,
+                  mass: 1,
+                  delay: 0.3,
+                }}
+                className="flex items-center justify-center py-4 gap-2"
+              >
+                <PlobboCircle value="green" />
+                <PlobboCircle value="violet" />
+                <PlobboCircle value="yellow" />
+                <PlobboCircle value="pink" />
+              </motion.div>
               <motion.p
                 className="text-black"
                 initial={{ y: 20, opacity: 0 }}
@@ -102,7 +120,7 @@ function RouteComponent() {
                   stiffness: 100,
                   damping: 12,
                   mass: 1,
-                  delay: 0.3,
+                  delay: 0.4,
                 }}
               >
                 It's time to add a new Journey
@@ -116,7 +134,7 @@ function RouteComponent() {
                 stiffness: 100,
                 damping: 12,
                 mass: 1,
-                delay: 0.5,
+                delay: 0.6,
               }}
             >
               {activeOrgId && <CreateJourney orgId={activeOrgId} />}
@@ -125,7 +143,7 @@ function RouteComponent() {
         </section>
       ) : (
         <>
-          <div className="border-b">
+          <div className="">
             <header className="flex items-center max-w-[1536px] mx-auto p-8 gap-x-2 justify-between w-full">
               <h1 className="font-semibold text-4xl tracking-tighter ">
                 Welcome {profile?.name ? profile?.name : "back"}, Let's make new
@@ -138,12 +156,12 @@ function RouteComponent() {
               </div>
             </header>
           </div>
-          <div className="border-b">
-            <div className="max-w-[1536px] grid grid-cols-2 mx-auto w-full py-4 px-8">
+          <div className="bg-none">
+            <div className="max-w-[1536px] grid grid-cols-2 mx-auto w-full py-0 px-8">
               <div className="relative">
                 <Input
                   placeholder="Find your documented journey..."
-                  className="bg-[#F6F6F6] outline-none focus-visible:outline-none focus-visible:ring-0 placeholder:text-neutral-600 font-medium tracking-tight"
+                  className="bg-[#FAF9F7] outline-none focus-visible:outline-none focus-visible:ring-0 placeholder:text-neutral-600 font-medium tracking-tight"
                   onChange={(e) => handleSearch(e.target.value)}
                 />
                 <div className="absolute top-1/2 -translate-y-1/2 right-2 text-neutral-600">
@@ -152,11 +170,11 @@ function RouteComponent() {
               </div>
             </div>
           </div>
-          <div className="max-w-[1536px] mx-auto grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-[10px] p-8">
+          <div className="max-w-[1536px] mx-auto grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-8">
             {filteredJourney.map((journey) => {
               return (
                 <Card
-                  className="p-[20px] flex flex-col justify-between rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
+                  className="p-[20px] border border-neutral-300 bg-[#FAF9F7] flex flex-col justify-between rounded-sm shadow-none hover:bg-neutral-100 cursor-pointer transition-all"
                   onClick={() => {
                     navigate({
                       to: "/journey/$journey-id",

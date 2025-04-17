@@ -65,7 +65,7 @@ export function OrgSwitcher() {
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuItem className="border border-neutral-300 bg-white/70 rounded-md">
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton

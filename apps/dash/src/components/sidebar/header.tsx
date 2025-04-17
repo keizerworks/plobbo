@@ -26,7 +26,7 @@ export default function DashboardHeader() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <header className="flex h-10 shrink-0 items-center gap-2 px-4">
+    <header className="flex bg-[#FAF9F7] h-10 shrink-0 items-center gap-2 px-4">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="mr-2 -ml-1" />
 

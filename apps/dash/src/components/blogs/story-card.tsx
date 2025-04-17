@@ -51,7 +51,7 @@ export function StoryCard({
     <div className="flex flex-col">
       <Card
         onClick={handleNavigate}
-        className="overflow-hidden hover:bg-neutral-100 transition-all cursor-pointer border-neutral-300 rounded-sm shadow-none w-full"
+        className="overflow-hidden hover:bg-neutral-100 bg-[#FAF9F7] transition-all cursor-pointer border-neutral-300 rounded-sm shadow-none w-full"
       >
         <CardContent className="p-4 flex items-start justify-between">
           <div className="flex items-start gap-4 w-full">
