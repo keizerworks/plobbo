@@ -59,7 +59,7 @@ export const CreateOrganization = () => {
     onSuccess: async ({ id }) => {
       await queryClient.refetchQueries(organizationsQueryOption);
       setActiveOrgId(id);
-      await navigate({ to: "/", replace: true });
+      await navigate({ to: "/journey", replace: true });
     },
     onError: console.error,
   });

@@ -27,10 +27,10 @@ export function NavMain() {
     () =>
       [
         {
-          title: "Dashboard",
-          url: "/",
-          icon: LayoutDashboard,
-          isActive: pathname === "/",
+          title: "Journey",
+          url: "/journey",
+          icon: Newspaper,
+          isActive: pathname.startsWith("/journey"),
         },
         {
           title: "Plobbo Ai",
@@ -39,11 +39,12 @@ export function NavMain() {
           isActive: pathname.startsWith("/plobbo-ai"),
         },
         {
-          title: "Journey",
-          url: "/journey",
-          icon: Newspaper,
-          isActive: pathname.startsWith("/journey"),
+          title: "Dashboard",
+          url: "/",
+          icon: LayoutDashboard,
+          isActive: pathname === "/",
         },
+
         {
           title: "Users",
           url: "/users",
