@@ -48,7 +48,7 @@ export function PlateEditor({ blog }: Props) {
   return (
     <DndProvider backend={HTML5Backend}>
       <Plate onChange={debouncedUpdate} editor={editor}>
-        <EditorContainer>
+        <EditorContainer className="bg-white">
           <Editor variant="fullWidth" />
         </EditorContainer>
       </Plate>

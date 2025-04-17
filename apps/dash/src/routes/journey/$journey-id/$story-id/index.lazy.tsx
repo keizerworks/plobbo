@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute("/journey/$journey-id/$story-id/")({
 function RouteComponent() {
   const blog = Route.useLoaderData();
   return (
-    <main className="flex size-full flex-col gap-y-2">
+    <main className="flex size-full max-h-[calc(100dvh-60px)] flex-col gap-y-2">
       <div
         data-registry="plate"
         className="animate-in fade-in-0 relative flex size-full items-center justify-center overflow-hidden transition-all"
