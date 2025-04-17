@@ -28,7 +28,7 @@ export function NavUser() {
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuItem className="bg-white/70  rounded-md border border-neutral-300">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton

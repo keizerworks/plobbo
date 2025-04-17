@@ -12,7 +12,7 @@ body {
 
 :root {
   --font-sans: "Inter", sans-serif;
-  --background: hsl(0 0% 100%);
+  --background: #ecefeb;
   --foreground: hsl(0 0% 3.9%);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(0 0% 3.9%);
@@ -28,7 +28,7 @@ body {
   --accent-foreground: hsl(0 0% 9%);
   --destructive: hsl(0 84.2% 60.2%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: #e8e8e8;
+  --border: #bdc9b8;
   --input: hsl(0 0% 89.8%);
   --ring: hsl(0 0% 3.9%);
   --chart-1: hsl(12 76% 61%);
@@ -37,13 +37,13 @@ body {
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
-  --sidebar: hsl(0 0% 98%);
+  --sidebar: #ecefeb;
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
   --sidebar-primary-foreground: hsl(0 0% 98%);
   --sidebar-accent: hsl(240 4.8% 95.9%);
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-border: #7a8077;
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
