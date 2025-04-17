@@ -163,7 +163,7 @@ function RouteComponent() {
   );
 }
 
-const BackgroundGradient = () => {
+export const BackgroundGradient = () => {
   return (
     <motion.svg
       className="absolute opacity-50 scale-75 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
