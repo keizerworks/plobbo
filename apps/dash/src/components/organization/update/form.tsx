@@ -68,7 +68,7 @@ export const UpdateOrganizationForm = (data: Organization) => {
   }
 
   return (
-    <Card className="border-0 shadow-none">
+    <Card className="border-0 shadow-none bg-transparent">
       <CardHeader className="border-b p-4 px-0">
         <CardTitle className="text-3xl font-bold">
           Update Organization
