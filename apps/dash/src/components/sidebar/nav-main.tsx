@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { Cog, LayoutDashboard, Newspaper, Users } from "lucide-react";
+import { ComponentIcon, Newspaper, Settings, Stars, Users } from "lucide-react";
 
 import { Collapsible } from "~/components/ui/collapsible";
 
@@ -35,13 +35,13 @@ export function NavMain() {
         {
           title: "Plobbo Ai",
           url: "/plobbo-ai",
-          icon: LayoutDashboard,
+          icon: Stars,
           isActive: pathname.startsWith("/plobbo-ai"),
         },
         {
           title: "Dashboard",
           url: "/",
-          icon: LayoutDashboard,
+          icon: ComponentIcon,
           isActive: pathname === "/",
         },
 
@@ -54,7 +54,7 @@ export function NavMain() {
         {
           title: "configure",
           url: "/configure",
-          icon: Cog,
+          icon: Settings,
           isActive: pathname.startsWith("/configure"),
         },
       ] satisfies NavItemInterface[],

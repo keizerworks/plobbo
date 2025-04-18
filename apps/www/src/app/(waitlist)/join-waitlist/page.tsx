@@ -6,17 +6,16 @@ import { motion } from "framer-motion";
 import JoinWaitlistForm from "~/components/join-waitlist/form";
 
 export default function Page() {
-  const headlineText = ["Experience the future of", "Effortless Blogging"];
-  const headlineTextSm = ["Experience the future of Effortless Blogging"];
+  const headlineText = ["Write Once, Share Your", "Journey Effortless"];
+  const headlineTextSm = ["Write Once, Share Your Journey Effortless"];
 
   const descriptionLines = [
-    "The first open-source platform that prioritizes your creativity and freedom. We turn",
-    "your audience into a thriving brand with AI blogging, built-in SEO, and a minimalist UI",
+    "Join Plobbo and transform how you share your story, Save countless hours, reach wider",
+    "audiences, and build your personal brand with just one click.",
   ];
 
   const descriptionLinesSm = [
-    `The first open-source platform that prioritizes your creativity and freedom. We turn
-    your audience into a thriving brand with AI blogging, built-in SEO, and a minimalist UI`,
+    `Join Plobbo and transform how you share your story, Save countless hours, reach wider audiences, and build your personal brand with just one click.`,
   ];
 
   const containerVariants = {
@@ -132,7 +131,7 @@ export default function Page() {
       </motion.h1>
 
       <motion.p
-        className="mt-2 text-xs sm:mt-4 sm:max-w-md sm:text-base md:max-w-2xl"
+        className="mt-2 sm:px-0 px-8 text-xs sm:mt-4 sm:max-w-md sm:text-base md:max-w-2xl"
         initial="hidden"
         animate="visible"
         variants={descriptionContainerVariants}
