@@ -1,12 +1,13 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { zValidator } from "@hono/zod-validator";
 import { convertToCoreMessages, generateText, streamText } from "ai";
 import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono/quick";
 import { z } from "zod";
 
-import { openAiOptions } from "@plobbo/api/lib/openai";
 import { enforeAuthMiddleware } from "@plobbo/api/middleware/auth";
+
+import { geminiOptions } from "../lib/gemini";
 
 const aiRouter = new Hono().use(enforeAuthMiddleware);
 
@@ -18,14 +19,14 @@ aiRouter.post(
   ),
   (c) => {
     const { messages, system } = c.req.valid("json");
-    const openai = createOpenAI(openAiOptions);
+    const gemini = createGoogleGenerativeAI(geminiOptions);
 
     try {
       const result = streamText({
         maxTokens: 2048,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         messages: convertToCoreMessages(messages),
-        model: openai("gpt-3.5-turbo-0125"),
+        model: gemini("gemini-2.0-flash-001"),
         system,
       });
       return result.toDataStreamResponse();
@@ -49,13 +50,13 @@ aiRouter.post(
   async (c) => {
     const { prompt, system } = c.req.valid("json");
 
-    const openai = createOpenAI(openAiOptions);
+    const gemini = createGoogleGenerativeAI(geminiOptions);
 
     try {
       const result = await generateText({
         abortSignal: c.event.request.signal,
         maxTokens: 200,
-        model: openai("gpt-3.5-turbo-0125"),
+        model: gemini("gemini-2.0-flash-001"),
         prompt,
         system,
         temperature: 0.7,
