@@ -1,1 +1,0 @@
-ALTER TABLE "organization_domain" ADD COLUMN "certificate_arn" varchar NOT NULL;

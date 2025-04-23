@@ -1,24 +1,34 @@
 {
-  "name": "plobbo",
-  "version": "1.0.0",
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "db:generate": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:generate",
-    "db:migrate": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:migrate",
-    "db:studio": "pnpm sst shell --target drizzle-studio -- pnpm --filter=db db:studio",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.0.0",
-  "devDependencies": {
-    "@plobbo/eslint-config": "workspace:*",
-    "@plobbo/prettier-config": "workspace:*",
-    "@plobbo/tsconfig": "workspace:*"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@pulumi/aws": "^6.71.0",
-    "sst": "3.9.37"
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
-  "prettier": "@plobbo/prettier-config"
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250423.0",
+    "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "~1.0.0-beta.0 || ^1.0.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "wrangler": "^4.12.1"
+  },
+  "packageManager": "pnpm@10.4.1"
 }
